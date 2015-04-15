@@ -1,0 +1,35 @@
+\documentclass[12pt]{article}
+\usepackage{hyperref}
+\usepackage{courier}
+
+%opening
+\title{CSE 291, Neural Networks, Winter 2015, Project 1}
+\author{Bobak Hashemi, William Fedus, Matthew Burns}
+\begin{document}
+\maketitle
+
+Say we have m datapoints over n features (house prices). We lay out the data as a corresponding, tall, m by n matrix: $X$. $X$ is augmented with a column of ones and $\theta$ an extra variable, $\theta_0$ (an intercept term). $y$ is packaged as a column vector.\\    
+
+\begin{equation}
+\theta = [\theta_{0},\theta_{1}, ...]^{T}
+\end{equation}
+
+\begin{equation}
+x_{i}= Xe_{i} 
+\end{equation}
+Where $e_i$ is the ith unit basis vector in $\mathcal{R}^n$. This gives us the ith column of $X$.\\
+
+\begin{equation}
+y^{(i)}=x_{i}^{T}\theta = \left \langle x_{i}, \theta \right \rangle 
+\end{equation}
+
+\begin{equation}
+y = [y^{(1)},y^{(2)},...]^{T}
+\end{equation}
+
+\begin{equation}
+y=X\theta=[]
+\end{equation}
+
+\end{document}
+
