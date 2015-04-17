@@ -2,12 +2,12 @@ titles={'Predictive performance on test data: minFunc';...
     'Predictive performance on test data: gradient descent';...
     'Predictive performance on test data: closed form'};
 
-for i=1:length(alltheta)
+for i=2:length(alltheta)
 subplot (3,1,i);
 
 % Print out test RMS error
 actual_prices = test.y;
-predicted_prices = theta'*test.X;
+predicted_prices = alltheta{i}'*test.X;
 test_rms=sqrt(mean((predicted_prices - actual_prices).^2));
 fprintf('RMS testing error: %f\n', test_rms);
 

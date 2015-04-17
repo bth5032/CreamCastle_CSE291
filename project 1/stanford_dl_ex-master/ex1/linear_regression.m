@@ -6,5 +6,6 @@ function [f, g] = linear_regression(theta, X, y)
   %   y - The target value for each example.  y(j) is the target for example j.
   %
 
-  f=norm(y'-X'*theta); % Euclidean norm between targets and guess
-  g=X*X'*theta-(y*X')'; % Gradient of the objective function f with respect to our weight vector
+  e=y'-X'*theta;
+  f=e'*e; % Euclidean norm squared between targets and guess
+  g=2*(X*X')*theta-2*(y*X')'; % Gradient of the objective function f with respect to our weight vector
