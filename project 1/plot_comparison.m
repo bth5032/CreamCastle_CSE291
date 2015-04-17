@@ -2,7 +2,6 @@ titles={'Predictive performance on test data: minFunc';...
     'Predictive performance on test data: gradient descent';...
     'Predictive performance on test data: closed form'};
 
-
 for i=1:length(alltheta)
 subplot (3,1,i);
 
