@@ -5,6 +5,6 @@ function [theta, f, g, exitflag ] = closed_form( X, y )
 %Thus the solutions to the normal equations: 2Xy' = 2X*X'*theta is
 %immediate. 
 
-theta=(X*X')\((X)*(y'));
+theta=(X*X')\(X*(y'));
 
 end
