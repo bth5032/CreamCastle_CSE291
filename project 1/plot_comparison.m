@@ -22,6 +22,7 @@ title(titles{i});
 legend('Actual Price', 'Predicted Price');
 xlabel('House #', 'interpreter','tex');
 ylabel('House price ($1000s)', 'interpreter','tex');
+
 end
 
 saveas(gcf,'Predictive Performance','pdf');

@@ -1,4 +1,3 @@
-%
 %This exercise uses a data from the UCI repository:
 % Bache, K. & Lichman, M. (2013). UCI Machine Learning Repository
 % http://archive.ics.uci.edu/ml
@@ -52,40 +51,38 @@ fprintf('Optimization of MinFunc took %f seconds.\n', toc);
 % all three predictions on test data.
 %
 
-tic;
 [alltheta{2}] = grad_desc_naive( @linear_regression, train.X(:,1), options, train.X, train.y);
 fprintf('Optimization of grad_desc took %f seconds.\n', toc);
 
-tic;
 [alltheta{3}] = closed_form( train.X, train.y );
 fprintf('Optimization of closed_form took %f seconds.\n', toc);
 
 %% Below is an example of error calculation and plotting for one solution.%%
 
-% % Plot predicted prices and actual prices from training set.
-% actual_prices = test.y;
-% predicted_prices = theta'*test.X;
-% 
-% % Print out root-mean-squared (RMS) training error.
-% train_rms=sqrt(mean((predicted_prices - actual_prices).^2));
-% fprintf('RMS training error: %f\n', train_rms);
-% 
-% % Print out test RMS error
-% actual_prices = test.y;
-% predicted_prices = theta'*test.X;
-% test_rms=sqrt(mean((predicted_prices - actual_prices).^2));
-% fprintf('RMS testing error: %f\n', test_rms);
-% 
-% 
-% % Plot predictions on test data.
-% plot_prices=true;
-% if (plot_prices)
-%   [actual_prices,I] = sort(actual_prices);
-%   predicted_prices=predicted_prices(I);
-%   plot(actual_prices, 'rx');
-%   hold on;
-%   plot(predicted_prices,'bx');
-%   legend('Actual Price', 'Predicted Price');
-%   xlabel('House #');
-%   ylabel('House price ($1000s)');
-% end
+% Plot predicted prices and actual prices from training set.
+actual_prices = test.y;
+predicted_prices = theta'*test.X;
+
+% Print out root-mean-squared (RMS) training error.
+train_rms=sqrt(mean((predicted_prices - actual_prices).^2));
+fprintf('RMS training error: %f\n', train_rms);
+
+% Print out test RMS error
+actual_prices = test.y;
+predicted_prices = theta'*test.X;
+test_rms=sqrt(mean((predicted_prices - actual_prices).^2));
+fprintf('RMS testing error: %f\n', test_rms);
+
+
+% Plot predictions on test data.
+plot_prices=true;
+if (plot_prices)
+  [actual_prices,I] = sort(actual_prices);
+  predicted_prices=predicted_prices(I);
+  plot(actual_prices, 'rx');
+  hold on;
+  plot(predicted_prices,'bx');
+  legend('Actual Price', 'Predicted Price');
+  xlabel('House #');
+  ylabel('House price ($1000s)');
+end

@@ -8,8 +8,6 @@ titles={'Predictive performance on test data: minFunc';...
     'Predictive performance on test data: gradient descent';...
     'Predictive performance on test data: closed form'};
 
-method={ 'minFunc', 'gradient descent','closed form'};
-    
 for i=1:length(alltheta)
     subplot (3,1,i);
     
@@ -17,7 +15,7 @@ for i=1:length(alltheta)
     actual_prices = test.y;
     predicted_prices = alltheta{i}'*test.X;
     test_rms=sqrt(mean((predicted_prices - actual_prices).^2));
-    disp([method{i} ' RMS testing error: %f']);
+    fprintf('RMS testing error: %f\n', test_rms);
     xlabel('House #');
     ylabel('House price ($1000s)');
     
