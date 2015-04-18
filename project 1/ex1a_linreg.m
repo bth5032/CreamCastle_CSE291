@@ -1,4 +1,3 @@
-%
 %This exercise uses a data from the UCI repository:
 % Bache, K. & Lichman, M. (2013). UCI Machine Learning Repository
 % http://archive.ics.uci.edu/ml
