@@ -52,9 +52,11 @@ fprintf('Optimization of MinFunc took %f seconds.\n', toc);
 % all three predictions on test data.
 %
 
+tic;
 [alltheta{2}] = grad_desc_naive( @linear_regression, train.X(:,1), options, train.X, train.y);
 fprintf('Optimization of grad_desc took %f seconds.\n', toc);
 
+tic;
 [alltheta{3}] = closed_form( train.X, train.y );
 fprintf('Optimization of closed_form took %f seconds.\n', toc);
 
