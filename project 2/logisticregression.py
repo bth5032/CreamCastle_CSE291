@@ -1,6 +1,6 @@
 '''Logistic Regression for 0/1 in MNIST dataset'''
 import numpy as np
-from functions import displayImage
+import helper_functions as fn
 
 if __name__ == "__main__":
 	
@@ -10,6 +10,7 @@ if __name__ == "__main__":
 	full_testarray  = np.load('data/numpy/testarray.npy' )
 	full_testlabel  = np.load('data/numpy/testlabel.npy' )
 
+	X, Y = fn.preprocess_data(full_trainarray, full_trainlabel)
 
 	
 
