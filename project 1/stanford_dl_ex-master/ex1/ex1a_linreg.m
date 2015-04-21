@@ -43,8 +43,8 @@ theta = rand(n,1);
 % in linear_regression.m
 %
 tic;
-options = struct('MaxIter', 200);
-%theta = minFunc(@linear_regression, theta, options, train.X, train.y);
+options = struct('MaxIter', 200,'useMex',false);
+[alltheta{1}]  = minFunc(@linear_regression, theta, options, train.X, train.y);
 fprintf('Optimization of MinFunc took %f seconds.\n', toc);
 
 % TODO:  Use 1) gradient descent 2)closed-form solution
@@ -52,9 +52,11 @@ fprintf('Optimization of MinFunc took %f seconds.\n', toc);
 % all three predictions on test data.
 %
 
-[alltheta{2}] = grad_desc( @linear_regression, train.X(:,1), options, train.X, train.y);
+tic;
+[alltheta{2}] = grad_desc_naive( @linear_regression, train.X(:,1), options, train.X, train.y);
 fprintf('Optimization of grad_desc took %f seconds.\n', toc);
 
+tic;
 [alltheta{3}] = closed_form( train.X, train.y );
 fprintf('Optimization of closed_form took %f seconds.\n', toc);
 
