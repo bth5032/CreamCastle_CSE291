@@ -9,7 +9,6 @@ def display_image(dataset, labels, index):
 	imgplot = plt.imshow(dataset[index])
 	plt.show()
 
-
 def preprocess_data(dataset, labels):
 	''' Preprocessing code
 	0.  Normalize the pixel intensities to zero mean, unit variance
@@ -23,17 +22,24 @@ def preprocess_data(dataset, labels):
 			mean = dataset[i].mean()
 			std  = dataset[i].std()
 
-			X_list.append([np.append(1.0, (dataset[i] - mean)/std)])
-			Y_list.append(labels[i])
+			x = (dataset[i].flatten() - mean)/std
+
+			X_list.append(np.append(1.0, x))
+			
+			if labels[i] == 0:
+				Y_list.append(-1)
+			elif labels[i] == 1:
+				Y_list.append(1)
 
 	X = np.asarray(X_list)
 	Y = np.asarray(Y_list)
 
 	return X, Y
 
-def logistic_regression_package(X, Y, regularization = 1.0):
-	logreg = linear_model.LogisticRegression(C = regularization)
-	logreg.fit(X, Y)
+def logistic_regression_package(X_train, Y_train, regularization = 1.0):
+	logreg = linear_model.LogisticRegression()
+	logreg.fit(X_train, Y_train)
+	return logreg.coef_
 	
 
 

@@ -11,8 +11,13 @@ full_testlabel  = np.load('data/numpy/testlabel.npy' )
 X_train, Y_train = fn.preprocess_data(full_trainarray, full_trainlabel)
 X_test, Y_test = fn.preprocess_data(full_testarray, full_testlabel)
 
+print X_train.shape
+print Y_train.shape
+
 # Logistic regression via sklearn
-#w = fn.logistic_regression_package(X, Y, regularization = 1.0)
+w = fn.logistic_regression_package(X_train, Y_train, regularization = 1.0)
+
+print w
 
 
 	
