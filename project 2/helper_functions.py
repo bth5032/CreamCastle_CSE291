@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn import linear_model
 
 
 def display_image(dataset, labels, index):
@@ -29,6 +30,12 @@ def preprocess_data(dataset, labels):
 	Y = np.asarray(Y_list)
 
 	return X, Y
+
+def logistic_regression_package(X, Y, regularization = 1.0):
+	logreg = linear_model.LogisticRegression(C = regularization)
+	logreg.fit(X, Y)
+	
+
 
 def gradient_descent():
 	pass
