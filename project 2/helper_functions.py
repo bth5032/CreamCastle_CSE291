@@ -19,7 +19,7 @@ def preprocess_data(dataset, labels):
 	Y_list = []
 
 	for i in range(0, len(dataset)):
-		if labels[i] == 0 or labels[i] == 1: 
+		if labels[i] == 0 or labels[i] == 1:
 			mean = dataset[i].mean()
 			std  = dataset[i].std()
 
@@ -34,7 +34,7 @@ def preprocess_data(dataset, labels):
 def logistic_regression_package(X, Y, regularization = 1.0):
 	logreg = linear_model.LogisticRegression(C = regularization)
 	logreg.fit(X, Y)
-	
+
 
 
 def gradient_descent():
