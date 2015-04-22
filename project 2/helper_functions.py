@@ -4,11 +4,10 @@ from sklearn import linear_model
 
 
 def display_image(dataset, labels, index):
-	'''Display a particular digit to screen'''	
+	'''Display a particular digit to screen'''
 	print "Image label: ", labels[index]
 	imgplot = plt.imshow(dataset[index])
 	plt.show()
-
 
 def preprocess_data(dataset, labels):
 	''' Preprocessing code
@@ -23,8 +22,14 @@ def preprocess_data(dataset, labels):
 			mean = dataset[i].mean()
 			std  = dataset[i].std()
 
-			X_list.append([np.append(1.0, (dataset[i] - mean)/std)])
-			Y_list.append(labels[i])
+			x = (dataset[i].flatten() - mean)/std
+
+			X_list.append(np.append(1.0, x))
+
+			if labels[i] == 0:
+				Y_list.append(-1)
+			elif labels[i] == 1:
+				Y_list.append(1)
 
 	X = np.asarray(X_list)
 	Y = np.asarray(Y_list)
@@ -36,6 +41,17 @@ def logistic_regression_package(X, Y, regularization = 1.0):
 	logreg.fit(X, Y)
 
 
+'''
+def fit(X_train, Y_train, regularization = 1.0):
+	logreg = linear_model.LogisticRegression()
+	logreg.fit(X_train, Y_train)
+	return logreg.coef_
+
+def predict(X_train, Y_train, regularization = 1.0):
+	logreg = linear_model.LogisticRegression()
+	logreg.fit(X_train, Y_train)
+	return logreg.coef_
+'''
 
 def gradient_descent():
 	pass
