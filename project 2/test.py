@@ -23,7 +23,7 @@ print logreg.w
 predict = logreg.predict()
 print logreg.incorrect
 '''
-w = np.zeros(X_train.shape[1])
+w = np.random.rand(X_train.shape[1])
 w = mf.gradient_descent(X_train, Y_train, w, 1000)
 
 print w

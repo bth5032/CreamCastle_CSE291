@@ -1,17 +1,13 @@
 import bigfloat
 import numpy as np
 
-
-def sigmoid_probability(x, y, w):
-	'''Probability of class y given x.  Sigmoid function'''
-	return 1.0/(1.0 + np.exp(- y * np.dot(w,x) ))
-
 def sigmoid_loss(X, Y, w):
 	'''Sigmoid Loss Function'''	
 	val = 0.0
 	for i in range(0, len(X)):
-		val += bigfloat.log(1.0 + bigfloat.exp(-Y[i]*np.dot(w,X[i])))
+		val += np.log(1.0 + np.exp(-Y[i]*np.dot(w,X[i])))
 	return val
+
 
 def sigmoid_gradient(X, Y, w):
 	'''Gradient of Sigmoid Loss Function
@@ -24,7 +20,7 @@ def sigmoid_gradient(X, Y, w):
 	val = np.zeros(len(w))
 
 	for i in range(0, len(w)):
-		val += -X[i]*Y[i]/(1.0 + bigfloat.exp(Y[i] * np.dot(w, X[i])))
+		val += -X[i]*Y[i]/(1.0 + np.exp(Y[i] * np.dot(w, X[i])))
 	return val
 
 
