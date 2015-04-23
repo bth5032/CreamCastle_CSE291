@@ -6,7 +6,7 @@ def sigmoid_probability(x, y, w):
 	return 1.0/(1.0 + np.exp(- y * np.dot(w,x) ))
 
 def sigmoid_loss(X, Y, w):
-	'''Sigmoid Loss Function'''
+	'''Sigmoid Loss Function'''	
 	val = 0.0
 	for i in range(0, len(X)):
 		val += np.log(1.0 + np.exp(-Y[i]*np.dot(w,X[i])))
