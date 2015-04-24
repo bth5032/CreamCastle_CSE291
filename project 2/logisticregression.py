@@ -1,5 +1,15 @@
 import numpy as np
+<<<<<<< Updated upstream
 from sklearn import linear_model
+=======
+import helper_functions as fn
+
+# Load dataset from MNIST
+full_trainarray = np.load('data/numpy/trainarray.npy')
+full_trainlabel = np.load('data/numpy/trainlabel.npy')
+full_testarray  = np.load('data/numpy/testarray.npy' )
+full_testlabel  = np.load('data/numpy/testlabel.npy' )
+>>>>>>> Stashed changes
 
 class LogisticRegression:
 	'''sklearn based logistic regression wrapper'''
