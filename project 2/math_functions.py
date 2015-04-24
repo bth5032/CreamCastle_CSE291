@@ -5,7 +5,7 @@ def sigmoid_loss(X, Y, w):
 	'''Sigmoid Loss Function'''	
 	val = 0.0
 	for i in range(0, len(X)):
-		val += np.log(1.0 + np.exp(-Y[i]*np.dot(w,X[i])))
+		val += np.log(1.0 + np.exp(-Y[i] * np.dot(w, X[i])))
 	return val
 
 
@@ -20,7 +20,7 @@ def sigmoid_gradient(X, Y, w):
 	val = np.zeros(len(w))
 
 	for i in range(0, len(w)):
-		val += -X[i]*Y[i]/(1.0 + np.exp(Y[i] * np.dot(w, X[i])))
+		val += -X[i]*Y[i]/(1.0+np.exp(Y[i]*np.dot(w, X[i])))
 	return val
 
 
@@ -42,9 +42,9 @@ def gradient_descent(X, Y, w, M):
 	for i in range(0, M):
 		eta = 1.0
 
-		grad = sigmoid_gradient(X,Y,w)
+		grad = sigmoid_gradient(X, Y, w)
 
-		while sigmoid_loss(X, Y, (w - eta * grad)) >= (sigmoid_loss(X,Y,w) - alpha * eta *np.linalg.norm(grad)):
+		while sigmoid_loss(X, Y, (w-eta*grad)) >= (sigmoid_loss(X, Y, w) - alpha*eta*np.linalg.norm(grad)):
 			eta = beta * eta
 
 			if eta < 10E-5:
