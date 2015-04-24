@@ -39,5 +39,5 @@ if __name__=='__main__':
 	X_train, Y_train = fn.preprocess_data(full_trainarray, full_trainlabel)
 	X_test, Y_test = fn.preprocess_data(full_testarray, full_testlabel)
 
-# Logistic regression via sklearn
+#Logistic regression via sklearn
 #w = fn.logistic_regression_package(X, Y, regularization = 1.0)
