@@ -35,26 +35,3 @@ def preprocess_data(dataset, labels):
 	Y = np.asarray(Y_list)
 
 	return X, Y
-
-def logistic_regression_package(X, Y, regularization = 1.0):
-	logreg = linear_model.LogisticRegression(C = regularization)
-	logreg.fit(X, Y)
-
-
-'''
-def fit(X_train, Y_train, regularization = 1.0):
-	logreg = linear_model.LogisticRegression()
-	logreg.fit(X_train, Y_train)
-	return logreg.coef_
-
-def predict(X_train, Y_train, regularization = 1.0):
-	logreg = linear_model.LogisticRegression()
-	logreg.fit(X_train, Y_train)
-	return logreg.coef_
-'''
-
-def gradient_descent():
-	pass
-
-def stochastic_gradient_descent():
-	pass
