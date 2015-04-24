@@ -1,2 +1,6 @@
 *.pyc
+<<<<<<< HEAD
 *.zip
+=======
+
+>>>>>>> parent of dbb0d1f... gitignore .zip
