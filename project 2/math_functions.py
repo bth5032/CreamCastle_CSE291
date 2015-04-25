@@ -1,6 +1,6 @@
-import bigfloat
 import numpy as np
 import random, math
+import random
 from scipy.misc import logsumexp
 
 
@@ -21,11 +21,12 @@ def loss_function(X, Y, w):
 
 
 def gradient(X, Y, w):
-	'''Gradient Loss Function
+	'''Gradient Loss Function calculated from all training examples
 	Input:
 		0.  Training Examples Matrix, X.
 		1.  Training Labels Vector,   Y
 		2.  Initalized Weight Vector, w
+	
 	Output:
 		Gradient of loss function at w'''
 	val = np.zeros(len(w))
@@ -36,21 +37,24 @@ def gradient(X, Y, w):
 
 
 def gradient_batch(X, Y, w, n):
-	'''Gradient Loss Function
+	'''Gradient Loss Function calculated from a batch of training examples
 	Input:
 		0.  Training Examples Matrix, X.
 		1.  Training Labels Vector,   Y
 		2.  Initalized Weight Vector, w
 		3.  Batch size of number of examples to consider, n
+	
 	Output:
 		Gradient of loss function at w
+	'''
 	val = np.zeros(len(w))
 
-	for i in range(0, len(w)):
-		val += X[i]*(sigmoid(X[i], w)-Y[i])
+	# Retrieve a random subset of samples
+	X_rand = random.sample(X, n)
+
+	for i in range(0, len(X_rand)):
+		val += X[i]*(sigmoid(X_rand[i], w)-Y[i])
 	return val
-	'''
-	pass
 
 
 def gradient_descent(X, Y, w, M):
@@ -60,6 +64,7 @@ def gradient_descent(X, Y, w, M):
 		1.  Training Labels Vector,   Y
 		2.  Initalized Weight Vector, w
 		3.  Max Number of Iterations, M
+	
 	Output:
 		Optimized Weight Vector,      w
 	Further information:
@@ -84,29 +89,25 @@ def gradient_descent(X, Y, w, M):
 	return w
 
 
-def stochastic_gradient_descent(X, Y, w, M):
+def stochastic_gradient_descent(X, Y, w, M, n):
 	'''Stochastic gradient descent of Loss Function using backtracking
 	Input:
 		0.  Training Examples Matrix, X.
 		1.  Training Labels Vector,   Y
 		2.  Initalized Weight Vector, w
 		3.  Max Number of Iterations, M
+		4.  Batch size of number of examples to consider, n
+	
 	Output:
 		Optimized Weight Vector,      w
 	Further information:
 	http://ufldl.stanford.edu/tutorial/supervised/OptimizationStochasticGradientDescent/ '''
-	#alpha = 0.15
-	#beta  = 0.5
 	eta   = 1E-5
 
 	for i in range(0, M):
-		print 'Iteration ', i
-
-
-
-	
-
-	pass
+		w = w - eta*gradient_batch(X, Y, w, n)
+	print 'loss: ', loss_function(X, Y, w)
+	return w
 
 
 def value_difference(x, epsilon, f, df):

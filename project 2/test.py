@@ -24,13 +24,8 @@ predict = logreg.predict()
 print logreg.incorrect
 
 
-#print X_train.shape
-#print X_train.shape[0]
-#print X_train.shape[1]
-#print len(X_train)
-
-
 # 1.  Batch gradient descent logistic regression
+
 w = np.zeros(X_train.shape[1])
 w = mf.gradient_descent(X_train, Y_train, w, 25)
 print w
@@ -38,7 +33,7 @@ print w
 
 # 2.  Stochastic gradient descent logistic regression
 w = np.zeros(X_train.shape[1])
-w = mf.stochastic_gradient_descent(X_train, Y_train, w, 10000)
+w = mf.stochastic_gradient_descent(X_train, Y_train, w, 1000, 100)
 print w
 
 
