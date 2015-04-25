@@ -4,7 +4,7 @@ from sklearn import linear_model
 
 
 def display_image(dataset, labels, index):
-	'''Display a particular digit to screen'''	
+	'''Display a particular digit to screen'''
 	print "Image label: ", labels[index]
 	imgplot = plt.imshow(dataset[index])
 	plt.show()
@@ -18,14 +18,14 @@ def preprocess_data(dataset, labels):
 	Y_list = []
 
 	for i in range(0, len(dataset)):
-		if labels[i] == 0 or labels[i] == 1: 
+		if labels[i] == 0 or labels[i] == 1:
 			mean = dataset[i].mean()
 			std  = dataset[i].std()
 
 			x = (dataset[i].flatten() - mean)/std
 
 			X_list.append(np.append(1.0, x))
-			
+
 			if labels[i] == 0:
 				Y_list.append(-1)
 			elif labels[i] == 1:
@@ -35,4 +35,3 @@ def preprocess_data(dataset, labels):
 	Y = np.asarray(Y_list)
 
 	return X, Y
-
