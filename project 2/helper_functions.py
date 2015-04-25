@@ -25,12 +25,12 @@ def preprocess_data(dataset, labels):
 			x = (dataset[i].flatten() - mean)/std
 
 			X_list.append(np.append(1.0, x))
-
+			
 			if labels[i] == 0:
-				Y_list.append(-1)
+				Y_list.append(0)
 			elif labels[i] == 1:
 				Y_list.append(1)
-
+			
 	X = np.asarray(X_list)
 	Y = np.asarray(Y_list)
 
