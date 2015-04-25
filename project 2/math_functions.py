@@ -2,20 +2,22 @@ import bigfloat
 import numpy as np
 import random, math
 
-def sigmoid_loss(X, Y, w):
-	'''Sigmoid Loss Function'''
+
+def sigmoid(x, w):
+	'''Sigmoid function'''
+	return 1.0/(1.0+np.exp(-1.0*np.dot(x, w)))	
+
+
+def loss_function(X, Y, w):
+	'''Loss Function'''
 	val = 0.0
 	for i in range(0, len(X)):
-		if -Y[i] * np.dot(w, X[i]) > 500:
-			# for x >> 1, log(1+x) ~ x.
-			val += -Y[i] * np.dot(w, X[i]) 
-		else:
-			val += np.log(1.0 + np.exp(-Y[i] * np.dot(w, X[i])))
+		val += -1.0 * (Y[i]*np.log(sigmoid(X[i], w)) + (1.0-Y[i])*np.log(1-sigmoid(X[i], w)))
 	return val
 
 
-def sigmoid_gradient(X, Y, w):
-	'''Gradient of Sigmoid Loss Function
+def gradient(X, Y, w):
+	'''Gradient Loss Function
 	Input:
 		0.  Training Examples Matrix, X.
 		1.  Training Labels Vector,   Y
@@ -25,10 +27,7 @@ def sigmoid_gradient(X, Y, w):
 	val = np.zeros(len(w))
 
 	for i in range(0, len(w)):
-		if Y[i]*np.dot(w, X[i]) > 500:
-			val += 0
-		else:
-			val += -X[i]*Y[i]/(1.0+np.exp(Y[i]*np.dot(w, X[i])))
+		val += X[i]*(sigmoid(X[i], w)-Y[i])
 	return val
 
 
@@ -48,20 +47,21 @@ def gradient_descent(X, Y, w, M):
 	beta  = 0.5
 
 	for i in range(0, M):
+		print
+		print
+		print 'Iteration ', i
 		eta = 1.0
-		grad = sigmoid_gradient(X, Y, w)
-		loss = sigmoid_loss(X, Y, w)
+		grad = gradient(X, Y, w)
+		loss = loss_function(X, Y, w)
 
-
-		while sigmoid_loss(X, Y, (w-eta*grad)) >= (loss - alpha*eta*np.linalg.norm(grad)):
+		while loss_function(X, Y, (w-eta*grad)) >= (loss - alpha*eta*np.linalg.norm(grad)):
 			eta = beta * eta
-
 			if eta < 10E-5:
 				break
-		
 		w = w - eta * grad
-		print "Log-loss: ", loss, " at i: ", i
+		print " loss: ", loss
 	return w
+
 
 def stochastic_gradient_descent(X, Y, w):
 	'''Stochastic gradient descent of Loss Function'''
