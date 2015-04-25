@@ -14,19 +14,19 @@ full_testlabel  = np.load('data/numpy/testlabel.npy' )
 X_train, Y_train = fn.preprocess_data(full_trainarray, full_trainlabel)
 X_test, Y_test   = fn.preprocess_data(full_testarray, full_testlabel)
 
-'''
-# Logistic Regression using sklearn
+
+# 1.  Sklearn logistic regression
 logreg = LogisticRegression(X_train, Y_train, X_test, Y_test)
 logreg.fit()
 
 print logreg.w
+'''
 predict = logreg.predict()
 print logreg.incorrect
 '''
-w = np.random.rand(X_train.shape[1])
-#w = np.zeros(X_train.shape[1])
-w = mf.gradient_descent(X_train, Y_train, w, 100)
-
+# Batch gradient descent logistic regression
+w = np.zeros(X_train.shape[1])
+w = mf.gradient_descent(X_train, Y_train, w, 10)
 print w
 
 

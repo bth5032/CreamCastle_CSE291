@@ -1,6 +1,7 @@
 import bigfloat
 import numpy as np
 import random, math
+from scipy.misc import logsumexp
 
 
 def sigmoid(x, w):
@@ -11,8 +12,11 @@ def sigmoid(x, w):
 def loss_function(X, Y, w):
 	'''Loss Function'''
 	val = 0.0
+	# Overflow issue solution:
+	# http://lingpipe-blog.com/2012/02/16/howprevent-overflow-underflow-logistic-regression/
 	for i in range(0, len(X)):
-		val += -1.0 * (Y[i]*np.log(sigmoid(X[i], w)) + (1.0-Y[i])*np.log(1-sigmoid(X[i], w)))
+		val += -1.0 * (Y[i]*-1.0*logsumexp([0, -1.0*np.dot(X[i], w)]))
+		val += -1.0 * ((1.0-Y[i])*-1.0*logsumexp([0, np.dot(X[i], w)]))
 	return val
 
 
@@ -47,8 +51,6 @@ def gradient_descent(X, Y, w, M):
 	beta  = 0.5
 
 	for i in range(0, M):
-		print
-		print
 		print 'Iteration ', i
 		eta = 1.0
 		grad = gradient(X, Y, w)
