@@ -1,6 +1,8 @@
 import numpy as np
+import os
 import helper_functions as fn
 from sklearn import linear_model
+
 
 class LogisticRegression:
 	'''sklearn based logistic regression wrapper'''
@@ -30,3 +32,13 @@ class LogisticRegression:
 
 #Logistic regression via sklearn
 #w = fn.logistic_regression_package(X, Y, regularization = 1.0)
+if __name__=='__main__':
+	# Load dataset from MNIST
+	full_trainarray = np.load(os.path.join('data','numpy','trainarray.npy'))
+	full_trainlabel = np.load(os.path.join('data','numpy','trainlabel.npy'))
+	full_testarray  = np.load(os.path.join('data','numpy','testarray.npy' ))
+	full_testlabel  = np.load(os.path.join('data','numpy','testlabel.npy' ))
+
+	X_train, Y_train = fn.preprocess_data(full_trainarray, full_trainlabel)
+	X_test, Y_test = fn.preprocess_data(full_testarray, full_testlabel)
+
