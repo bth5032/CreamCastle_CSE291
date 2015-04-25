@@ -30,9 +30,27 @@ def gradient(X, Y, w):
 		Gradient of loss function at w'''
 	val = np.zeros(len(w))
 
+	for i in range(0, len(X)):
+		val += X[i]*(sigmoid(X[i], w)-Y[i])
+	return val
+
+
+def gradient_batch(X, Y, w, n):
+	'''Gradient Loss Function
+	Input:
+		0.  Training Examples Matrix, X.
+		1.  Training Labels Vector,   Y
+		2.  Initalized Weight Vector, w
+		3.  Batch size of number of examples to consider, n
+	Output:
+		Gradient of loss function at w
+	val = np.zeros(len(w))
+
 	for i in range(0, len(w)):
 		val += X[i]*(sigmoid(X[i], w)-Y[i])
 	return val
+	'''
+	pass
 
 
 def gradient_descent(X, Y, w, M):
@@ -58,15 +76,36 @@ def gradient_descent(X, Y, w, M):
 
 		while loss_function(X, Y, (w-eta*grad)) >= (loss - alpha*eta*np.linalg.norm(grad)):
 			eta = beta * eta
-			if eta < 10E-5:
+			if eta < 10E-20:
 				break
+		print ' eta: ', eta
 		w = w - eta * grad
-		print " loss: ", loss
+		print ' loss: ', loss
 	return w
 
 
-def stochastic_gradient_descent(X, Y, w):
-	'''Stochastic gradient descent of Loss Function'''
+def stochastic_gradient_descent(X, Y, w, M):
+	'''Stochastic gradient descent of Loss Function using backtracking
+	Input:
+		0.  Training Examples Matrix, X.
+		1.  Training Labels Vector,   Y
+		2.  Initalized Weight Vector, w
+		3.  Max Number of Iterations, M
+	Output:
+		Optimized Weight Vector,      w
+	Further information:
+	http://ufldl.stanford.edu/tutorial/supervised/OptimizationStochasticGradientDescent/ '''
+	#alpha = 0.15
+	#beta  = 0.5
+	eta   = 1E-5
+
+	for i in range(0, M):
+		print 'Iteration ', i
+
+
+
+	
+
 	pass
 
 

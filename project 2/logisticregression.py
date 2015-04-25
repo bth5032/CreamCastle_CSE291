@@ -2,6 +2,7 @@ import numpy as np
 import helper_functions as fn
 from sklearn import linear_model
 
+
 class LogisticRegression:
 	'''sklearn based logistic regression wrapper'''
 	def __init__(self, X_train, Y_train, X_test, Y_test):
@@ -25,6 +26,6 @@ class LogisticRegression:
 		for i in range(0, len(predict)):
 			if predict[i] != self.Y_test[i]:
 				self.incorrect.append(i)
-
 		return predict
+
 

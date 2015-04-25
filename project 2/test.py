@@ -15,21 +15,31 @@ X_train, Y_train = fn.preprocess_data(full_trainarray, full_trainlabel)
 X_test, Y_test   = fn.preprocess_data(full_testarray, full_testlabel)
 
 
-# 1.  Sklearn logistic regression
+# 0.  Sklearn logistic regression
 logreg = LogisticRegression(X_train, Y_train, X_test, Y_test)
 logreg.fit()
 
 print logreg.w
-'''
 predict = logreg.predict()
 print logreg.incorrect
-'''
-# Batch gradient descent logistic regression
+
+
+#print X_train.shape
+#print X_train.shape[0]
+#print X_train.shape[1]
+#print len(X_train)
+
+
+# 1.  Batch gradient descent logistic regression
 w = np.zeros(X_train.shape[1])
-w = mf.gradient_descent(X_train, Y_train, w, 10)
+w = mf.gradient_descent(X_train, Y_train, w, 25)
 print w
 
 
+# 2.  Stochastic gradient descent logistic regression
+w = np.zeros(X_train.shape[1])
+w = mf.stochastic_gradient_descent(X_train, Y_train, w, 10000)
+print w
 
 
 	

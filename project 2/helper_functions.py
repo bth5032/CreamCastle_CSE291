@@ -9,6 +9,7 @@ def display_image(dataset, labels, index):
 	imgplot = plt.imshow(dataset[index])
 	plt.show()
 
+
 def preprocess_data(dataset, labels):
 	''' Preprocessing code
 	0.  Normalize the pixel intensities to zero mean, unit variance
