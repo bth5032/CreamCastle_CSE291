@@ -114,11 +114,6 @@ def gradient_check(f, df, numargs, stochastic=True, numcheck=10, x=None, epsilon
 
 	return (min, average, max)
 
-
-
-
-
-
 ###TESTING########################################################################
 def sumSquare(x):
 	'''x1^2 + x2^2'''

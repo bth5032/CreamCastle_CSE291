@@ -3,7 +3,6 @@ import os
 import helper_functions as fn
 from sklearn import linear_model
 
-
 class LogisticRegression:
 	'''sklearn based logistic regression wrapper'''
 	def __init__(self, X_train, Y_train, X_test, Y_test):
