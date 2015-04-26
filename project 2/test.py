@@ -25,7 +25,6 @@ print logreg.incorrect
 
 
 # 1.  Batch gradient descent logistic regression
-
 w = np.zeros(X_train.shape[1])
 w = mf.gradient_descent(X_train, Y_train, w, 25)
 print w

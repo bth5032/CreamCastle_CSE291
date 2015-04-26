@@ -9,7 +9,7 @@ def sigmoid(x, w):
 	return 1.0/(1.0+np.exp(-1.0*np.dot(x, w)))	
 
 
-def loss_function(X, Y, w):
+def loss_logistic(X, Y, w):
 	'''Loss Function'''
 	val = 0.0
 	# Overflow issue solution:
@@ -77,9 +77,9 @@ def gradient_descent(X, Y, w, M):
 		print 'Iteration ', i
 		eta = 1.0
 		grad = gradient(X, Y, w)
-		loss = loss_function(X, Y, w)
+		loss = loss_logistic(X, Y, w)
 
-		while loss_function(X, Y, (w-eta*grad)) >= (loss - alpha*eta*np.linalg.norm(grad)):
+		while loss_logistic(X, Y, (w-eta*grad)) >= (loss - alpha*eta*np.linalg.norm(grad)):
 			eta = beta * eta
 			if eta < 10E-20:
 				break
@@ -106,8 +106,34 @@ def stochastic_gradient_descent(X, Y, w, M, n):
 
 	for i in range(0, M):
 		w = w - eta*gradient_batch(X, Y, w, n)
-	print 'loss: ', loss_function(X, Y, w)
+	print 'loss: ', loss_logistic(X, Y, w)
 	return w
+
+
+def identity(y, k):
+	'''Identiy function that checks if integers match'''
+	if y == k:
+		return 1
+	else:
+		return 0
+
+
+def softmax(W, x):
+	'''Computes the softmax probability for a W-matrix'''
+	prob  = np.dot(W, x)
+	prob  = np.exp(prob)
+	denom = np.sum(prob)
+	return prob/denom
+
+
+def loss_softmax(W, X, Y):
+	'''Loss function for softmax regression'''
+	val = 0.0
+	for i in range(0, len(X)):
+		for k in range(0, 10):
+			vec  = np.dot(W, X[i]) 
+			val -= identity(Y[i], k)*(np.dot(W[:,k], X[i]) - logsumexp(vec))
+	return val
 
 
 def value_difference(x, epsilon, f, df):

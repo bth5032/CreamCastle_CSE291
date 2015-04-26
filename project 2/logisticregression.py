@@ -28,4 +28,6 @@ class LogisticRegression:
 				self.incorrect.append(i)
 		return predict
 
+class SoftmaxRegression:
+	'''sklearn based multiclass logistic (softmax) regression'''
 
