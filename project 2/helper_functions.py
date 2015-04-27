@@ -1,6 +1,23 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import linear_model
+from IPython.terminal.embed import InteractiveShellEmbed
+from IPython.config.loader import Config
+
+
+# Configure the prompt so that I know I am in a nested (embedded) shell
+cfg = Config()
+prompt_config = cfg.PromptManager
+prompt_config.in_template = 'N.In <\\#>: '
+prompt_config.in2_template = '   .\\D.: '
+prompt_config.out_template = 'N.Out<\\#>: '
+
+# Messages displayed when I drop into and exit the shell.
+banner_msg = ("\n**Nested Interpreter:\n"
+"Hit Ctrl-D to exit interpreter and continue program.\n"
+"Note that if you use %kill_embedded, you can fully deactivate\n"
+"This embedded instance so it will never turn on again")   
+exit_msg = '**Leaving Nested interpreter'
 
 
 def display_image(dataset, labels, index):
