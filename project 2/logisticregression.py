@@ -27,7 +27,3 @@ class LogisticRegression:
 			if predict[i] != self.Y_test[i]:
 				self.incorrect.append(i)
 		return predict
-
-class SoftmaxRegression:
-	'''sklearn based multiclass logistic (softmax) regression'''
-

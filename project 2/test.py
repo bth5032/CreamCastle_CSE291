@@ -14,20 +14,29 @@ full_testlabel  = np.load('data/numpy/testlabel.npy' )
 X_train, Y_train = fn.preprocess_data(full_trainarray, full_trainlabel)
 X_test, Y_test   = fn.preprocess_data(full_testarray, full_testlabel)
 
-
+#---------------------#
+# Logistic Regression #
+#---------------------#
 # 0.  Sklearn logistic regression
 logreg = LogisticRegression(X_train, Y_train, X_test, Y_test)
 logreg.fit()
-
-print logreg.w
-predict = logreg.predict()
+p = logreg.predict()
 print logreg.incorrect
+w = logreg.w
+print w.shape
+print X_test
+p1 = mf.predict_logistic(X_test, w.T)
+
+for i in range(0, len(Y_test)):
+	if p1[i] != Y_test[i]:
+		print i
+
 
 
 # 1.  Batch gradient descent logistic regression
 w = np.zeros(X_train.shape[1])
 w = mf.gradient_descent(X_train, Y_train, w, 25)
-print w
+p = mf.predict(X_train, Y_train, w)
 
 
 # 2.  Stochastic gradient descent logistic regression
@@ -35,7 +44,9 @@ w = np.zeros(X_train.shape[1])
 w = mf.stochastic_gradient_descent(X_train, Y_train, w, 1000, 100)
 print w
 
-
+#--------------------#
+# Softmax Regression #
+#--------------------#
 	
 
 

@@ -9,6 +9,18 @@ def sigmoid(x, w):
 	return 1.0/(1.0+np.exp(-1.0*np.dot(x, w)))	
 
 
+def predict_logistic(X, w):
+	'''Predict X using w'''
+	pred = np.zeros(len(X))
+
+	for i in range(0, len(X)):
+		if sigmoid(X[i], w) <= 0.5:
+			pred[i] = 0
+		elif sigmoid(X[i], w) > 0.5:
+			pred[i] = 1
+	return pred
+
+
 def loss_logistic(X, Y, w):
 	'''Loss Function'''
 	val = 0.0

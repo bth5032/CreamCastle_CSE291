@@ -1,8 +1,16 @@
-'''SoftMax Regression for Digits in MNIST dataset'''
 import numpy as np
-	
-# Load dataset from MNIST
-full_trainarray = np.load('data/numpy/trainarray.npy')
-full_trainlabel = np.load('data/numpy/trainlabel.npy')
-full_testarray  = np.load('data/numpy/testarray.npy' )
-full_testlabel  = np.load('data/numpy/testlabel.npy' )
+import helper_functions as fn
+from sklearn import linear_model
+
+
+class SoftmaxRegression:
+	'''sklearn based multiclass logistic (softmax) regression'''
+	def __init__(self, X_train, Y_train, X_test, Y_test):
+		self.model     = None
+		self.W         = None
+		self.incorrect = []
+		self.X_train   = X_train
+		self.X_test    = X_test
+		self.Y_train   = Y_train
+		self.Y_test    = Y_test
+
