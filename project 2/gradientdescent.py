@@ -1,9 +1,7 @@
 import numpy as np
 import os
 import helper_functions as fn
-import math
 import sys
-
 
 #For logistic regression 
 class GradientDescent:     
