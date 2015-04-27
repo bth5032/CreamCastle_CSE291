@@ -56,3 +56,17 @@ def preprocess_data(dataset, labels, binary_class = True):
 	Y = np.asarray(Y_list)
 
 	return X, Y
+
+def print_performance(pred, actual):
+	'''Simply takes in predicted and actual and prints performance'''
+	num_incorrect = 0.0
+	incorrect     = []
+
+	for i in range(0, len(actual)):
+		if pred[i] != actual[i]:
+			num_incorrect += 1
+			incorrect.append(i)
+	print 'Incorrect indices: ', incorrect
+	print ' Performance: ', float((len(actual)-num_incorrect)/len(actual))
+	print
+

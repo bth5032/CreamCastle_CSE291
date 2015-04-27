@@ -22,14 +22,7 @@ print 'Logistic regression using sklearn'
 logreg = SklearnLogisticRegression()
 w = logreg.train(X_train, Y_train)
 p = logreg.predict(X_test)
-
-incorrect = 0.0
-for i in range(0, len(Y_test)):
-	if p[i] != Y_test[i]:
-		incorrect += 1
-		print ' Incorrect entries: ', i
-print ' Performance: ', float((len(X_train)-incorrect)/len(X_train))
-print
+fn.print_performance(p, Y_test)
 
 
 # 1.  Batch gradient descent logistic regression
@@ -37,13 +30,7 @@ print 'Logistic regression using gradient descent'
 w = np.zeros(X_train.shape[1])
 w = ml.gradient_descent(X_train, Y_train, w, 10)
 p = ml.predict_logistic(X_test, w)
-incorrect = 0.0
-for i in range(0, len(Y_test)):
-	if p[i] != Y_test[i]:
-		incorrect += 1
-		print ' Incorrect entries: ', i
-print ' Performance: ', float((len(X_train)-incorrect)/len(X_train))
-print
+fn.print_performance(p, Y_test)
 
 
 # 2.  Stochastic gradient descent logistic regression
@@ -51,20 +38,7 @@ print 'Logistic regression using stochastic gradient descent'
 w = np.zeros(X_train.shape[1])
 w = ml.stochastic_gradient_descent(X_train, Y_train, w, 5000, 100)
 p = ml.predict_logistic(X_test, w)
-incorrect = 0.0
-for i in range(0, len(Y_test)):
-	if p[i] != Y_test[i]:
-		incorrect += 1
-		print ' Incorrect entries: ', i
-print ' Performance: ', float((len(X_train)-incorrect)/len(X_train))
-print
-
-
-#--------------------#
-# Softmax Regression #
-#--------------------#
-X_train, Y_train = fn.preprocess_data(full_trainarray, full_trainlabel, False)
-X_test, Y_test   = fn.preprocess_data(full_testarray, full_testlabel, False)
+fn.print_performance(p, Y_test)
 
 
 
