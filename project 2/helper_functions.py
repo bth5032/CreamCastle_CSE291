@@ -10,7 +10,7 @@ def display_image(dataset, labels, index):
 	plt.show()
 
 
-def preprocess_data(dataset, labels):
+def preprocess_data(dataset, labels, binary_class = True):
 	''' Preprocessing code
 	0.  Normalize the pixel intensities to zero mean, unit variance
 	1.  Extract 0 and 1 digits only from Test/Training
@@ -19,19 +19,22 @@ def preprocess_data(dataset, labels):
 	Y_list = []
 
 	for i in range(0, len(dataset)):
-		if labels[i] == 0 or labels[i] == 1:
-			mean = dataset[i].mean()
-			std  = dataset[i].std()
+		mean = dataset[i].mean()
+		std  = dataset[i].std()
+		x    = (dataset[i].flatten() - mean)/std
 
-			x = (dataset[i].flatten() - mean)/std
-
-			X_list.append(np.append(1.0, x))
-			
+		if binary_class == True:
+			if labels[i] == 0 or labels[i] == 1:
+				X_list.append(np.append(1.0, x))	
 			if labels[i] == 0:
 				Y_list.append(0)
 			elif labels[i] == 1:
 				Y_list.append(1)
-			
+
+		elif binary_class == False:
+			X_list.append(np.append(1.0, x))
+			Y_list.append(labels[i])
+
 	X = np.asarray(X_list)
 	Y = np.asarray(Y_list)
 
