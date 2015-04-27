@@ -50,10 +50,12 @@ def gradient_batch(X, Y, w, n):
 	val = np.zeros(len(w))
 
 	# Retrieve a random subset of samples
-	X_rand = random.sample(X, n)
+	indices = random.sample(xrange(X), n)
+	X_rand  = X[indices]
+	Y_rand  = Y[indices]
 
 	for i in range(0, len(X_rand)):
-		val += X[i]*(sigmoid(X_rand[i], w)-Y[i])
+		val += X[i]*(sigmoid(X_rand[i], w)-Y_rand[i])
 	return val
 
 
@@ -135,6 +137,51 @@ def loss_softmax(W, X, Y):
 			val -= identity(Y[i], k)*(np.dot(W[:,k], X[i]) - logsumexp(vec))
 	return val
 
+
+def gradient_softmax_batch(X, Y, W, n):
+	'''Gradient Loss Function calculated from a batch of training examples
+	Input:
+		0.  Training Examples Matrix, X.
+		1.  Training Labels Vector,   Y
+		2.  Initalized Weight Vector, w
+		3.  Batch size of number of examples to consider, n
+	
+	Output:
+		Gradient of loss function at w
+	'''
+	val = np.zeros(W.shape)
+
+	# Retrieve a random subset of samples
+	indices = random.sample(xrange(X), n)
+	X_rand  = X[indices]
+	Y_rand  = Y[indices]
+
+	for i in range(0, len(X_rand)):
+		for k in range(0, 10):
+			val -= X_rand[i]*identity(Y_rand[i], k)-softmax(W, X_rand[i])
+	return val
+
+
+def stochastic_gradient_descent_softmax(X, Y, W, M, n):
+	'''Gradient descent of using backtracking
+	Input:
+		0.  Training Examples Matrix (m, , X.
+		1.  Training Labels Vector (m, 1),   Y
+		2.  Initalized Weight Matrix (n, k), W
+		3.  Max Number of Iterations, M
+	
+	Output:
+		Optimized Weight Matrix (n, k),      W
+	Further information:
+	# Backtracking:  http://users.ece.utexas.edu/~cmcaram/EE381V_2012F/Lecture_4_Scribe_Notes.final.pdf	'''
+
+	eta = 1.0
+
+	for i in range(0, M):
+		# Update the parameter matrix
+		W = W - eta*gradient_softmax_batch(X, Y, W, n)
+	return W
+	
 
 def value_difference(x, epsilon, f, df):
 	'''computes the difference between the numerical gradient of f at x and df at x.'''
