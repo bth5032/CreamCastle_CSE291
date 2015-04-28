@@ -8,12 +8,12 @@ The data comes from the MNIST dataset of handwritten digits.  Data has been proc
 
 #### Code Base
 To run the code, execute
-'''
+```
 
 python run_logisticregression.py
 python run_softmaxregression.py
 
-'''
+```
 
 Math functionality (probability, loss functions, gradients, gradient descents) are stored in the respective files:
 * math_logistic.py
