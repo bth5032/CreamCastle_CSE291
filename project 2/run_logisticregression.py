@@ -18,14 +18,17 @@ full_testlabel  = np.load('data/numpy/testlabel.npy' )
 X_train, Y_train = fn.preprocess_data(full_trainarray, full_trainlabel, True)
 X_test, Y_test   = fn.preprocess_data(full_testarray, full_testlabel, True)
 
+'''
 # 0.  Sklearn logistic regression
 print 'Logistic regression using sklearn'
 t0 = time.time()
 logreg = SklearnLogisticRegression()
 w = logreg.train(X_train, Y_train)
-p = logreg.predict(X_test)
 t1 = time.time()
-print ' Time:', t1-t0
+print ' Training time:', t1-t0
+p = logreg.predict(X_test)
+t2 = time.time()
+print ' Testing time:', t2-t1
 fn.print_performance(p, Y_test)
 
 
@@ -34,20 +37,24 @@ print 'Logistic regression using gradient descent'
 t0 = time.time()
 w = np.zeros(X_train.shape[1])
 w = ml.gradient_descent(X_train, Y_train, w, 10)
-p = ml.predict_logistic(X_test, w)
 t1 = time.time()
-print ' Time:', t1-t0
+print ' Training time:', t1-t0
+p = ml.predict_logistic(X_test, w)
+t2 = time.time()
+print ' Testing time:', t2-t1
 fn.print_performance(p, Y_test)
-
+'''
 
 # 2.  Stochastic gradient descent logistic regression
 print 'Logistic regression using stochastic gradient descent'
 t0 = time.time()
 w = np.zeros(X_train.shape[1])
-w = ml.stochastic_gradient_descent(X_train, Y_train, w, 5000, 100)
-p = ml.predict_logistic(X_test, w)
+w = ml.stochastic_gradient_descent(X_train, Y_train, w, 10, 1)
 t1 = time.time()
-print ' Time:', t1-t0
+print ' Training time:', t1-t0
+p = ml.predict_logistic(X_test, w)
+t2 = time.time()
+print ' Testing time:', t2-t1
 fn.print_performance(p, Y_test)
 
 
