@@ -18,14 +18,16 @@ full_testlabel  = np.load('data/numpy/testlabel.npy' )
 X_train, Y_train = fn.preprocess_data(full_trainarray, full_trainlabel, False)
 X_test, Y_test   = fn.preprocess_data(full_testarray, full_testlabel, False)
 
-
+'''
 # 0.  Sklearn softmax regression
 print 'Softmax regression using sklearn'
 softmax = SklearnSoftmaxRegression(tolerance = 0.1)
 W = softmax.train(X_train, Y_train)
 p = softmax.predict(X_test)
 fn.print_performance(p, Y_test)
-
+'''
 
 # 0.  Softmax regression using stochastic gradient descent
 print 'Softmax regression using stochastic gradient descent'
+W = np.zeros([X_train.shape[1], 10])
+W = ms.stochastic_gradient_descent(X_train, Y_train, W, 10000, 100)
