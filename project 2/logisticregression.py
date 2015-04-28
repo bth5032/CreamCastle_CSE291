@@ -5,7 +5,7 @@ from sklearn import linear_model
 
 
 class SklearnLogisticRegression:
-	'''sklearn based logistic regression wrapper'''
+	'''sklearn based logistic/softmax regression wrapper'''
 	def __init__(self):
 		self.model     = linear_model.LogisticRegression()
 		self.w         = None
@@ -19,8 +19,3 @@ class SklearnLogisticRegression:
 		predict = self.model.predict(X_test)
 		return predict
 
-#w = fn.logistic_regression_package(X, Y, regularization = 1.0)
-	full_trainarray = np.load(os.path.join('data','numpy','trainarray.npy'))
-	full_trainlabel = np.load(os.path.join('data','numpy','trainlabel.npy'))
-	full_testarray  = np.load(os.path.join('data','numpy','testarray.npy' ))
-	full_testlabel  = np.load(os.path.join('data','numpy','testlabel.npy' ))

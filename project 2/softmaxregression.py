@@ -3,14 +3,18 @@ import helper_functions as fn
 from sklearn import linear_model
 
 
-class SoftmaxRegression:
+class SklearnSoftmaxRegression:
 	'''sklearn based multiclass logistic (softmax) regression'''
-	def __init__(self, X_train, Y_train, X_test, Y_test):
-		self.model     = None
+	def __init__(self):
+		self.model     = linear_model.LogisticRegression(tol = 0.1)
 		self.W         = None
-		self.incorrect = []
-		self.X_train   = X_train
-		self.X_test    = X_test
-		self.Y_train   = Y_train
-		self.Y_test    = Y_test
+
+	def train(self, X_train, Y_train):
+		self.model.fit(X_train, Y_train)
+		self.W = self.model.coef_
+		return self.W
+
+	def predict(self, X_test):
+		predict = self.model.predict(X_test)
+		return predict		
 
