@@ -7,10 +7,16 @@ We perform logistic regression and softmax regression on the MNIST dataset.  The
 The data comes from the MNIST dataset of handwritten digits.  Data has been processed from IDX format into Numpy format.
 
 #### Code Base
-To run the code, execute
+To run logistic regression, execute
 ```
 
 python run_logisticregression.py
+
+```
+
+And similarly, to run softmax regression, simply execute
+```
+
 python run_softmaxregression.py
 
 ```
