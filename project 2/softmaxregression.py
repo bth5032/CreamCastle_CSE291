@@ -5,8 +5,8 @@ from sklearn import linear_model
 
 class SklearnSoftmaxRegression:
 	'''sklearn based multiclass logistic (softmax) regression'''
-	def __init__(self):
-		self.model     = linear_model.LogisticRegression(tol = 0.1)
+	def __init__(self, tolerance):
+		self.model     = linear_model.LogisticRegression(tol = tolerance)
 		self.W         = None
 
 	def train(self, X_train, Y_train):

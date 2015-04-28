@@ -21,7 +21,7 @@ X_test, Y_test   = fn.preprocess_data(full_testarray, full_testlabel, False)
 
 # 0.  Sklearn softmax regression
 print 'Softmax regression using sklearn'
-softmax = SklearnSoftmaxRegression()
+softmax = SklearnSoftmaxRegression(tolerance = 0.1)
 W = softmax.train(X_train, Y_train)
 p = softmax.predict(X_test)
 fn.print_performance(p, Y_test)
