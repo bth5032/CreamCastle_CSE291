@@ -35,12 +35,12 @@ def gradient_softmax_batch(X, Y, W, n=100):
 	Input:
 		0.  Training Examples Matrix, X.
 		1.  Training Labels Vector,   Y
-		2.  Initalized Weight Vector, w
+		2.  Initalized Weight Matrix, W
 		3.  Batch size of number of examples to consider, n
 
 	Output:
-		Gradient of loss function at w
-	'''
+		wierd matrix gradient-like object of loss function at w
+	'''s
 	val = np.zeros(W.shape)
 
 	# Retrieve a random subset of samples
