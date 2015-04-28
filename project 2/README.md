@@ -12,16 +12,12 @@ The data comes from the MNIST dataset of handwritten digits.  Data has been proc
 #### Code Base
 To run logistic regression, execute
 ```
-
 python run_logisticregression.py
-
 ```
 
 And similarly, to run softmax regression, simply execute
 ```
-
 python run_softmaxregression.py
-
 ```
 
 Math functionality (probability, loss functions, gradients, gradient descents) are stored in the respective files:
