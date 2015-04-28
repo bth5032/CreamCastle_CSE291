@@ -6,7 +6,7 @@ from scipy.misc import logsumexp
 
 def sigmoid(x, w):
 	'''Sigmoid function'''
-	return 1.0/(1.0+np.exp(-1.0*np.dot(x, w)))	
+	return 1.0/(1.0+np.exp(-1.0*np.dot(x, w)))
 
 
 def predict_logistic(X, w):
@@ -29,6 +29,7 @@ def loss_logistic(X, Y, w):
 	for i in range(0, len(X)):
 		val += -1.0 * (Y[i]*-1.0*logsumexp([0, -1.0*np.dot(X[i], w)]))
 		val += -1.0 * ((1.0-Y[i])*-1.0*logsumexp([0, np.dot(X[i], w)]))
+
 	return val
 
 
@@ -38,7 +39,7 @@ def gradient(X, Y, w):
 		0.  Training Examples Matrix, X.
 		1.  Training Labels Vector,   Y
 		2.  Initalized Weight Vector, w
-	
+
 	Output:
 		Gradient of loss function at w'''
 	val = np.zeros(len(w))
@@ -55,7 +56,7 @@ def gradient_batch(X, Y, w, n):
 		1.  Training Labels Vector,   Y
 		2.  Initalized Weight Vector, w
 		3.  Batch size of number of examples to consider, n
-	
+
 	Output:
 		Gradient of loss function at w
 	'''
@@ -78,7 +79,7 @@ def gradient_descent(X, Y, w, M):
 		1.  Training Labels Vector,   Y
 		2.  Initalized Weight Vector, w
 		3.  Max Number of Iterations, M
-	
+
 	Output:
 		Optimized Weight Vector,      w
 	Further information:
@@ -108,7 +109,7 @@ def stochastic_gradient_descent(X, Y, w, M, n):
 		2.  Initalized Weight Vector, w
 		3.  Max Number of Iterations, M
 		4.  Batch size of number of examples to consider, n
-	
+
 	Output:
 		Optimized Weight Vector,      w
 	Further information:
@@ -118,4 +119,3 @@ def stochastic_gradient_descent(X, Y, w, M, n):
 	for i in range(0, M):
 		w = w - eta*gradient_batch(X, Y, w, n)
 	return w
-

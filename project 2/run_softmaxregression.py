@@ -7,7 +7,7 @@ from logisticregression import SklearnLogisticRegression
 from sklearn import linear_model
 
 #--------------------#
-# Softmax Regression #
+# Softmax Regression #n=100
 #--------------------#
 # Load dataset from MNIST
 full_trainarray = np.load('data/numpy/trainarray.npy')

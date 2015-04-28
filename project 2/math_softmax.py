@@ -25,19 +25,19 @@ def loss_softmax(W, X, Y):
 	val = 0.0
 	for i in range(0, len(X)):
 		for k in range(0, 10):
-			vec  = np.dot(W, X[i]) 
+			vec  = np.dot(W, X[i])
 			val -= identity(Y[i], k)*(np.dot(W[:,k], X[i]) - logsumexp(vec))
 	return val
 
 
-def gradient_softmax_batch(X, Y, W, n):
+def gradient_softmax_batch(X, Y, W, n=100):
 	'''Gradient Loss Function calculated from a batch of training examples
 	Input:
 		0.  Training Examples Matrix, X.
 		1.  Training Labels Vector,   Y
 		2.  Initalized Weight Vector, w
 		3.  Batch size of number of examples to consider, n
-	
+
 	Output:
 		Gradient of loss function at w
 	'''
@@ -61,7 +61,7 @@ def stochastic_gradient_descent_softmax(X, Y, W, M, n):
 		1.  Training Labels Vector (m, 1),   Y
 		2.  Initalized Weight Matrix (n, k), W
 		3.  Max Number of Iterations, M
-	
+
 	Output:
 		Optimized Weight Matrix (n, k),      W
 	Further information:
