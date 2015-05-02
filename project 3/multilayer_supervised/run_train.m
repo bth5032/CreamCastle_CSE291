@@ -21,13 +21,14 @@ POFA=2;
 
 %Load NimStim as cell array of matrices. We need a dummy 'ErrorHandler' to to tell it to pass if nothing was loaded 
 file_paths = fullfile(dataset_locs{NimStim}, {paths{NimStim}(:).name});
-NimStim = cellfun(@(x) imread(x), file_paths, 'UniformOutput', false, 'ErrorHandler', @(x,y) 0)'; 
-NimStim = NimStim(~NimStim==0);
+data{NimStim} = cellfun(@(x) imread(x), file_paths, 'UniformOutput', false, 'ErrorHandler', @(x,y) 0)'; 
 
 %Load POFA 
 file_paths = fullfile(dataset_locs{POFA}, {paths{POFA}(:).name});
-POFA = cellfun(@(x) imread(x), file_paths, 'UniformOutput', false, 'ErrorHandler', @(x,y) 0)'; 
-POFA = POFA(~POFA==0);
+data{POFA} = cellfun(@(x) imread(x), file_paths, 'UniformOutput', false, 'ErrorHandler', @(x,y) 0)';
+data{POFA} = data{POFA}(cellfun(@(x) ~any(x), data{POFA}, 'ErrorHandler', @(x,y) 0));
+
+
 
 %% NimStim: populate ei with the network architecture to train
 % ei is a structure you can use to store hyperparameters of the network
@@ -36,7 +37,7 @@ POFA = POFA(~POFA==0);
 
 %TODO: decide proper hyperparameters for both datasets.
 % dimension of input features FOR YOU TO DECIDE
-ei.input_dim = 6;
+ei.input_dim = ?;
 
 % number of output classes FOR YOU TO DECIDE
 ei.output_dim = 6;
@@ -101,15 +102,16 @@ acc_train = mean(pred'==labels_train);
 fprintf('train accuracy: %f\n', acc_train);
 
 %##########################################################################
-%% Create NetworkInput objects 
+%% Create NetworkInput objects
+%Makes code easier to read
+NimStim=1;
+POFA=2; 
 
-%Perform image downsampling
+net_input = {NetworkInput(ei{NimStim}, NimStim)
 
-%Perform orientation-sampling
+inputs = cellfun(@(x) NetworkInput(x.ei, x.data), networkintput_input);
 
-%Perform Gabor filtering
-
-inputs = cellfun(@(x) NetworkInput(x.ei, x.data), input); 
+network = cellfun(@(x) NetworkInput(x.ei, x.data), inputs);
 
 
 
