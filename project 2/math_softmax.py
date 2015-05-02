@@ -11,6 +11,15 @@ def softmax(W, x):
 	denom = np.sum(prob)
 	return prob/denom
 
+def predict(X, W):
+	'''Predict X using W'''
+	pred = np.zeros(len(X))
+
+	for i in range(0, len(X)):
+		pred[i] = np.argmax(softmax(W, X[i]))
+
+	return pred
+
 
 def identity(y, k):
 	'''Identiy function that checks if integers match'''

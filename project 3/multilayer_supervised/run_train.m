@@ -57,11 +57,11 @@ ei.activation_fun = 'logistic';
 %% POFA: populate ei with the network architecture to train
 %TODO: decide proper hyperparameters for both datasets.
 % dimension of input features FOR YOU TO DECIDE
-ei.input_dim = ;
+ei.input_dim = 10;
 % number of output classes FOR YOU TO DECIDE
-ei.output_dim = ;
+ei.output_dim = 10;
 % sizes of all hidden layers and the output layer FOR YOU TO DECIDE
-ei.layer_sizes = ;
+ei.layer_sizes = 1;
 % scaling parameter for l2 weight regularization penalty
 ei.lambda = 1;
 % which type of activation function to use in hidden layers
