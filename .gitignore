@@ -2,4 +2,4 @@
 *.pyc
 *.zip
 *.orig
-
+.DS_Store
