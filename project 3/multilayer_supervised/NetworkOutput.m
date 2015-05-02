@@ -2,6 +2,8 @@ classdef NetworkOutput
     %NETWORKOUTPUT 
     
     properties
+        network %Back link
+        
         gradient
         log_liklihood
         loss
@@ -11,19 +13,17 @@ classdef NetworkOutput
     methods
         %Plot the convergence of the Network 
         function h = plot_convergence(obj)
+            obj.network.
         end
         
-        %Plot the convergence of the Network 
-        function h = log_liklihood(obj)
+        %Plot log(pdf(Data))
+        function h = plot_log_liklihood(obj)
         end
 
-        %Plot the convergence of the Network 
-        function h = loss(obj)
+        
+        function h = plot_loss(obj)
         end
         
-        %Plot the convergence of the Network 
-        function h = weights(obj)
-        end
     end     
 end
 

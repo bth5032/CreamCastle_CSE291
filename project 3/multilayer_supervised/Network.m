@@ -7,27 +7,31 @@ classdef Network
         network_weights
         network_converged
         
-        %Structure containg nodes and connections
-        net_tree
     end
     
     methods
         %Constructor
-        function obj = NetworkOutput()
+        function obj = Network()
         end
         
         %Make one gradient descent step in this network
-        function step_learn_weights(obj, num_iterations)
+        function stepLearnWeights(obj, num_iterations)
         end       
         
         %Compute gradient of network
         function gradient(obj)
         end
         
-        %Recursively construct the desired network and store in obj.net_tree
-        function make_network(obj)
+        function makeNetwork(obj)
         end
+        
+        function loss(obj)
+        end
+        
+        %2.b - Check gradient using numerical approximations (unit test for gradient)
+        function checkGradient(obj)
+        end
+        
     end
-    
 end
 
