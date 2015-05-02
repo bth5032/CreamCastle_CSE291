@@ -17,6 +17,30 @@ for i = 1:N
     end    
     
     theta = theta - eta * g/norm(g);    
-end 
+end
+
+%{
+% Backtracking algorithm parameters
+alpha = 0.15;
+beta  = 0.5;
+eta   = 1;
+N     = 100000;
+
+for i = 1:N
+    
+    [f  , g] = funObj(theta, X, y);
+    [f_n,g]  = funObj(theta-eta*g,X,y);
+    
+    while f_n >= f - alpha*eta*norm(g) 
+        eta = eta*beta;
+        if eta < 1e-10
+            break
+    end    
+    
+    theta = theta - eta * g/norm(g);
+    disp(sqrt(f/800));
+    
+end
+%}    
     
 end

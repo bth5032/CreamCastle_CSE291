@@ -1,15 +1,21 @@
-'''Logistic Regression for 0/1 in MNIST dataset'''
 import numpy as np
+import os
 import helper_functions as fn
+from sklearn import linear_model
 
-# Load dataset from MNIST
-full_trainarray = np.load('data/numpy/trainarray.npy')
-full_trainlabel = np.load('data/numpy/trainlabel.npy')
-full_testarray  = np.load('data/numpy/testarray.npy' )
-full_testlabel  = np.load('data/numpy/testlabel.npy' )
 
-X_train, Y_train = fn.preprocess_data(full_trainarray, full_trainlabel)
-X_test, Y_test = fn.preprocess_data(full_testarray, full_testlabel)
+class SklearnLogisticRegression:
+	'''sklearn based logistic/softmax regression wrapper'''
+	def __init__(self):
+		self.model     = linear_model.LogisticRegression()
+		self.w         = None
+		
+	def train(self, X_train, Y_train):
+		self.model.fit(X_train, Y_train)
+		self.w = self.model.coef_
+		return self.w
 
-# Logistic regression via sklearn
-#w = fn.logistic_regression_package(X, Y, regularization = 1.0)
+	def predict(self, X_test):
+		predict = self.model.predict(X_test)
+		return predict
+
