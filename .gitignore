@@ -1,5 +1,5 @@
 *checkpoint.ipnb
 *.pyc
+.DS_Store
 *.zip
 *.orig
-.DS_Store
