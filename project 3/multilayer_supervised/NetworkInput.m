@@ -6,8 +6,9 @@ classdef NetworkInput
         ei
         data
         
-        %This will be the multiscale 
-        convolved_features
+        %From stack2params(stack)
+        params
+        params_participant_map
     end
     
     methods
@@ -30,7 +31,7 @@ classdef NetworkInput
         
         
         function preprocess_all(obj)
-            obj.convolved_features = cellfun(@preprocess, obj.data) 
+            obj.convolved_features = cellfun(@preprocess, obj.data)
         end
         
         
@@ -195,10 +196,19 @@ classdef NetworkInput
                     featureVector(((c-1)*s+1):(c*s)) = gaborAbs;
                     
                 end
-            end
-
-        
+            end          
+        end       
     end
     
+   methods(Static=true) 
+       
+       %Parse the NimStim filename into label struct
+       function label = filename2Label(filename)
+           temp=regexp(filename,'[_-]','split');
+           label.id=temp{1}(1:2);
+           label.state=temp{2};
+       end
+   end
+   
 end
 
