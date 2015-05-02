@@ -6,6 +6,7 @@ from softmaxregression import SklearnSoftmaxRegression
 from logisticregression import SklearnLogisticRegression
 from sklearn import linear_model
 import time
+import matplotlib.pyplot as plt
 
 #--------------------#
 # Softmax Regression #
@@ -25,9 +26,11 @@ print 'Softmax regression using sklearn'
 t0 = time.time()
 softmax = SklearnSoftmaxRegression(tolerance = 0.1)
 W = softmax.train(X_train, Y_train)
-p = softmax.predict(X_test)
 t1 = time.time()
-print ' Time:', t1-t0
+print ' Training time:', t1-t0
+p = softmax.predict(X_test)
+t2 = time.time()
+print ' Testing time:', t2-t1
 fn.print_performance(p, Y_test)
 
 
@@ -35,6 +38,9 @@ fn.print_performance(p, Y_test)
 print 'Softmax regression using stochastic gradient descent'
 t0 = time.time()
 W = np.zeros([X_train.shape[1], 10])
-W = ms.stochastic_gradient_descent(X_train, Y_train, W, 10000, 100)
+W = ms.stochastic_gradient_descent(X_train, Y_train, W, 10, 100)
 t1 = time.time()
-print ' Time:', t1-t0
+print ' Training time:', t1-t0
+p = ms.predict(X_test, W)
+print ' Testing time:', t2-t1
+fn.print_performance(p, Y_test)

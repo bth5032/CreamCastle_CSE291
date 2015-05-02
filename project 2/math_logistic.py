@@ -86,17 +86,20 @@ def gradient_descent(X, Y, w, M):
 
 	alpha = 0.15
 	beta  = 0.5
+	l     = []
 
 	for i in range(0, M):
 		eta = 1.0
 		grad = gradient(X, Y, w)
 		loss = loss_logistic(X, Y, w)
-
+		l.append(loss)
 		while loss_logistic(X, Y, (w-eta*grad)) >= (loss - alpha*eta*np.linalg.norm(grad)):
 			eta = beta * eta
 			if eta < 10E-20:
 				break
 		w = w - eta * grad
+
+	print l	
 	return w
 
 
@@ -113,9 +116,21 @@ def stochastic_gradient_descent(X, Y, w, M, n):
 		Optimized Weight Vector,      w
 	Further information:
 	http://ufldl.stanford.edu/tutorial/supervised/OptimizationStochasticGradientDescent/ '''
-	eta   = 1E-5
+	#eta   = 1E-5
+
+	alpha = 0.15
+	beta  = 0.5
 
 	for i in range(0, M):
+		print i
+		eta = 1.0
+		grad = gradient_batch(X, Y, w, n)
+		loss = loss_logistic(X, Y, w)
+
+		while loss_logistic(X, Y, (w-eta*grad)) >= (loss - alpha*eta*np.linalg.norm(grad)):
+			eta = beta * eta
+			if eta < 10E-10:
+				break
 		w = w - eta*gradient_batch(X, Y, w, n)
 	return w
 
