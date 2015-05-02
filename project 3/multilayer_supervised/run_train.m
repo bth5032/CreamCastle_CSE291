@@ -8,30 +8,66 @@ ei = [];
 
 % add common directory to your path for
 % minfunc and mnist data helpers
-addpath ../common;
-addpath(genpath('../common/minFunc_2012/minFunc'));
+addpath(fullfile('..', 'common'));
+addpath(genpath(fullfile('..', 'common','minFunc_2012','minFunc')));
 
 %% TODO: load face data
+dataset_locs={fullfile('..','data','NimStim'), fullfile('..','data','POFA')};
+paths = cellfun(@(x) dir(x), dataset_locs, 'UniformOutput', false)';
 
+%Makes code easier to read
+NimStim=1;
+POFA=2; 
 
-%% populate ei with the network architecture to train
+%Load NimStim as cell array of matrices. We need a dummy 'ErrorHandler' to to tell it to pass if nothing was loaded 
+file_paths = fullfile(dataset_locs{NimStim}, {paths{NimStim}(:).name});
+NimStim = cellfun(@(x) imread(x), file_paths, 'UniformOutput', false, 'ErrorHandler', @(x,y) 0)'; 
+NimStim = NimStim(~NimStim==0);
+
+%Load POFA 
+file_paths = fullfile(dataset_locs{POFA}, {paths{POFA}(:).name});
+POFA = cellfun(@(x) imread(x), file_paths, 'UniformOutput', false, 'ErrorHandler', @(x,y) 0)'; 
+POFA = POFA(~POFA==0);
+
+%% NimStim: populate ei with the network architecture to train
 % ei is a structure you can use to store hyperparameters of the network
 % You should be able to try different network architectures by changing ei
 % only (no changes to the objective function code)
 
+%TODO: decide proper hyperparameters for both datasets.
+% dimension of input features FOR YOU TO DECIDE
+ei.input_dim = 6;
 
-%TODO: decide proper hyperparameters.
+% number of output classes FOR YOU TO DECIDE
+ei.output_dim = 6;
+
+% sizes of all hidden layers and the output layer FOR YOU TO DECIDE
+ei.layer_sizes = [10, 10, ei.output_dim];
+
+% scaling parameter for l2 weight regularization penalty
+ei.lambda = 1;
+
+% which type of activation function to use in hidden layers
+% feel free to implement support for different activation function
+ei.activation_fun = 'logistic';
+%ei.activation_fun = 'tanh';
+
+
+%% POFA: populate ei with the network architecture to train
+%TODO: decide proper hyperparameters for both datasets.
 % dimension of input features FOR YOU TO DECIDE
 ei.input_dim = ;
 % number of output classes FOR YOU TO DECIDE
 ei.output_dim = ;
 % sizes of all hidden layers and the output layer FOR YOU TO DECIDE
-ei.layer_sizes = [, ei.output_dim];
+ei.layer_sizes = ;
 % scaling parameter for l2 weight regularization penalty
-ei.lambda = ;
+ei.lambda = 1;
 % which type of activation function to use in hidden layers
 % feel free to implement support for different activation function
 ei.activation_fun = 'logistic';
+%ei.activation_fun = 'tanh';
+
 
 %% setup random initial weights
 stack = initialize_weights(ei);
@@ -63,3 +99,21 @@ fprintf('test accuracy: %f\n', acc_test);
 [~,pred] = max(pred);
 acc_train = mean(pred'==labels_train);
 fprintf('train accuracy: %f\n', acc_train);
+
+%##########################################################################
+%% Create NetworkInput objects 
+
+%Perform image downsampling
+
+%Perform orientation-sampling
+
+%Perform Gabor filtering
+
+inputs = cellfun(@(x) NetworkInput(x.ei, x.data), input); 
+
+
+
+
+
+
+
