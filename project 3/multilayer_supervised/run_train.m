@@ -1,3 +1,5 @@
+% LIAM:  What are the warnings  we receive when running run_train.m
+
 % runs training procedure for supervised multilayer network
 % softmax output layer with cross entropy loss function
 
@@ -42,6 +44,8 @@ unique_state={unique_nstim_state, unique_pofa_state};
 unique_nstim_id = unique(upper({label{NIMSTIM}(:).id}))';
 unique_pofa_id=unique({label{POFA}(:).id})'; 
 unique_id={unique_nstim_id, unique_pofa_id}; 
+% LIAM:  Why do you save these?  The IDs or classes is different for both
+% datasets
 
 % populate ei with the network architecture to train
 % ei is a structure you can use to store hyperparameters of the network
@@ -51,13 +55,23 @@ unique_id={unique_nstim_id, unique_pofa_id};
 for i=1:length(ei)
 % NimStim:
 % dimension of input features FOR YOU TO DECIDE
-ei(i).input_dim = numel(data{i}{1});
+ei(i).input_dim = numel(data{i}{1}); 
+
+% LIAM:  Why initialize input dimension to 986700 
+
 % number of output classes FOR YOU TO DECIDE
 ei(i).output_dim = length(unique_state{NIMSTIM});
+% LIAM:  We need to classify identities, there are not 8 identities for
+% NIMSTIM
+
 % sizes of all hidden layers and the output layer FOR YOU TO DECIDE
 ei(i).layer_sizes = [ceil(ei(i).input_dim/ei(i).output_dim), ei(i).output_dim];
+% LIAM:  What is this?
+
 % scaling parameter for l2 weight regularization penalty
 ei(i).lambda = 1;
+% LIAM:  Grid search for optimal regularization weight?
+
 % which type of activation function to use in hidden layers
 % feel free to implement support for different activation function
 ei(i).activation_fun = 'logistic';
@@ -113,6 +127,7 @@ for i=1:length(ei)
 end
 
 %% Train with gradientdescent; leave 2 out line search for lambda (L2 regularization);
+% LIAM:  Code fails here
 net_input = {NetworkInput(ei{NimStim}, NimStim)};
 for i=1:length(ei)
     for j=1:1
