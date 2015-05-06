@@ -1,4 +1,4 @@
-classdef NetworkOutput
+classdef NetworkOutput < matlab.mixin.Copyable
     %NETWORKOUTPUT 
     
     properties
@@ -8,12 +8,19 @@ classdef NetworkOutput
         log_liklihood
         loss
         weights
+        
+        steps=0; 
     end
     
     methods
+        
+        %Nothing special for constructor
+        function obj = NetworkOutput
+        end
+            
         %Plot the convergence of the Network 
         function h = plot_convergence(obj)
-            obj.network.
+            
         end
         
         %Plot log(pdf(Data))
