@@ -24,14 +24,14 @@ classdef NetworkInput
             %   A single processed image
             
             % Resize a single image and convert image to gray-scale
-            temp   = rgb2gray(imresize(img, 64, 64))
-            gabArr = gaborFilterBank(5, 8, 96, 96)
-            convolved_feature = gaborFeatures(temp, gabArr, 8, 8)
+            temp   = rgb2gray(imresize(img, 64, 64));
+            gabArr = gaborFilterBank(5, 8, 96, 96);
+            convolved_feature = gaborFeatures(temp, gabArr, 8, 8);
         end
         
         
         function preprocess_all(obj)
-            obj.convolved_features = cellfun(@preprocess, obj.data)
+            convolved_features = cellfun(@preprocess, obj.data);
         end
         
         
@@ -68,13 +68,9 @@ classdef NetworkInput
             % (C)	Mohammad Haghighat, University of Miami
             %       haghighat@ieee.org
             %       I WILL APPRECIATE IF YOU CITE OUR PAPER IN YOUR WORK.
-            
-            
-            
             if (nargin ~= 4)    % Check correct number of arguments
                 error('There should be four inputs.')
             end
-            
             
             %% Create Gabor filters
             
@@ -108,7 +104,7 @@ classdef NetworkInput
         end
         
         
-        function featureVector = gaborFeatures(obj, img,gaborArray,d1,d2)
+        function featureVector = gaborFeatures(obj, img, gaborArray, d1,d2)
             
             % GABORFEATURES extracts the Gabor features of the image.
             % It creates a column vector, consisting of the image's Gabor features.
@@ -147,7 +143,6 @@ classdef NetworkInput
             % (C)	Mohammad Haghighat, University of Miami
             %       haghighat@ieee.org
             %       I WILL APPRECIATE IF YOU CITE OUR PAPER IN YOUR WORK.
-            
             
             if (nargin ~= 4)    % Check correct number of arguments
                 error('Use correct number of input arguments!')
