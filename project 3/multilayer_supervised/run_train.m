@@ -49,30 +49,24 @@ unique_id={unique_nstim_id, unique_pofa_id};
 % only (no changes to the objective function code)
 
 % NimStim:
-% dimension of input features FOR YOU TO DECIDE
 ei(NIMSTIM).input_dim = length(data{NIMSTIM})*40; 
-% number of output classes FOR YOU TO DECIDE
 ei(NIMSTIM).output_dim = length(unique_id{NIMSTIM});
-% sizes of all hidden layers and the output layer FOR YOU TO DECIDE
+% sizes of all hidden layers and the output layer
 ei(NIMSTIM).layer_sizes = [ceil(ei(NIMSTIM).input_dim/ei(NIMSTIM).output_dim), ei(NIMSTIM).output_dim];
 % scaling parameter for l2 weight regularization penalty
 ei(NIMSTIM).lambda = 1;
 % which type of activation function to use in hidden layers
-% feel free to implement support for different activation function
 ei(NIMSTIM).activation_fun = 'logistic';
 %ei.activation_fun = 'tanh';
 
 % POFA: 
-% dimension of input features FOR YOU TO DECIDE
 ei(POFA).input_dim = length(data{POFA})*40; 
-% number of output classes FOR YOU TO DECIDE
 ei(POFA).output_dim = length(unique_state{POFA});
-% sizes of all hidden layers and the output layer FOR YOU TO DECIDE
+% sizes of all hidden layers and the output layer
 ei(POFA).layer_sizes = [10, ei(POFA).output_dim];
 % scaling parameter for l2 weight regularization penalty
 ei(POFA).lambda = 1;
 % which type of activation function to use in hidden layers
-% feel free to implement support for different activation function
 ei(POFA).activation_fun = 'logistic';
 %ei.activation_fun = 'tanh';
 

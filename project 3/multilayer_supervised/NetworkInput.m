@@ -1,10 +1,11 @@
-classdef NetworkInput
+classdef NetworkInput < matlab.mixin.Copyable
     %NETWORKINPUT Summary of this class goes here
     %   Detailed explanation goes here
     
     properties
         ei
         data
+        convolved_features
         
         %From stack2params(stack)
         params
@@ -13,29 +14,33 @@ classdef NetworkInput
     
     methods
         function obj = NetworkInput(ei, data)
-            
-        end
-        
-        
-        function convolved_feature = preprocess(obj, img)
-            % Input
-            %   1. Image, img
-            % Output
-            %   A single processed image
-            
-            % Resize a single image and convert image to gray-scale
-            temp   = rgb2gray(imresize(img, 64, 64));
-            gabArr = gaborFilterBank(5, 8, 96, 96);
-            convolved_feature = gaborFeatures(temp, gabArr, 8, 8);
+            obj.ei   = ei;
+            obj.data = data;
         end
         
         
         function preprocess_all(obj)
-            convolved_features = cellfun(@preprocess, obj.data);
+            obj.convolved_features = cellfun(@(x) preprocess(obj,x), obj.data, 'UniformOutput', false);
+        end
+        
+       
+        function convolved_feature = preprocess(obj, img)
+            % Input
+            %        img   :    The RGB image in matrix form to be preprocessed 
+            %
+            % Output
+            %        convolved_feature : The flattened array of 40 
+            %                            convolved images rescaled by a 
+            %                            factor of 1/8 for a single image
+            
+            % Resize a single image and convert image to gray-scale
+            temp   = rgb2gray(imresize(img, [64, 64]));
+            gabArr = obj.gaborFilterBank(5, 8, 96, 96);
+            convolved_feature = obj.gaborFeatures(temp, gabArr, 8, 8);
         end
         
         
-        function gaborArray = gaborFilterBank(obj, u,v,m,n)
+        function gaborArray = gaborFilterBank(obj,u,v,m,n)
             
             % GABORFILTERBANK generates a custom Gabor filter bank.
             % It creates a u by v array, whose elements are m by n matries;
@@ -68,7 +73,7 @@ classdef NetworkInput
             % (C)	Mohammad Haghighat, University of Miami
             %       haghighat@ieee.org
             %       I WILL APPRECIATE IF YOU CITE OUR PAPER IN YOUR WORK.
-            if (nargin ~= 4)    % Check correct number of arguments
+            if (nargin ~= 5)    % Check correct number of arguments
                 error('There should be four inputs.')
             end
             
@@ -103,8 +108,7 @@ classdef NetworkInput
             end
         end
         
-        
-        function featureVector = gaborFeatures(obj, img, gaborArray, d1,d2)
+        function featureVector = gaborFeatures(obj, img, gaborArray, d1, d2)
             
             % GABORFEATURES extracts the Gabor features of the image.
             % It creates a column vector, consisting of the image's Gabor features.
@@ -114,10 +118,8 @@ classdef NetworkInput
             % Inputs:
             %       img         :	Matrix of the input image
             %       gaborArray	:	Gabor filters bank created by the function gaborFilterBank
-            %       d1          :	The factor of downsampling along rows.
-            %                       d1 must be a factor of n if n is the number of rows in img.
-            %       d2          :	The factor of downsampling along columns.
-            %                       d2 must be a factor of m if m is the number of columns in img.
+            %       d1          :	The number of rows of the output image.
+            %       d2          :	The number of columns of the output image.
             %
             % Output:
             %       featureVector	:   A column vector with length (m*n*u*v)/(d1*d2).
@@ -130,7 +132,7 @@ classdef NetworkInput
             %
             % img = imread('cameraman.tif');
             % gaborArray = gaborFilterBank(5,8,39,39);  % Generates the Gabor filter bank
-            % featureVector = gaborFeatures(img,gaborArray,4,4);   % Extracts Gabor feature vector, 'featureVector', from the image, 'img'.
+            % featureVector = gaborFeatures(img,gaborArray,8, 8);   % Extracts Gabor feature vector, 'featureVector', from the image, 'img'.
             %
             %
             %   Details can be found in:
@@ -144,7 +146,7 @@ classdef NetworkInput
             %       haghighat@ieee.org
             %       I WILL APPRECIATE IF YOU CITE OUR PAPER IN YOUR WORK.
             
-            if (nargin ~= 4)    % Check correct number of arguments
+            if (nargin ~= 5)    % Check correct number of arguments
                 error('Use correct number of input arguments!')
             end
             
@@ -181,8 +183,10 @@ classdef NetworkInput
                     
                     c = c+1;
                     gaborAbs = abs(gaborResult{i,j});
-                    gaborAbs = downsample(gaborAbs,d1);
-                    gaborAbs = downsample(gaborAbs.',d2);
+                    gaborAbs = imresize(gaborAbs, [d1,d2]);
+                    %piazza suggested imresize instead of downsample
+                    %gaborAbs = downsample(gaborAbs,d1);
+                    %gaborAbs = downsample(gaborAbs.',d2);
                     gaborAbs = reshape(gaborAbs.',[],1);
                     
                     % Normalized to zero mean and unit variance. (if not applicable, please comment this line)
