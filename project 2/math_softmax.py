@@ -11,6 +11,15 @@ def softmax(W, x):
 	denom = np.sum(prob)
 	return prob/denom
 
+def predict(X, W):
+	'''Predict X using W'''
+	pred = np.zeros(len(X))
+
+	for i in range(0, len(X)):
+		pred[i] = np.argmax(softmax(W, X[i]))
+
+	return pred
+
 
 def identity(y, k):
 	'''Identiy function that checks if integers match'''
@@ -25,12 +34,13 @@ def loss_softmax(W, X, Y):
 	val = 0.0
 	for i in range(0, len(X)):
 		for k in range(0, 10):
-			vec  = np.dot(W, X[i])
+			vec  = np.dot(W.T, X[i])
 			val -= identity(Y[i], k)*(np.dot(W[:,k], X[i]) - logsumexp(vec))
 	return val
 
 
-def gradient_softmax_batch(X, Y, W, n=100):
+
+def gradient_batch(X, Y, W, n):
 	'''Gradient Loss Function calculated from a batch of training examples
 	Input:
 		0.  Training Examples Matrix, X.
@@ -44,17 +54,17 @@ def gradient_softmax_batch(X, Y, W, n=100):
 	val = np.zeros(W.shape)
 
 	# Retrieve a random subset of samples
-	indices = random.sample(xrange(X), n)
+	indices = random.sample(xrange(len(X)), n)
 	X_rand  = X[indices]
 	Y_rand  = Y[indices]
 
 	for i in range(0, len(X_rand)):
 		for k in range(0, 10):
-			val -= X_rand[i]*identity(Y_rand[i], k)-softmax(W, X_rand[i])
+			val[:,k] -= X_rand[i]*(identity(Y_rand[i], k)-softmax(W.T, X_rand[i])[k])
 	return val
 
 
-def stochastic_gradient_descent_softmax(X, Y, W, M, n):
+def stochastic_gradient_descent(X, Y, W, M, n):
 	'''Gradient descent of using backtracking
 	Input:
 		0.  Training Examples Matrix (m, , X.
@@ -67,9 +77,11 @@ def stochastic_gradient_descent_softmax(X, Y, W, M, n):
 	Further information:
 	# Backtracking:  http://users.ece.utexas.edu/~cmcaram/EE381V_2012F/Lecture_4_Scribe_Notes.final.pdf	'''
 
-	eta = 1.0
+	eta = 0.001
 
 	for i in range(0, M):
+		print 'Iteration ', i
 		# Update the parameter matrix
-		W = W - eta*gradient_softmax_batch(X, Y, W, n)
+		W = W - eta*gradient_batch(X, Y, W, n)
+		print' Loss: ', loss_softmax(W, X, Y)
 	return W
