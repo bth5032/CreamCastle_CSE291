@@ -28,7 +28,6 @@ classdef NetworkInput < matlab.mixin.Copyable
             SCALES=8;
             NUM_COMPONENTS=40;
             
-            
             for i=1:length(fulldata)
                 
                 %Given a cell array of datasets
