@@ -7,9 +7,6 @@ classdef NetworkInput < matlab.mixin.Copyable
         data
         convolved_features
         
-        %From stack2params(stack)
-        params
-        params_participant_map
     end
     
     methods

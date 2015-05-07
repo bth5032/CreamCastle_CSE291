@@ -80,6 +80,7 @@ for i = 1:u
         gaborAbs = downsample(gaborAbs.',d2);
         gaborAbs = reshape(gaborAbs.',[],1);
         
+        
         % Normalized to zero mean and unit variance. (if not applicable, please comment this line)
         gaborAbs = (gaborAbs-mean(gaborAbs))/std(gaborAbs,1);
         
