@@ -9,6 +9,7 @@ ei = [];
 %Makes code easier to read
 NIMSTIM=1;
 POFA=2;
+NUMFOLDS=5;
 
 % add common directory to your path for
 % minfunc and mnist data helpers
@@ -18,12 +19,10 @@ addpath(genpath(fullfile('..', 'common','minFunc_2012','minFunc')));
 addpath(genpath(fullfile('..', 'common', 'Mohammad Haghighat')));  %From Matlab exchange
 
 % TODO: load face data
-
 % populate ei with the network architecture to train
 % ei is a structure you can use to store hyperparameters of the network
 % You should be able to try different network architectures by changing ei
 % only (no changes to the objective function code)
-
 
 %Pre-processing pipeline: includes loading data and instantiating network
 p3;

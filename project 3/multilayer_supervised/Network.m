@@ -3,9 +3,10 @@ classdef Network < matlab.mixin.Copyable
     
     properties
         network_design
-        network_input
-        network_output
+        train_input
+        test_input
         
+        network_output
         network_converged=0
     end
     
@@ -13,7 +14,7 @@ classdef Network < matlab.mixin.Copyable
         
         %Constructor: takes NetworkDesign and NetworkInput ojbects as
         %arguments.
-        function obj = Network(input, design)
+        function obj = Network(design, train_input, test_input)
             %Check input
             assert(isa(design, 'NetworkDesign'), 'Network (constructor): design must be of NetworkDesign class');
             assert(isa(input, 'NetworkInput'), 'Network (constructor): design must be of NetworkDesign class');
@@ -22,9 +23,9 @@ classdef Network < matlab.mixin.Copyable
             %Create a single network for each input/design pair 
             if length(input)==1 && length(design)==1
                 obj.network_design=design;
-                obj.network_input=input;
+                obj.train_input=train_input;
+                obj.test_input=test_input;
                 obj.network_output = NetworkOutput;
-                obj.fwd_prop; %Updates obj(i).output
                 return;
                 
             %We are passed a vector of inputs/designs: recursively call
@@ -38,6 +39,17 @@ classdef Network < matlab.mixin.Copyable
             end
         end
         
+        %Train the network on train_input
+        function train(obj)
+        end
+        
+        %Test the network on test_input
+        function test(obj)
+        end
+
+    end
+    
+    methods(Hidden=true)
         %Make one gradient descent step in this network
         function stepLearnWeights(obj, num_iterations)
         end

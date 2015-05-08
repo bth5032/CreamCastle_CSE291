@@ -32,8 +32,8 @@ classdef NetworkInput < matlab.mixin.Copyable
                 
                 %Given a cell array of datasets
                 if iscell(fulldata)
-                    obj(i) = NetworkInput(fulldata{i}); 
-                    continue; 
+                    obj(i) = NetworkInput(fulldata{i});
+                    continue;
                 else
                     this_item=fulldata(i);
                 end
@@ -78,7 +78,7 @@ classdef NetworkInput < matlab.mixin.Copyable
                 gray_image=rgb2gray(image);
             else
                 gray_image=image;
-            end     
+            end
         end
     end
     
@@ -89,8 +89,19 @@ classdef NetworkInput < matlab.mixin.Copyable
             label.id=temp{1}(1:2);
             label.state=temp{2};
         end
+        
+        function folds = makeXvalFolds(fulldata, num_folds)
+            N=ceil(length(fulldata)/num_folds);
+            for i=1:num_folds
+                start_idx = (i-1)*N+1;
+                %Don't exceed the dimension of the data vector; last chunk
+                %can be short
+                end_idx = start_idx:min(start_idx+N, length(fulldata.data))
+                this_range = 1:();
+            end
+            
+        end
+        
+        
     end
     
-    
-end
-
