@@ -12,6 +12,7 @@ POFA=2;
 
 % add common directory to your path for
 % minfunc and mnist data helpers
+addpath(pwd); 
 addpath(fullfile('..', 'common'));
 addpath(genpath(fullfile('..', 'common','minFunc_2012','minFunc')));
 addpath(genpath(fullfile('..', 'common', 'Mohammad Haghighat')));  %From Matlab exchange

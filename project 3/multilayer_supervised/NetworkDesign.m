@@ -1,5 +1,5 @@
 classdef NetworkDesign < matlab.mixin.Copyable
-    %NETWORKDESIGN a deep net specification, ala ei
+    %NETWORKDESIGN a deep net specification (ei in stanford tutorial)
     
     properties
         ei
