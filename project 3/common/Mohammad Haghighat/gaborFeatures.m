@@ -38,16 +38,12 @@ function gaborResult = gaborFeatures(img, gaborArray, out_size)
 %       haghighat@ieee.org
 %       I WILL APPRECIATE IF YOU CITE OUR PAPER IN YOUR WORK.
 
-img = double(img);
-
-
-%% Filtering
+img = NetworkInput.toGray(double(img));
 
 % Filter input image by each Gabor filter
 [u,v] = size(gaborArray);
 gaborResult = cell(u,v);
 parfor i = 1:u*v
-        %gaborResult{i} = conv2(img, gaborArray{i}, 'same');
         temp = imfilter(img, gaborArray{i});
         gaborResult{i}=abs(imresize(temp, out_size)); 
         %TODO: gpu 
