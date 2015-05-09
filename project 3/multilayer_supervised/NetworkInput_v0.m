@@ -1,4 +1,4 @@
-classdef NetworkInput < matlab.mixin.Copyable
+classdef NetworkInput_v0 < matlab.mixin.Copyable
     %NETWORKINPUT Summary of this class goes here
     %   Detailed explanation goes here
     
@@ -7,31 +7,17 @@ classdef NetworkInput < matlab.mixin.Copyable
         data
         convolved_features
         
-        
     end
     
     methods
-        function obj = NetworkInput(ei, data)
+        function obj = NetworkInput_v0(ei, data)
             obj.ei   = ei;
             obj.data = data;
         end
         
         
         function preprocess_all(obj)
-           temp  = cellfun(@(x) preprocess(obj,x), obj.data, 'UniformOutput', false);
-           
-           num_dim    = 8*8*8;
-           num_ex     = length(obj.data);
-           num_scales = 5;
-           
-           obj.convolved_features = zeros(num_dim, num_scales, num_ex);
-           a = length(temp)
-           
-           for n = 1:length(temp)
-                obj.convolved_features(:, :, n) = temp{n};
-           end
-          
-           
+            obj.convolved_features = cellfun(@(x) preprocess(obj,x), obj.data, 'UniformOutput', false);
         end
         
        
@@ -199,11 +185,10 @@ classdef NetworkInput < matlab.mixin.Copyable
             % Extract feature vector from input image
             [n,m] = size(img);
             s = (n*m)/(d1*d2);
-            featureVector = zeros(s*v,u);
-            
-            % Loop over scales, u.
+            l = s*u*v;
+            featureVector = zeros(l,1);
+            c = 0;
             for i = 1:u
-                c = 0;
                 for j = 1:v
                     
                     c = c+1;
@@ -215,7 +200,7 @@ classdef NetworkInput < matlab.mixin.Copyable
                     % Normalized to zero mean and unit variance. (if not applicable, please comment this line)
                     gaborAbs = (gaborAbs-mean(gaborAbs))/std(gaborAbs,1);
                     
-                    featureVector(((c-1)*s+1):(c*s), i) = gaborAbs;
+                    featureVector(((c-1)*s+1):(c*s)) = gaborAbs;
                     
                 end
             end          
@@ -233,4 +218,3 @@ classdef NetworkInput < matlab.mixin.Copyable
    end
    
 end
-
