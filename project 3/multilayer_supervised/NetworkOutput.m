@@ -4,6 +4,7 @@ classdef NetworkOutput < matlab.mixin.Copyable
     properties
         network %Back link
         
+        activations
         gradient
         log_liklihood
         loss
@@ -20,7 +21,6 @@ classdef NetworkOutput < matlab.mixin.Copyable
             
         %Plot the convergence of the Network 
         function h = plot_convergence(obj)
-            
         end
         
         %Plot log(pdf(Data))

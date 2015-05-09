@@ -5,6 +5,7 @@ paths = cellfun(@(x) dir(x), dataset_locs, 'UniformOutput', false)';
 %Makes code easier to read
 NIMSTIM=1;
 POFA=2;
+NUMFOLDS=5;
 
 %Loop over two datasets
 for i=1:length(paths)
@@ -13,7 +14,10 @@ for i=1:length(paths)
     fulldata{i}.data = cellfun(@(x) imread(x), file_paths{i}, 'UniformOutput', false, 'ErrorHandler', @(x,y) 0)';
     good_idx{i} = cellfun(@(x) nnz(x) > 0, fulldata{i}.data, 'ErrorHandler', @(x,y) 0);
     fulldata{i}.data = fulldata{i}.data(good_idx{i});
-
+    
+    %Remove to get full data, not just top 10
+    fulldata{i}.data=fulldata{i}.data(1:10); 
+    
     %Save filename to extract label
     temp = regexp({paths{i}(good_idx{i}).name}, '[\\\/.]', 'split')';
     filename{i} = cellfun(@(x) x{1}, temp, 'UniformOutput', false);
@@ -28,7 +32,9 @@ fulldata{NIMSTIM}.unique_id=unique(upper({label{NIMSTIM}(:).id}))';
 fulldata{POFA}.unique_id=unique({label{POFA}(:).id})'; 
 
 
-network_input=NetworkInput(fulldata); 
+%% Create cross-validation folds (train v. test inputs)
+%[inputs] = NetworkInput(fulldata);
+folds = NetworkInput.makeXvalFolds(fulldata, NUMFOLDS);
 
 %% Create NetworkDesign object
 % populate ei with the network architecture to train
@@ -41,7 +47,7 @@ network_input=NetworkInput(fulldata);
 ei{NIMSTIM}.input_dim = length(fulldata{NIMSTIM}.data)*40; 
 % number of output classes FOR YOU TO DECIDE
 ei{NIMSTIM}.output_dim = length(fulldata{NIMSTIM}.unique_id);
-% sizes of all hidden layers and the output layer FOR YOU TO DEcCIDE
+% sizes of all hidden layers and the output layer
 ei{NIMSTIM}.layer_sizes = [ceil(ei{NIMSTIM}.input_dim/ei{NIMSTIM}.output_dim), ei{NIMSTIM}.output_dim];
 % scaling parameter for l2 weight regularization penalty
 ei{NIMSTIM}.lambda = 1;
@@ -68,6 +74,11 @@ network_design = NetworkDesign(ei);
 
 %% Create Network
 network=Network(network_input, network_design); 
+
+network.train;
+network.test(test_data);
+
+
 
 
 

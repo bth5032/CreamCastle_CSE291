@@ -33,7 +33,7 @@ classdef Network < matlab.mixin.Copyable
             else
                 n=1; 
                 for i=1:length(design)
-                    obj(n) = Network(input(i), design(i));
+                    obj(n) = Network(design(i), train_input(i), test_input(i));
                     n=n+1; 
                 end
             end
@@ -46,17 +46,17 @@ classdef Network < matlab.mixin.Copyable
         %Test the network on test_input
         function test(obj)
         end
+        
+        %Compute all network activations 
+        function forwardProp(obj)
+            obj.network_design.ei.inputdim
+        end
 
     end
     
     methods(Hidden=true)
         %Make one gradient descent step in this network
         function stepLearnWeights(obj, num_iterations)
-        end
-        
-        %Compute current outputs at all layers
-        function fwd_prop(obj)
-            return;
         end
         
         %Perform backprop on network
