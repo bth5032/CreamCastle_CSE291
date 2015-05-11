@@ -5,11 +5,11 @@ classdef NetworkInput < matlab.mixin.Copyable
         features
         folds
         
-        unique_states
-        unique_ids
-        
-        params
-        params_participant_map
+        states
+        ids
+
+        state_map
+        id_map
     end
     
     properties(Constant)
@@ -107,6 +107,7 @@ classdef NetworkInput < matlab.mixin.Copyable
                 
                 %TODO: take a single fulldata struct and split into train
                 %and test structs based on participants (with the same fields as fulldata)
+                
                 train_data=[];
                 test_data=[]; 
                 
