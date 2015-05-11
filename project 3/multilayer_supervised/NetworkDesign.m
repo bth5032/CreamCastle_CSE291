@@ -30,12 +30,19 @@ classdef NetworkDesign < matlab.mixin.Copyable
             if strcmp(obj.ei.activation_fun, 'tanh')
                 func=@tanh;
             elseif strcmp(obj.ei.activation_fun, 'logistic')
-                func=@logistic_func;
+                func=@NetworkDesign.logistic_func;
             else
                 
             end
         end
+
+    end
+    
+    methods(Static)
+            
+        function logistic_func(
         
-        
+        end
+    
     end
 end

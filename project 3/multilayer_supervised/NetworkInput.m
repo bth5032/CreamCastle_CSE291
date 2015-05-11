@@ -7,6 +7,14 @@ classdef NetworkInput < matlab.mixin.Copyable
         data
         convolved_features
         
+<<<<<<< HEAD
+=======
+        states
+        ids
+
+        state_map
+        id_map
+>>>>>>> matt_develop
     end
     
     properties(Constant)
@@ -202,6 +210,7 @@ classdef NetworkInput < matlab.mixin.Copyable
                 
                 %TODO: take a single fulldata struct and split into train
                 %and test structs based on participants (with the same fields as fulldata)
+                
                 train_data=[];
                 test_data=[]; 
                 
