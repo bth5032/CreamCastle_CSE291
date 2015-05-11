@@ -8,7 +8,9 @@ classdef NetworkOutput < matlab.mixin.Copyable
         gradient
         log_liklihood
         loss
-        weights
+        
+        stack
+        params
         
         steps=0; 
     end
@@ -16,7 +18,10 @@ classdef NetworkOutput < matlab.mixin.Copyable
     methods
         
         %Nothing special for constructor
-        function obj = NetworkOutput
+        function obj = NetworkOutput(network)
+            obj.stack = initialize_weights(network.network_design.ei);
+            obj.params = stack2params(obj.stack);
+            obj.network=network;
         end
             
         %Plot the convergence of the Network 
