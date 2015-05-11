@@ -57,23 +57,25 @@ classdef Network < matlab.mixin.Copyable
         
         %Test the network on test_input
         function test(obj)
-        end
-        
-        %Compute all network activations
-        function forwardProp(obj)
-            obj.network_design.ei.inputdim;
-        end
-        
-        function backProp(obj)
-        end
+        end 
         
     end
     
     methods(Hidden=true)
+     
+        %Use gradient descent to learn weights for the current network activation 
+        function backProp(obj)
+        end
         
-        %Perform backprop on network
-        function gradientDesc(obj)
-            return;
+        %Compute all network activations
+        function forwardProp(obj)
+            a{i}
+            for i=1:length(obj.network_output.stack)
+                this_weight = obj.network_output.stack{i};
+                a{i}=tanh(this_weight.W*obj.network_output.deltas{i};
+            end
+            
+            
         end
         
         %2.b - Check gradient using numerical approximations (unit test for gradient)

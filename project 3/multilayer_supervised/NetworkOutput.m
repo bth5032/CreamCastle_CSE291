@@ -5,6 +5,8 @@ classdef NetworkOutput < matlab.mixin.Copyable
         network %Back link
         
         activations
+        deltas 
+        
         gradient
         log_liklihood
         loss
@@ -31,11 +33,9 @@ classdef NetworkOutput < matlab.mixin.Copyable
         %Plot log(pdf(Data))
         function h = plot_log_liklihood(obj)
         end
-
         
         function h = plot_loss(obj)
-        end
-        
+        end     
     end     
 end
 
