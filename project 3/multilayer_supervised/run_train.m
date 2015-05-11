@@ -62,29 +62,29 @@ end
 
 %% Train with gradientdescent; leave 2 out line search for lambda (L2 regularization);
 % LIAM:  Code fails here
-net_input = {NetworkInput(ei{NIMSTIM}, NIMSTIM)};
-for i=1:length(ei)
-    for j=1:1
-        stack = initialize_weights(ei{i});
-        params = stack2params(stack);
-        
-        % setup minfunc options
-        options = [];
-        options.display = 'iter';
-        options.maxFunEvals = 1e6;
-        options.Method = 'lbfgs';
-        
-        [opt_params,opt_value,exitflag,output] = gradientdescent( dnn_cost_function, params, options, ei, data, labels);
-        
-        %Makes code easier to read
-        NimStim=1;
-        POFA=2;
-        
-        inputs = cellfun(@(x) NetworkInput(x.ei, x.data), networkintput_input);
-        network = cellfun(@(x) Network(x), inputs);
-        outputs = cellfun(@(x) NetworkOutput(x), network);
-    end
-end
+% net_input = {NetworkInput(ei{NIMSTIM}, NIMSTIM)};
+% for i=1:length(ei)
+%     for j=1:1
+%         stack = initialize_weights(ei{i});
+%         params = stack2params(stack);
+%         
+%         % setup minfunc options
+%         options = [];
+%         options.display = 'iter';
+%         options.maxFunEvals = 1e6;
+%         options.Method = 'lbfgs';
+%         
+%         [opt_params,opt_value,exitflag,output] = gradientdescent( dnn_cost_function, params, options, ei, data, labels);
+%         
+%         %Makes code easier to read
+%         NimStim=1;
+%         POFA=2;
+%         
+%         inputs = cellfun(@(x) NetworkInput(x.ei, x.data), networkintput_input);
+%         network = cellfun(@(x) Network(x), inputs);
+%         outputs = cellfun(@(x) NetworkOutput(x), network);
+%     end
+% end
 
 
 
