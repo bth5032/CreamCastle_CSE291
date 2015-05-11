@@ -45,7 +45,6 @@ ei(POFA).lambda = 1;
 ei(POFA).activation_fun = 'logistic';
 %ei.activation_fun = 'tanh';
 
-
 %% Train with minFunc
 for i=1:length(ei)
     stack = initialize_weights(ei{i});
