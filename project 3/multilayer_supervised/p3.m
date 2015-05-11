@@ -5,7 +5,6 @@ paths = cellfun(@(x) dir(x), dataset_locs, 'UniformOutput', false)';
 %Makes code easier to read
 NIMSTIM=1;
 POFA=2;
-NUMFOLDS=5;
 
 %Loop over two datasets
 for i=1:length(paths)
@@ -33,6 +32,8 @@ fulldata{POFA}.unique_id=unique({label{POFA}(:).id})';
 
 
 %% Create cross-validation folds (train v. test inputs)
+inputs = NetworkInput(fulldata);
+%folds = NetworkInput.makeXvalFolds(fulldata, NUMFOLDS);
 
 %% Create NetworkDesign object
 % populate ei with the network architecture to train
@@ -74,6 +75,7 @@ network_design = NetworkDesign(ei);
 network=Network(network_input, network_design); 
 
 network.train;
+network.test;
 
 
 
