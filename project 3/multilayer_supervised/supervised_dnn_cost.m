@@ -14,9 +14,7 @@ numHidden = numel(ei.layer_sizes) - 1;
 hAct = cell(numHidden+1, 1);
 gradStack = cell(numHidden+1, 1);
 %% forward prop
-%%% YOUR CODE HERE %%%
-
-
+network.forwardProp; 
 
 %% return here if only predictions desired.
 if po

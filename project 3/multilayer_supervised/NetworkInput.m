@@ -9,6 +9,16 @@ classdef NetworkInput < matlab.mixin.Copyable
         
     end
     
+    properties(Constant)
+        IMAGEDIM=64;
+        FEATUREDIM=8;
+        FILTERDIM=96;
+        ORIENTATIONS=5;
+        SCALES=8;
+        NUM_COMPONENTS=40;
+        NUMFOLDS=5;
+    end
+    
     methods
         function obj = NetworkInput(ei, data)
             obj.ei   = ei;
@@ -92,15 +102,36 @@ classdef NetworkInput < matlab.mixin.Copyable
                     tetav = ((j-1)/v)*pi;
                     gFilter = zeros(m,n);
                     
-                    for x = 1:m
-                        for y = 1:n
-                            xprime = (x-((m+1)/2))*cos(tetav)+(y-((n+1)/2))*sin(tetav);
-                            yprime = -(x-((m+1)/2))*sin(tetav)+(y-((n+1)/2))*cos(tetav);
-                            gFilter(x,y) = (fu^2/(pi*gama*eta))*exp(-((alpha^2)*(xprime^2)+(beta^2)*(yprime^2)))*exp(1i*2*pi*fu*xprime);
-                        end
-                    end
-                    gaborArray{i,j} = gFilter;
+                    %Other data, labels, etc.
+                    obj(i).unique_states=fulldata{i}.unique_state;
+                    obj(i).unique_ids=fulldata{i}.unique_id;
                     
+                    continue;
+                    
+                else
+                    %Resize
+                    all_images = cellfun(@(x) imresize(x, [obj.IMAGEDIM, obj.IMAGEDIM]),...
+                        fulldata.data, 'uniformoutput',false);
+                    
+                    %Filter and downsample images
+                    all_512_gabor_features = cellfun(@(x) gaborFeatures(x, gabArr,...
+                        [obj.FEATUREDIM, obj.FEATUREDIM]), all_images, 'UniformOutput' , false);
+                    
+                    %PCA each scale of each image, reducing dimension across
+                    %pixels and orientation.
+                    temp = cellfun(@(x) obj.getCellFeatures(x), all_512_gabor_features, 'UniformOutput', false);
+                    
+                    %Concatenate features across images
+                    stacked_gabor_features=cell2mat(temp);
+                    
+                    %Normalize/vectorize features across images and scales
+                    scored_gabor_features = zscore(zscore(stacked_gabor_features)');
+                    
+                    %PCA/zscore: Normalize top-40 PCs. Save as obj.features
+                    obj.features = scored_gabor_features(:);
+                    
+                    %Make cross-validation folds
+                    obj.folds = obj.makeXvalFolds(fulldata);
                 end
             end
         end
@@ -146,24 +177,36 @@ classdef NetworkInput < matlab.mixin.Copyable
             if (nargin ~= 5)    % Check correct number of arguments
                 error('Use correct number of input arguments!')
             end
-            
-            if size(img,3) == 3	% % Check if the input image is grayscale
-                img = rgb2gray(img);
+        end
+        
+        %Take fulldata into xval folds
+        function folds = makeXvalFolds(obj, fulldata, fold_num)
+            if ~exist('fold_num','var')
+                fold_num=0;
             end
             
-            img = double(img);
-            
-            
-            %% Filtering
-            
-            % Filter input image by each Gabor filter
-            [u,v] = size(gaborArray);
-            gaborResult = cell(u,v);
-            for i = 1:u
-                for j = 1:v
-                    gaborResult{i,j} = conv2(img,gaborArray{i,j},'same');
-                    % J{u,v} = filter2(G{u,v},I);
+            if iscell(fulldata)
+                %Create fold for each dataset
+                for i=1:num_folds
+                    for j=1:length(fulldata)
+                        folds(i,j) = NetworkInput.makeXvalFolds(fulldata{j}, num_folds, i);
+                    end
                 end
+                
+            else
+                
+                obj.NUMFOLDS; 
+                
+                %TODO: populate obj.params_participant_map in Network
+                %constructor
+                
+                %TODO: take a single fulldata struct and split into train
+                %and test structs based on participants (with the same fields as fulldata)
+                train_data=[];
+                test_data=[]; 
+                
+                %Create NetworkXvalFold object
+                %folds=NetworkXvalFold(NetworkInput(train_data), NetworkInput(test_data));
             end
             
             
@@ -196,15 +239,23 @@ classdef NetworkInput < matlab.mixin.Copyable
         end       
     end
     
-   methods(Static=true) 
-       
-       %Parse the NimStim filename into label struct
-       function label = filename2Label(filename)
-           temp=regexp(filename,'[_-]','split');
-           label.id=temp{1}(1:2);
-           label.state=temp{2};
-       end
-   end
-   
+    methods(Static=true)
+        %RGB or grayscales can come through
+        function gray_image = toGray(image)
+            if size(image, 3) > 1
+                gray_image=rgb2gray(image);
+            else
+                gray_image=image;
+            end
+        end
+        
+        %Parse the filename into label struct
+        function label = filename2Label(filename)
+            temp=regexp(filename,'[_-]','split');
+            label.id=temp{1}(1:2);
+            label.state=temp{2};
+        end
+        
+    end
 end
 
