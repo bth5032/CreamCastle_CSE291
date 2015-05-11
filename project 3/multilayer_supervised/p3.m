@@ -24,10 +24,10 @@ for i=1:length(paths)
 end
 
 %Get unique states
-fulldata{NIMSTIM}.unique_state=unique(upper({label{NIMSTIM}(:).state}))'; 
+fulldata{NIMSTIM}.unique_state=upper({label{NIMSTIM}(:).state})'; 
 fulldata{POFA}.unique_state=unique({label{POFA}(:).state})'; 
 %Get unique ids
-fulldata{NIMSTIM}.unique_id=unique(upper({label{NIMSTIM}(:).id}))';
+fulldata{NIMSTIM}.unique_id=upper({label{NIMSTIM}(:).id})';
 fulldata{POFA}.unique_id=unique({label{POFA}(:).id})'; 
 
 
@@ -44,12 +44,16 @@ inputs = NetworkInput(fulldata);
 % NimStim:
 % dimension of input features FOR YOU TO DECIDE
 ei{NIMSTIM}.input_dim = length(fulldata{NIMSTIM}.data)*40; 
+
 % number of output classes FOR YOU TO DECIDE
 ei{NIMSTIM}.output_dim = length(fulldata{NIMSTIM}.unique_id);
+
 % sizes of all hidden layers and the output layer
 ei{NIMSTIM}.layer_sizes = [ceil(ei{NIMSTIM}.input_dim/ei{NIMSTIM}.output_dim), ei{NIMSTIM}.output_dim];
+
 % scaling parameter for l2 weight regularization penalty
 ei{NIMSTIM}.lambda = 1;
+
 % which type of activation function to use in hidden layers
 % feel free to implement support for different activation function
 ei{NIMSTIM}.activation_fun = 'logistic';

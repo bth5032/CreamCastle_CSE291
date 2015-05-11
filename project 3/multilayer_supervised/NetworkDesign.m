@@ -23,6 +23,19 @@ classdef NetworkDesign < matlab.mixin.Copyable
                     obj.ei=ei;
                 end
             end
-        end   
+        end 
+        
+        %TODO: return function handle for ei.activation_fun
+        function func=getActivationFunction(obj)
+            if strcmp(obj.ei.activation_fun, 'tanh')
+                func=@tanh;
+            elseif strcmp(obj.ei.activation_fun, 'logistic')
+                func=@logistic_func;
+            else
+                
+            end
+        end
+        
+        
     end
 end

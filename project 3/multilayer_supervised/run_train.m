@@ -9,7 +9,6 @@ ei = [];
 %Makes code easier to read
 NIMSTIM=1;
 POFA=2;
-NUMFOLDS=5;
 
 % add common directory to your path for
 % minfunc and mnist data helpers

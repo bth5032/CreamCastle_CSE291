@@ -69,7 +69,7 @@ classdef Network < matlab.mixin.Copyable
         
         %Compute all network activations
         function forwardProp(obj)
-            a{i}
+            act=obj.network_input.features; 
             for i=1:length(obj.network_output.stack)
                 this_weight = obj.network_output.stack{i};
                 a{i}=tanh(this_weight.W*obj.network_output.deltas{i};

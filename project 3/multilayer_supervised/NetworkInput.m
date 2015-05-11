@@ -65,6 +65,7 @@ classdef NetworkInput < matlab.mixin.Copyable
                     %PCA/zscore: Normalize top-40 PCs. Save as obj.features
                     obj.features = scored_gabor_features(:);
                     
+                    %Make cross-validation folds
                     obj.folds = obj.makeXvalFolds(fulldata);
                 end
             end
