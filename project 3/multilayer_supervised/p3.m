@@ -33,8 +33,6 @@ fulldata{POFA}.unique_id=unique({label{POFA}(:).id})';
 
 
 %% Create cross-validation folds (train v. test inputs)
-%[inputs] = NetworkInput(fulldata);
-folds = NetworkInput.makeXvalFolds(fulldata, NUMFOLDS);
 
 %% Create NetworkDesign object
 % populate ei with the network architecture to train
@@ -76,7 +74,6 @@ network_design = NetworkDesign(ei);
 network=Network(network_input, network_design); 
 
 network.train;
-network.test(test_data);
 
 
 
