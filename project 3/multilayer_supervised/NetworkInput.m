@@ -64,6 +64,8 @@ classdef NetworkInput < matlab.mixin.Copyable
                     
                     %PCA/zscore: Normalize top-40 PCs. Save as obj.features
                     obj.features = scored_gabor_features(:);
+                    
+                    obj.folds = obj.makeXvalFolds(fulldata);
                 end
             end
         end
@@ -81,7 +83,36 @@ classdef NetworkInput < matlab.mixin.Copyable
             end
         end
         
-        
+        %Take fulldata into xval folds
+        function folds = makeXvalFolds(obj, fulldata, fold_num)
+            if ~exist('fold_num','var')
+                fold_num=0;
+            end
+            
+            if iscell(fulldata)
+                %Create fold for each dataset
+                for i=1:num_folds
+                    for j=1:length(fulldata)
+                        folds(i,j) = NetworkInput.makeXvalFolds(fulldata{j}, num_folds, i);
+                    end
+                end
+                
+            else
+                
+                obj.NUMFOLDS; 
+                
+                %TODO: populate obj.params_participant_map in Network
+                %constructor
+                
+                %TODO: take a single fulldata struct and split into train
+                %and test structs based on participants (with the same fields as fulldata)
+                train_data=[];
+                test_data=[]; 
+                
+                %Create NetworkXvalFold object
+                %folds=NetworkXvalFold(NetworkInput(train_data), NetworkInput(test_data));
+            end
+        end
     end
     
     methods(Static=true)
@@ -101,32 +132,6 @@ classdef NetworkInput < matlab.mixin.Copyable
             label.state=temp{2};
         end
         
-        %Take fulldata into xval folds
-        function folds = makeXvalFolds(fulldata, num_folds, fold_num)
-            if ~exist('fold_num','var')
-                fold_num=0;
-            end
-            
-            if iscell(fulldata)
-                %Create fold for each dataset
-                for i=1:num_folds
-                    for j=1:length(fulldata)
-                        folds(i,j) = NetworkInput.makeXvalFolds(fulldata{j}, num_folds, i);
-                    end
-                end
-                
-            else
-                
-                %TODO: take a single fulldata struct and split into train 
-                %and test structs based on participants (with the same fields as fulldata) 
-                
-                %TODO: populate Network.params_participant_map in Network
-                %constructor 
-
-                %Create NetworkXvalFold object 
-                folds=NetworkXvalFold(NetworkInput(train_data), NetworkInput(test_data));
-            end
-        end
     end
 end
 
