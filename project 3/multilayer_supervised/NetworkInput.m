@@ -2,8 +2,8 @@ classdef NetworkInput < matlab.mixin.Copyable
     %NETWORKINPUT Prepares raw data for input to deep belief net
     
     properties
-        data
         features
+        folds
         
         unique_states
         unique_ids
@@ -19,6 +19,7 @@ classdef NetworkInput < matlab.mixin.Copyable
         ORIENTATIONS=5;
         SCALES=8;
         NUM_COMPONENTS=40;
+        NUMFOLDS=5;
     end
     
     methods
@@ -85,7 +86,7 @@ classdef NetworkInput < matlab.mixin.Copyable
     
     methods(Static=true)
         %RGB or grayscales can come through
-        function gray_image = toGray(obj, image)
+        function gray_image = toGray(image)
             if size(image, 3) > 1
                 gray_image=rgb2gray(image);
             else
@@ -116,29 +117,13 @@ classdef NetworkInput < matlab.mixin.Copyable
                 
             else
                 
-                M=length(fulldata.data);
-                L=ceil(M/num_folds);
+                %TODO: take a single fulldata struct and split into train 
+                %and test structs based on participants (with the same fields as fulldata) 
                 
-                start_idx = (fold_num - 1)*L+1;
-                
-                %Don't exceed the dimension of the data vector; last chunk
-                %can be short
-                end_idx = min(start_idx+L, M);
-                
-                %Get train and test data for this fold
-                test_idx=start_idx:end_idx;
-                train_idx=setdiff(1:length(fulldata.data), test_idx);
-                
-                %Make test and train datasets
-                train_data.data = fulldata.data(train_idx);
-                train_data.unique_state={''};
-                train_data.unique_id={''};
-                
-                test_data.data=fulldata.data(test_idx);
-                test_data.unique_state={''};
-                test_data.unique_id={''};
-                
-                %Create
+                %TODO: populate Network.params_participant_map in Network
+                %constructor 
+
+                %Create NetworkXvalFold object 
                 folds=NetworkXvalFold(NetworkInput(train_data), NetworkInput(test_data));
             end
         end
