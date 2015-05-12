@@ -15,7 +15,7 @@ classdef Network < matlab.mixin.Copyable
         
         %Constructor: takes NetworkDesign and NetworkInput ojbects as
         %arguments.
-        function obj = Network(design, network_input)
+        function obj = Network(design, full_data)
             %Check input
             assert(isa(design, 'NetworkDesign'), 'Network (constructor): design must be of NetworkDesign class');
             assert(isa(input, 'NetworkInput'), 'Network (constructor): design must be of NetworkDesign class');
@@ -45,7 +45,7 @@ classdef Network < matlab.mixin.Copyable
             for i=1:length(obj) 
                 %Iterate until MAXITER or converged
                 n=1; 
-                while obj(i).checkConvergence || ~(n > obj.MAXITER)
+                while obj(i).checkConvergence || (n > obj.MAXITER)
                     fprintf('Network.train: training Network %d/%d\n', i, length(obj));
                     folds = obj(i).network_input.makeXvalFolds;
                     obj(i).forwardProp;
@@ -62,6 +62,11 @@ classdef Network < matlab.mixin.Copyable
     end
     
     methods(Hidden=true)
+        % Logistic hypothesis
+        function hypothesis
+        
+        end
+       
         % Use gradient descent to learn weights for the current network activation 
         function backProp(obj)
             
@@ -70,14 +75,12 @@ classdef Network < matlab.mixin.Copyable
         %Compute all network activations
         function forwardProp(obj)
             act=obj.network_input.features; 
-            afunc=obj.network_design.activationFunction;
-            
-            obj.network_output.stack
             for i=1:length(obj.network_output.stack)
                 this_weight = obj.network_output.stack{i};
-                act = afunc(this_weight.W*act + this_weight.b);
-                obj.network_output.activations{i}=act;
-            end    
+                a{i}=tanh(this_weight.W*obj.network_output.deltas{i};
+            end
+            
+            
         end
         
         %2.b - Check gradient using numerical approximations (unit test for gradient)
