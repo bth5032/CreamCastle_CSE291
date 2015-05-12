@@ -41,8 +41,6 @@ fulldata{POFA}.labels = fulldata{POFA}.state;
 fulldata{NIMSTIM}.xval_tag='state';
 fulldata{POFA}.xval_tag='id';
 
-network_input = NetworkInput(fulldata);
-
 %% Create NetworkDesign object
 % populate ei with the network architecture to train
 % ei is a structure you can use to store hyperparameters of the network
@@ -81,11 +79,6 @@ ei{POFA}.lambda = 1;
 % feel free to implement support for different activation function
 ei{POFA}.activation_fun = 'logistic';
 %ei{POFA}.activation_fun = 'tanh';
-
-network_design = NetworkDesign(ei); 
-
-%% Create Network object
-network=Network(network_design, network_input);
 
 
 
