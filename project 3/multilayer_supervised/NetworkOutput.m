@@ -7,7 +7,6 @@ classdef NetworkOutput < matlab.mixin.Copyable
         activations
         deltas 
         
-        gradient
         log_liklihood
         loss
         
