@@ -85,7 +85,6 @@ ei{POFA}.activation_fun = 'logistic';
 network_design = NetworkDesign(ei); 
 
 %% Create Network object
-
 network=Network(network_design, network_input);
 
 
