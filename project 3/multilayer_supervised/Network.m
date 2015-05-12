@@ -11,7 +11,6 @@ classdef Network < matlab.mixin.Copyable
     end
     
     methods
-        
         %Constructor: takes NetworkDesign and NetworkInput ojbects as
         %arguments.
         function obj = Network(network_design, network_input)

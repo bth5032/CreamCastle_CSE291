@@ -54,7 +54,7 @@ network_input = NetworkInput(fulldata);
 ei{NIMSTIM}.input_dim = length(fulldata{NIMSTIM}.data)*40; 
 
 % number of output classes FOR YOU TO DECIDE
-ei{NIMSTIM}.output_dim = length(fulldata{NIMSTIM}.unique_id);
+ei{NIMSTIM}.output_dim = length(fulldata{NIMSTIM}.id);
 
 % sizes of all hidden layers and the output layer
 ei{NIMSTIM}.layer_sizes = [ceil(ei{NIMSTIM}.input_dim/ei{NIMSTIM}.output_dim), ei{NIMSTIM}.output_dim];
@@ -72,7 +72,7 @@ ei{NIMSTIM}.activation_fun = 'logistic';
 % dimension of input features FOR YOU TO DECIDE
 ei{POFA}.input_dim = length(fulldata{POFA}.data)*40; 
 % number of output classes FOR YOU TO DECIDE
-ei{POFA}.output_dim = length(fulldata{POFA}.unique_state);
+ei{POFA}.output_dim = length(fulldata{POFA}.state);
 % sizes of all hidden layers and the output layer FOR YOU TO DECIDE
 ei{POFA}.layer_sizes = [10, ei{POFA}.output_dim];
 % scaling parameter for l2 weight regularization penalty
