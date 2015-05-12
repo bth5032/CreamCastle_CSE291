@@ -61,7 +61,7 @@ classdef NetworkInput < matlab.mixin.Copyable
                     %unique_tags=unique(all_tags)
                     
                     %TODO: Make cross-validation folds
-                    %obj.folds = obj.makeXvalFolds(fulldata);
+                    obj.folds = obj.makeXvalFolds(fulldata);
                     
                     obj.labels=fulldata.labels;
                     

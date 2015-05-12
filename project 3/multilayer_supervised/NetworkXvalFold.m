@@ -4,10 +4,10 @@ classdef NetworkXvalFold
     properties
         train_input
         test_input
-        
-        weights
+            
         lambda
-        error
+        stack
+        cost
     end
     
     methods
@@ -15,6 +15,13 @@ classdef NetworkXvalFold
         function obj = NetworkXvalFold(train_input, test_input)
             obj.train_input=train_input;
             obj.test_input=test_input;
-        end
+        end  
+        
+        %Get optimal result
+        function [lambda, cost, stack] = getOptimalResults(obj)
+            [cost, idx] = min(mean(obj.cost));
+            lambda = obj.lambda(idx(1));
+            stack = obj.stack(idx(1));
+        end  
     end  
 end

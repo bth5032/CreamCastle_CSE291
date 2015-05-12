@@ -35,7 +35,7 @@ for i=1:length(network)
     options.Method = 'lbfgs';
     
     % run training
-    [opt_params,opt_value,exitflag,output] = minFunc(@network(1).supervised_dnn_cost, params, options, network(i).network_design.ei, data_train, labels_train);
+    [opt_params,opt_value,exitflag,output] = minFunc(network(i).costFunc, params, options, network(i).network_design.ei, data_train, labels_train);
         
     
     % TODO:  1) check the gradient calculated by supervised_dnn_cost.m

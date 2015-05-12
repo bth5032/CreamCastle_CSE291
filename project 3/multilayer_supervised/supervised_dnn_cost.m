@@ -16,6 +16,7 @@ gradStack = cell(numHidden+1, 1);
 %% forward prop
 network.forwardProp; 
 
+
 %% return here if only predictions desired.
 if po
   cost = -1; ceCost = -1; wCost = -1; numCorrect = -1;
