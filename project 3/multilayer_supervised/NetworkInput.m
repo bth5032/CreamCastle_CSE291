@@ -21,8 +21,18 @@ classdef NetworkInput < matlab.mixin.Copyable
     end
     
     methods
+<<<<<<< Updated upstream
         %Constructor: fulldata can be a cell array of dataset structs
         function obj = NetworkInput(fulldata)
+=======
+        %Constructor: fulldata can be a cell array of datasets
+        %fulldata.data (images)
+        %fulldata.unique_state (output state-space)
+        %fulldata.unique_id (unique identifier of the participant)
+        %TODO: put labels 
+        function obj = NetworkInput(fulldata, labels)
+            obj.labels = labels;
+>>>>>>> Stashed changes
             %Generate filters; 5 orientations, 8 scales
             gabArr = gaborFilterBank(obj.ORIENTATIONS, obj.SCALES, obj.FILTERDIM, obj.FILTERDIM);
             
