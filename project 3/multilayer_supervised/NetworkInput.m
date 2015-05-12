@@ -3,13 +3,10 @@ classdef NetworkInput < matlab.mixin.Copyable
     
     properties
         features
-        folds
+        labels
+        label_map
         
-        states
-        ids
-
-        state_map
-        id_map
+        folds 
     end
     
     properties(Constant)
@@ -27,7 +24,8 @@ classdef NetworkInput < matlab.mixin.Copyable
         %fulldata.data (images)
         %fulldata.unique_state (output state-space)
         %fulldata.unique_id (unique identifier of the participant)
-        function obj = NetworkInput(fulldata)
+        %TODO: put labels 
+        function obj = NetworkInput(fulldata, labels)
             
             %Generate filters; 5 orientations, 8 scales
             gabArr = gaborFilterBank(obj.ORIENTATIONS, obj.SCALES, obj.FILTERDIM, obj.FILTERDIM);
@@ -38,8 +36,8 @@ classdef NetworkInput < matlab.mixin.Copyable
                     obj(i) = NetworkInput(fulldata{i});
                     
                     %Other data, labels, etc.
-                    obj(i).unique_states=fulldata{i}.unique_state;
-                    obj(i).unique_ids=fulldata{i}.unique_id;
+                    obj(i).state_map=fulldata{i}.state;
+                    obj(i).id_map=fulldata{i}.id;
                     
                     continue;
                     
@@ -94,10 +92,9 @@ classdef NetworkInput < matlab.mixin.Copyable
                 %Create fold for each dataset
                 for i=1:num_folds
                     for j=1:length(fulldata)
-                        folds(i,j) = NetworkInput.makeXvalFolds(fulldata{j}, num_folds, i);
+                        folds(i,j) = NetworkInput.makeXvalFolds(fulldata{j}, num_folds, i); 
                     end
-                end
-                
+                end  
             else
                 
                 obj.NUMFOLDS; 
@@ -112,7 +109,7 @@ classdef NetworkInput < matlab.mixin.Copyable
                 test_data=[]; 
                 
                 %Create NetworkXvalFold object
-                %folds=NetworkXvalFold(NetworkInput(train_data), NetworkInput(test_data));
+                folds=NetworkXvalFold(NetworkInput(train_data), NetworkInput(test_data));
             end
         end
     end

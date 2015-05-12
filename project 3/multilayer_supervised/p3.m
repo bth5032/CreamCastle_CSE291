@@ -23,17 +23,17 @@ for i=1:length(paths)
     label{i}=cellfun( @NetworkInput.filename2Label, filename{i});
 end
 
-%Get unique states
-fulldata{NIMSTIM}.unique_state=upper({label{NIMSTIM}(:).state})'; 
-fulldata{POFA}.unique_state=unique({label{POFA}(:).state})'; 
-%Get unique ids
-fulldata{NIMSTIM}.unique_id=upper({label{NIMSTIM}(:).id})';
-fulldata{POFA}.unique_id=unique({label{POFA}(:).id})'; 
+%Get states
+fulldata{NIMSTIM}.state=upper({label{NIMSTIM}(:).state})'; 
+fulldata{POFA}.state=unique({label{POFA}(:).state})'; 
+
+%Get ids
+fulldata{NIMSTIM}.id=upper({label{NIMSTIM}(:).id})';
+fulldata{POFA}.id=unique({label{POFA}(:).id})'; 
 
 
 %% Create cross-validation folds (train v. test inputs)
-inputs = NetworkInput(fulldata);
-%folds = NetworkInput.makeXvalFolds(fulldata, NUMFOLDS);
+network_input = NetworkInput(fulldata);
 
 %% Create NetworkDesign object
 % populate ei with the network architecture to train
@@ -57,7 +57,10 @@ ei{NIMSTIM}.lambda = 1;
 % which type of activation function to use in hidden layers
 % feel free to implement support for different activation function
 ei{NIMSTIM}.activation_fun = 'logistic';
-%ei.activation_fun = 'tanh';
+%ei{NIMSTIM}.activation_fun = 'tanh';
+
+%Tells us how to break up xval folds
+ei{NIMSTIM}.xval_tag='state';
 
 % POFA: 
 % dimension of input features FOR YOU TO DECIDE
@@ -71,12 +74,14 @@ ei{POFA}.lambda = 1;
 % which type of activation function to use in hidden layers
 % feel free to implement support for different activation function
 ei{POFA}.activation_fun = 'logistic';
-%ei.activation_fun = 'tanh';
+%ei{POFA}.activation_fun = 'tanh';
 
+%Tells us how to break up xval folds
+ei{POFA}.xval_tag='state';
 network_design = NetworkDesign(ei); 
 
 %% Create Network
-network=Network(network_input, network_design); 
+network=Network(network_design, network_input); 
 
 network.train;
 network.test;
