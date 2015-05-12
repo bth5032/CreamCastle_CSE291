@@ -2,7 +2,7 @@ function [ cost, grad, pred_prob] = supervised_dnn_cost( theta, ei, data, labels
 %SPNETCOSTSLAVE Slave cost function for simple phone net
 %   Does all the work of cost / gradient computation
 
-%% Check which activation function is being used
+%% Determine activation function from ei struct
 if strcmp(ei.activation_fun, 'logistic')
     func = @sigmoid;
     grad = @(A) (A.*(1-A));
