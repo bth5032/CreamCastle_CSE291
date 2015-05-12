@@ -8,7 +8,6 @@ classdef Network < matlab.mixin.Copyable
     end
     
     properties(Constant)
-        MAXITER=1000;
     end
     
     methods
@@ -39,38 +38,77 @@ classdef Network < matlab.mixin.Copyable
         
         %Train the network on train_input
         function train(obj)
-            for i=1:length(obj) 
+            for i=1:length(obj)
                 %Iterate until MAXITER or converged
-                n=1; 
+                n=1;
                 while obj(i).checkConvergence || ~(n > obj.MAXITER)
                     fprintf('Network.train: training Network %d/%d\n', i, length(obj));
                     folds = obj(i).network_input.makeXvalFolds;
                     obj(i).forwardProp;
                     obj(i).backProp(folds);
-                    n=n+1; 
+                    n=n+1;
                 end
             end
         end
         
         %Test the network on test_input
         function test(obj)
-        end 
+        end
+        
+        function [ cost, grad, pred_prob] = cost( obj, theta, ei, data, labels, pred_only)
+            %SPNETCOSTSLAVE Slave cost function for simple phone net
+            %   Does all the work of cost / gradient computation
+            
+            %% default values
+            po = false;
+            if exist('pred_only','var')
+                po = pred_only;
+            end;
+            
+            %% reshape into network
+            stack = params2stack(theta, ei);
+            numHidden = numel(ei.layer_sizes) - 1;
+            hAct = cell(numHidden+1, 1);
+            gradStack = cell(numHidden+1, 1);
+            %% forward prop
+            network.forwardProp;
+            
+            %% return here if only predictions desired.
+            if po
+                cost = -1; ceCost = -1; wCost = -1; numCorrect = -1;
+                grad = [];
+                return;
+            end;
+            
+            %% compute cost
+            %%% YOUR CODE HERE %%%
+            cost = network.lossfunc;
+            
+            %% compute gradients using backpropagation
+            %%% YOUR CODE HERE %%%
+            
+            %% compute weight penalty cost and gradient for non-bias terms
+            %%% YOUR CODE HERE %%%
+            
+            %% reshape gradients into vector
+            [grad] = stack2params(gradStack);
+        end
         
         %Make Network objects serializable
         function saveObj(obj)
         end
         
     end
-    
+    %%
     methods(Hidden=true)
-        % Use gradient descent to learn weights for the current network activation 
+        % Use gradient descent to learn weights for the current network activation
         function backProp(obj)
             
         end
         
         %Compute all network activations
         function forwardProp(obj)
-            act=obj.network_input.features; 
+            act=obj.network_input.features;
             afunc=obj.network_design.activationFunction;
             
             obj.network_output.stack
@@ -78,7 +116,7 @@ classdef Network < matlab.mixin.Copyable
                 this_weight = obj.network_output.stack{i};
                 act = afunc(this_weight.W*act + this_weight.b);
                 obj.network_output.activations{i}=act;
-            end    
+            end
         end
         
         %2.b - Check gradient using numerical approximations (unit test for gradient)
@@ -89,7 +127,7 @@ classdef Network < matlab.mixin.Copyable
         function checkConverged(obj)
             return;
         end
-       
+        
         % Cross-entropy loss for neural network
         function loss = lossFunc(obj)
             loss = 0;
@@ -111,17 +149,15 @@ classdef Network < matlab.mixin.Copyable
             end
         end
         
-<<<<<<< Updated upstream
         %Make Network objects serializable
         function loadObj
         end
-=======
+        
         function gradient(obj)
             % Initialize gradient for kth output node
             grad = zeros(1, length());
         end
-        
->>>>>>> Stashed changes
     end
+    
 end
 
