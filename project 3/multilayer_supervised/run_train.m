@@ -15,6 +15,7 @@ POFA=2;
 addpath(pwd); 
 addpath(fullfile('..', 'common'));
 addpath(genpath(fullfile('..', 'common','minFunc_2012','minFunc')));
+addpath(genpath(fullfile('..', 'common','minFunc_2012','autoDif')));
 addpath(genpath(fullfile('..', 'common', 'Mohammad Haghighat')));  %From Matlab exchange
 
 % TODO: load face data

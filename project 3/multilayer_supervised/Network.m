@@ -44,7 +44,16 @@ classdef Network < matlab.mixin.Copyable
                 n=1;
                 fprintf('Network.train: training Network %d/%d\n', i, length(obj));
                 while obj(i).checkConvergence || ~(n > obj.MAXITER)
-                    obj(i).backProp(obj(i).network_input.folds);
+                    theta=stack2params(obj(i).network_output.stack);
+                    data=obj(i).network_input.features; 
+                    labels=obj(i).network_input.labels; 
+                    ei=obj(i).network_design.ei; 
+                    
+                    [ cost, grad, obj(i).network_output.hAct, delta] = supervised_dnn_cost( theta, ei, data, labels);
+                    
+                    obj(i).network_output.loss(n)=norm(cost);
+                    obj(i).network_output.steps=n;
+                    =
                     n=n+1;
                 end
             end
@@ -88,6 +97,7 @@ classdef Network < matlab.mixin.Copyable
         
         %2.b - Check gradient using numerical approximations (unit test for gradient)
         function checkGradient(obj)
+            derivativeCheck
             return;
         end
         

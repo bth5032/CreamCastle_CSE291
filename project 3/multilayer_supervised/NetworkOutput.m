@@ -10,8 +10,7 @@ classdef NetworkOutput < matlab.mixin.Copyable
         log_liklihood
         loss
         
-        stack
-        params
+        hAct
         
         steps=0; 
     end
