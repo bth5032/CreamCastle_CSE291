@@ -39,22 +39,22 @@ classdef Network < matlab.mixin.Copyable
         
         %Train the network on train_input
         function train(obj)
-            for i=1:length(obj) 
+            for i=1:length(obj)
                 %Iterate until MAXITER or converged
-                n=1; 
+                n=1;
                 while obj(i).checkConvergence || ~(n > obj.MAXITER)
                     fprintf('Network.train: training Network %d/%d\n', i, length(obj));
                     folds = obj(i).network_input.makeXvalFolds;
                     obj(i).forwardProp;
                     obj(i).backProp(folds);
-                    n=n+1; 
+                    n=n+1;
                 end
             end
         end
         
         %Test the network on test_input
         function test(obj)
-        end 
+        end
         
         %Make Network objects serializable
         function saveObj(obj)
@@ -63,14 +63,14 @@ classdef Network < matlab.mixin.Copyable
     end
     
     methods(Hidden=true)
-        % Use gradient descent to learn weights for the current network activation 
+        % Use gradient descent to learn weights for the current network activation
         function backProp(obj)
             
         end
         
         %Compute all network activations
         function forwardProp(obj)
-            act=obj.network_input.features; 
+            act=obj.network_input.features;
             afunc=obj.network_design.activationFunction;
             
             obj.network_output.stack
@@ -78,7 +78,7 @@ classdef Network < matlab.mixin.Copyable
                 this_weight = obj.network_output.stack{i};
                 act = afunc(this_weight.W*act + this_weight.b);
                 obj.network_output.activations{i}=act;
-            end    
+            end
         end
         
         %2.b - Check gradient using numerical approximations (unit test for gradient)
@@ -89,9 +89,12 @@ classdef Network < matlab.mixin.Copyable
         function checkConverged(obj)
             return;
         end
-       
+    end
+    
+    methods(Static)
+        
         % Cross-entropy loss for neural network
-        function loss(obj)
+        function loss = lossFunc(obj)
             loss = 0;
             
             % Index of the hidden layer directly before output layer
@@ -111,9 +114,6 @@ classdef Network < matlab.mixin.Copyable
             end
         end
         
-    end
-    
-    methods(Static)
         %Make Network objects serializable
         function loadObj
         end

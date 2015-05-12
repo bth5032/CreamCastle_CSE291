@@ -25,6 +25,7 @@ end;
 
 %% compute cost
 %%% YOUR CODE HERE %%%
+cost = network.lossfunc;
 
 %% compute gradients using backpropagation
 %%% YOUR CODE HERE %%%
