@@ -25,24 +25,21 @@ classdef NetworkDesign < matlab.mixin.Copyable
             end
         end 
         
-        %TODO: return function handle for ei.activation_fun
-        function func=getActivationFunction(obj)
+        %Return function handle for ei.activation_fun
+        function func=activationFunction(obj)
             if strcmp(obj.ei.activation_fun, 'tanh')
                 func=@tanh;
             elseif strcmp(obj.ei.activation_fun, 'logistic')
-                func=@NetworkDesign.logistic_func;
+                func=@NetworkDesign.logisticFunc;
             else
                 
             end
         end
-
     end
     
     methods(Static)
-            
-        function logistic_func(
-        
+        function retval = logisticFunc(x)
+            retval=1/(1+exp(-x)); 
         end
-    
     end
 end

@@ -7,6 +7,10 @@ classdef NetworkGradientDescent < matlab.mixin.Copyable
         options
     end
     
+    properties(Constant)
+        MAXITER=1000;
+    end
+    
     methods
         %Constructor
         function obj=NetworkGradientDescent

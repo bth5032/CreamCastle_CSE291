@@ -3,13 +3,11 @@ classdef NetworkInput < matlab.mixin.Copyable
     
     properties
         features
-        folds
+        labels
         
-        states
-        ids
-
-        state_map
-        id_map
+        xval_map
+        
+        folds
     end
     
     properties(Constant)
@@ -23,10 +21,8 @@ classdef NetworkInput < matlab.mixin.Copyable
     end
     
     methods
-        %Constructor: fulldata can be a cell array of datasets
-        %fulldata.data (images)
-        %fulldata.unique_state (output state-space)
-        %fulldata.unique_id (unique identifier of the participant)
+        
+        %Constructor: fulldata can be a cell array of dataset structs
         function obj = NetworkInput(fulldata)
             
             %Generate filters; 5 orientations, 8 scales
@@ -36,11 +32,6 @@ classdef NetworkInput < matlab.mixin.Copyable
                 %Given a cell array of datasets
                 if iscell(fulldata)
                     obj(i) = NetworkInput(fulldata{i});
-                    
-                    %Other data, labels, etc.
-                    obj(i).unique_states=fulldata{i}.unique_state;
-                    obj(i).unique_ids=fulldata{i}.unique_id;
-                    
                     continue;
                     
                 else
@@ -65,8 +56,15 @@ classdef NetworkInput < matlab.mixin.Copyable
                     %PCA/zscore: Normalize top-40 PCs. Save as obj.features
                     obj.features = scored_gabor_features(:);
                     
-                    %Make cross-validation folds
-                    obj.folds = obj.makeXvalFolds(fulldata);
+                    %TODO: populate obj.xval_map
+                    %all_tags = fulldata.(fulldata.xval_tag);
+                    %unique_tags=unique(all_tags)
+                    
+                    %TODO: Make cross-validation folds
+                    %obj.folds = obj.makeXvalFolds(fulldata);
+                    
+                    obj.labels=fulldata.labels;
+                    
                 end
             end
         end
@@ -97,22 +95,20 @@ classdef NetworkInput < matlab.mixin.Copyable
                         folds(i,j) = NetworkInput.makeXvalFolds(fulldata{j}, num_folds, i);
                     end
                 end
-                
             else
                 
-                obj.NUMFOLDS; 
+                obj.NUMFOLDS;
                 
-                %TODO: populate obj.params_participant_map in Network
-                %constructor
+                %TODO: populate obj.xval_map in Network constructor
                 
                 %TODO: take a single fulldata struct and split into train
                 %and test structs based on participants (with the same fields as fulldata)
                 
                 train_data=[];
-                test_data=[]; 
+                test_data=[];
                 
                 %Create NetworkXvalFold object
-                %folds=NetworkXvalFold(NetworkInput(train_data), NetworkInput(test_data));
+                folds=NetworkXvalFold(NetworkInput(train_data), NetworkInput(test_data));
             end
         end
     end

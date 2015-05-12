@@ -27,10 +27,7 @@ addpath(genpath(fullfile('..', 'common', 'Mohammad Haghighat')));  %From Matlab 
 p3;
 
 %% Train with minFunc
-for i=1:length(ei)
-    stack = initialize_weights(ei{i});
-    params = stack2params(stack);
-    
+for i=1:length(network)
     % setup minfunc options
     options = [];
     options.display = 'iter';
@@ -38,8 +35,8 @@ for i=1:length(ei)
     options.Method = 'lbfgs';
     
     % run training
-    [opt_params,opt_value,exitflag,output] = minFunc(@supervised_dnn_cost,...
-        params,options,ei{i}, data_train, labels_train);
+    [opt_params,opt_value,exitflag,output] = minFunc(@network(1).supervised_dnn_cost, params, options, network(i).network_design.ei, data_train, labels_train);
+        
     
     % TODO:  1) check the gradient calculated by supervised_dnn_cost.m
     %        2) Decide proper hyperparamters and train the network.
