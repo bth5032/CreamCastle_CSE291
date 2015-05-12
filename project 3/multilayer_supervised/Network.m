@@ -34,7 +34,7 @@ classdef Network < matlab.mixin.Copyable
                 end
             end
             
-            obj.forwardProp;
+            %obj.forwardProp;
         end
         
         %Train the network on train_input
@@ -53,7 +53,6 @@ classdef Network < matlab.mixin.Copyable
                     
                     obj(i).network_output.loss(n)=norm(cost);
                     obj(i).network_output.steps=n;
-                    =
                     n=n+1;
                 end
             end
