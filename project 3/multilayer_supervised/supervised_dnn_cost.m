@@ -1,5 +1,4 @@
 function [ cost, grad, pred_prob] = supervised_dnn_cost( theta, ei, data, labels, pred_only)
-%SPNETCOSTSLAVE Slave cost function for simple phone net
 %   Does all the work of cost / gradient computation
 
 %% Determine activation function type.
@@ -11,10 +10,12 @@ elseif strcmp(ei.activation_fun, 'tanh')
     f_derivative = @(A) ( 1-A.^2); 
 end
 
+
 %% Characteristics of data.
 [d, m] = size(data);
 % Determine the number of unique classes
 K = length(unique(labels));
+
 
 %% Default values.
 po = false;
@@ -22,31 +23,30 @@ if exist('pred_only','var')
   po = pred_only;
 end;
 
+
 %% Reshape into network.
 stack     = params2stack(theta, ei);
 numHidden = numel(ei.layer_sizes) - 1;
 hAct      = cell(numHidden+1, 1);
 gradStack = cell(numHidden+1, 1);
 
+
 %% Forward propagation.
+% Initial activation is simply the data input
+hAct{1}.activation = data;
 
+% Using prior layers, compute activations
+for h = 1:numHidden
+    Z = stack{h}.weight_matrix * hAct{h}.activation + stack{h}.bias_vector;
+    Z = f(Z);
+    hAct{h+1}.activation = Z;
+end
 
-%{ 
-act=obj.network_input.features;
- afunc=obj.network_design.activationFunction;
- 
- obj.network_output.stack
- for i=1:length(obj.network_output.stack)
-     this_weight = obj.network_output.stack{i};
-     act = afunc(this_weight.W*act + this_weight.b);
-     obj.network_output.activations{i}=act;
- end
-%}                
-%TODO:  Need to fill out hAct, activations at each layer
-%       i.e. hAct{l+1}.activation = Z
-%TODO:  Need to return probability from forward propagation
-%       Z_output = ...
-%       i.e. probability = softmax(Z_output)
+% Output layer
+H = numHidden + 1;
+Z_output = stack{H}.weight_matrix * hAct{H} + stack{H}.bias_vector;
+probability = softmax(Z_output);
+
 
 %% Return here if only predictions (po == True) desired.
 if po
@@ -55,8 +55,10 @@ if po
   return;
 end;
 
+
 %% Compute cost.
 cost = network.lossfunc;
+
 
 %% Compute gradients using backpropagation algorithm.
 deltas       = cell(numHidden + 1, 1);
@@ -81,10 +83,11 @@ for h = 1:(numHidden + 1)
 end
 
 
-%% compute weight penalty cost and gradient for non-bias terms
+%% Compute weight penalty cost and gradient for non-bias terms.
 %%% YOUR CODE HERE %%%
 
-%% reshape gradients into vector
+
+%% Reshape gradients into vector.
 [grad] = stack2params(gradStack);
 end
 
