@@ -129,7 +129,7 @@ classdef Network < matlab.mixin.Copyable
         end
         
         % Cross-entropy loss for neural network
-        function loss = lossFunc(obj)
+        function loss = lossFunc(obj, theta, ei, data, labels)
             loss = 0;
             
             % Index of the hidden layer directly before output layer
