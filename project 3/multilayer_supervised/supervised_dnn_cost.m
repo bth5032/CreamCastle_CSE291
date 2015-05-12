@@ -2,27 +2,28 @@ function [ cost, grad, pred_prob] = supervised_dnn_cost( theta, ei, data, labels
 %SPNETCOSTSLAVE Slave cost function for simple phone net
 %   Does all the work of cost / gradient computation
 
-%% Determine activation function from ei struct
+%% Determine activation function type.
 if strcmp(ei.activation_fun, 'logistic')
-    func = @sigmoid;
+    func = @sigmoid_activation;
     grad = @(A) (A.*(1-A));
 elseif strcmp(ei.activation_fun, 'tanh')
-    func = @tanh;
-    grad = 
+    func = @tanh_activation;
+    grad = @(A) ( 1-A.^2); 
 end
 
-%% default values
+%% Default values.
 po = false;
 if exist('pred_only','var')
   po = pred_only;
 end;
 
-%% reshape into network
+%% Reshape into network.
 stack = params2stack(theta, ei);
 numHidden = numel(ei.layer_sizes) - 1;
 hAct = cell(numHidden+1, 1);
 gradStack = cell(numHidden+1, 1);
-%% forward prop
+
+%% Forward prop
 network.forwardProp; 
 
 %% return here if only predictions desired.
@@ -32,8 +33,11 @@ if po
   return;
 end;
 
-%% compute cost
-%%% YOUR CODE HERE %%%
+%% Compute loss
+loss = 0
+% Sum over number of examples
+for i=1:
+
 cost = network.lossfunc;
 
 %% compute gradients using backpropagation
