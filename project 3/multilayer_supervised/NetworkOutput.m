@@ -7,12 +7,10 @@ classdef NetworkOutput < matlab.mixin.Copyable
         activations
         deltas 
         
-        gradient
         log_liklihood
         loss
         
-        stack
-        params
+        hAct
         
         steps=0; 
     end
