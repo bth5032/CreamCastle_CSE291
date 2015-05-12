@@ -15,27 +15,24 @@ classdef Network < matlab.mixin.Copyable
         
         %Constructor: takes NetworkDesign and NetworkInput ojbects as
         %arguments.
-        function obj = Network(design, network_input)
+        function obj = Network(network_design, network_input)
             %Check input
-            assert(isa(design, 'NetworkDesign'), 'Network (constructor): design must be of NetworkDesign class');
-            assert(isa(input, 'NetworkInput'), 'Network (constructor): design must be of NetworkDesign class');
-            assert(length(input)==length(design),'Network (constructor): input and design must be same length');
+            assert(isa(network_design, 'NetworkDesign'), 'Network (constructor): design must be of NetworkDesign class');
+            assert(isa(network_input, 'NetworkInput'), 'Network (constructor): design must be of NetworkDesign class');
+            assert(length(network_input)==length(network_design),'Network (constructor): input and design must be same length');
             
             %Create a single network for each input/design pair
-            if length(input)==1 && length(design)==1
-                obj.network_design=design;
-                obj.train_input=train_input;
-                obj.test_input=test_input;
-                obj.network_output = NetworkOutput(obj);
+            if length(network_design)==1
+                obj.network_design=copy(network_design);
+                obj.network_input=copy(network_input);
+                obj.network_output = NetworkOutput(obj); %NetworkOutput keeps a backlink to this object
                 return;
                 
                 %We are passed a vector of inputs/designs: recursively call
                 %for each pair.
             else
-                n=1;
-                for i=1:length(design)
-                    obj(n) = Network(design(i), train_input(i), test_input(i));
-                    n=n+1;
+                for i=1:length(network_design)
+                    obj(i) = Network(network_design(i), network_input(i));
                 end
             end
         end
@@ -58,6 +55,10 @@ classdef Network < matlab.mixin.Copyable
         %Test the network on test_input
         function test(obj)
         end 
+        
+        %Make Network objects serializable
+        function saveObj(obj)
+        end
         
     end
     
@@ -110,6 +111,12 @@ classdef Network < matlab.mixin.Copyable
             end
         end
         
+    end
+    
+    methods(Static)
+        %Make Network objects serializable
+        function loadObj
+        end
     end
 end
 

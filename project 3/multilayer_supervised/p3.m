@@ -1,4 +1,4 @@
-%% Get data from disk, Create NetworkInput object
+%% Get data from disk
 dataset_locs={fullfile('..','data','NimStim'), fullfile('..','data','POFA')};
 paths = cellfun(@(x) dir(x), dataset_locs, 'UniformOutput', false)';
 
@@ -23,16 +23,24 @@ for i=1:length(paths)
     label{i}=cellfun( @NetworkInput.filename2Label, filename{i});
 end
 
+%% Create NetworkInput object
+
 %Get states
 fulldata{NIMSTIM}.state=upper({label{NIMSTIM}(:).state})'; 
-fulldata{POFA}.state=unique({label{POFA}(:).state})'; 
+fulldata{POFA}.state={label{POFA}(:).state}'; 
 
 %Get ids
 fulldata{NIMSTIM}.id=upper({label{NIMSTIM}(:).id})';
-fulldata{POFA}.id=unique({label{POFA}(:).id})'; 
+fulldata{POFA}.id={label{POFA}(:).id}'; 
 
+%Get labels
+fulldata{NIMSTIM}.labels = fulldata{NIMSTIM}.id;
+fulldata{POFA}.labels = fulldata{POFA}.state;
 
-%% Create cross-validation folds (train v. test inputs)
+%Select cross-validation 
+fulldata{NIMSTIM}.xval_tag='state';
+fulldata{POFA}.xval_tag='id';
+
 network_input = NetworkInput(fulldata);
 
 %% Create NetworkDesign object
@@ -59,8 +67,6 @@ ei{NIMSTIM}.lambda = 1;
 ei{NIMSTIM}.activation_fun = 'logistic';
 %ei{NIMSTIM}.activation_fun = 'tanh';
 
-%Tells us how to break up xval folds
-ei{NIMSTIM}.xval_tag='state';
 
 % POFA: 
 % dimension of input features FOR YOU TO DECIDE
@@ -76,15 +82,11 @@ ei{POFA}.lambda = 1;
 ei{POFA}.activation_fun = 'logistic';
 %ei{POFA}.activation_fun = 'tanh';
 
-%Tells us how to break up xval folds
-ei{POFA}.xval_tag='state';
 network_design = NetworkDesign(ei); 
 
-%% Create Network
-network=Network(network_design, network_input); 
+%% Create Network object
 
-network.train;
-network.test;
+network=Network(network_design, network_input);
 
 
 
