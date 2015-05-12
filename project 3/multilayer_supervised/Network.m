@@ -33,6 +33,8 @@ classdef Network < matlab.mixin.Copyable
                     obj(i) = Network(network_design(i), network_input(i));
                 end
             end
+            
+            obj.forwardProp;
         end
         
         %Train the network on train_input
@@ -69,6 +71,21 @@ classdef Network < matlab.mixin.Copyable
             end
         end
         
+        %Compute all network activations
+        function forwardProp(obj)
+            for k=1:length(obj)
+                act=obj(k).network_input.features;
+                afunc=obj(k).network_design.activationFunction;
+                
+                obj(k).network_output.stack
+                for i=1:length(obj(k).network_output.stack)
+                    this_weight = obj(k).network_output.stack{i};
+                    act = afunc(this_weight.W*act + this_weight.b);
+                    obj(k).network_output.activations{i}=act;
+                end
+            end
+        end
+        
         %2.b - Check gradient using numerical approximations (unit test for gradient)
         function checkGradient(obj)
             return;
@@ -86,12 +103,6 @@ classdef Network < matlab.mixin.Copyable
         %Make Network objects serializable
         function loadObj
         end
-        
-        function gradient(obj)
-            % Initialize gradient for kth output node
-            grad = zeros(1, length());
-        end
     end
-    
 end
 
