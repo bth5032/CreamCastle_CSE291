@@ -111,17 +111,15 @@ classdef Network < matlab.mixin.Copyable
             end
         end
         
-<<<<<<< Updated upstream
         %Make Network objects serializable
         function loadObj
         end
-=======
+
         function gradient(obj)
             % Initialize gradient for kth output node
             grad = zeros(1, length());
         end
         
->>>>>>> Stashed changes
     end
 end
 
