@@ -88,15 +88,26 @@ classdef Network < matlab.mixin.Copyable
         function checkConverged(obj)
             return;
         end
-        
+       
         % Cross-entropy loss for neural network
         function loss(obj)
-           for i=1:length(fulldata.data) 
-               for k=1:length(obj.network_design.ei.output_dim)
-                   -identity( , k)*hypothesis()
-               
-           end    
+            loss = 0;
             
+            % Index of the hidden layer directly before output layer
+            layer_index = length(obj.network_output.activations)-1;
+            
+            % Calc denominator of cross-entropy loss
+            denominator = 0;
+            for j=1:length(obj.network_design.ei.output_dim)
+                denominator = denominator + dot(obj.network_output.activations{layer_index}, obj.network_output.stack{layer_index}(j));
+            end
+            
+            for i=1:length(fulldata.data)
+                for k=1:length(obj.network_design.ei.output_dim)
+                    numerator   = dot(obj.network_output.activations{layer_index}, obj.network_output.stack{layer_index}(k));
+                    loss = loss -1*(obj.network_input.labels==k)*log(numerator/denominator);
+                end
+            end
         end
         
     end
