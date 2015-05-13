@@ -60,9 +60,9 @@ end;
 cost = 0;
 
 for i = 1:m
-    
+    cost = cost - log(pred_prob(labels(i), i));
 end
-
+cost = cost/m;
 
 %% Compute gradients using backpropagation algorithm.
 deltas       = cell(numHidden + 1, 1);
