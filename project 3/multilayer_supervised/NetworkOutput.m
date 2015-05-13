@@ -4,14 +4,12 @@ classdef NetworkOutput < matlab.mixin.Copyable
     properties
         network %Back link
         
-        activations
-        deltas 
+        stack
+        act_stack
+        delta_stack
         
-        log_liklihood
         loss
-        
-        hAct
-        
+
         steps=0; 
     end
     
@@ -20,7 +18,7 @@ classdef NetworkOutput < matlab.mixin.Copyable
         %Nothing special for constructor
         function obj = NetworkOutput(network)
             obj.stack = initialize_weights(network.network_design.ei);
-            obj.params = stack2params(obj.stack);
+            obj.stack = stack2params(obj.stack);
             obj.network=network;
         end
             
