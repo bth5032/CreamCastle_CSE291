@@ -8,6 +8,7 @@ classdef Network < matlab.mixin.Copyable
     end
     
     properties(Constant)
+        MAX_TRAIN_PASSES=100; 
     end
     
     methods
@@ -43,7 +44,7 @@ classdef Network < matlab.mixin.Copyable
                 %Iterate until MAXITER or converged
                 n=1;
                 fprintf('Network.train: training Network %d/%d\n', i, length(obj));
-                while obj(i).checkConvergence || ~(n > obj.MAXITER)
+                while obj(i).checkConvergence || ~(n > obj.MAX_TRAIN_PASSES)
                     theta=stack2params(obj(i).network_output.stack);
                     data=obj(i).network_input.features; 
                     labels=obj(i).network_input.labels; 
@@ -53,9 +54,11 @@ classdef Network < matlab.mixin.Copyable
                     gd=NetworkGradientDescent; 
                     gd.stochasticL2(obj); 
                     
-                    [obj(i).network_output.loss(n), delta, obj(i).network_output.act_stack(n)] = supervised_dnn_cost( theta, ei, data, labels);
-                    obj(i).network_output.delta_stack(n)=params2stack(delta); 
-                    obj(i).network_output.loss(n)=norm(cost);
+                    [cost, ~, output, hAct, delta] = supervised_dnn_cost( theta, ei, data, labels);
+                    obj(i).network_output.output{n}=output; 
+                    obj(i).network_output.act_stack{n}=param2stack(hAct); 
+                    obj(i).network_output.delta_stack{n}=delta; 
+                    obj(i).network_output.loss(n)=cost;
                     obj(i).network_output.steps=n;
                     n=n+1;
                 end

@@ -8,6 +8,7 @@ classdef NetworkOutput < matlab.mixin.Copyable
         act_stack
         delta_stack
         
+        output
         loss
 
         steps=0; 
