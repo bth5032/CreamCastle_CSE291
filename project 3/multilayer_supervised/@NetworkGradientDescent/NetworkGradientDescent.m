@@ -14,13 +14,11 @@ classdef NetworkGradientDescent < matlab.mixin.Copyable
     methods
         %Constructor
         function obj=NetworkGradientDescent
-            %Options for objective functions
-            obj.obj_funcs.BATCH_L2=1;
-            
             %Options for optimization
             obj.options.display = 'iter';
             obj.options.maxFunEvals = 1e4;
             obj.options.Method = 'lbfgs';
+            obj.options.lambda = logspace(0,5,20);
         end
         
         %Return function handle to desired objective function 
@@ -51,8 +49,6 @@ classdef NetworkGradientDescent < matlab.mixin.Copyable
         
         
         %Declare all objective functions (in files)
-        function batchL2 end
-        function batchGaussNewtonL2 end
         function stochasticL2 end
         function stochasticGaussNewtonL2 end
     end

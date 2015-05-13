@@ -56,15 +56,17 @@ classdef NetworkInput < matlab.mixin.Copyable
                     %PCA/zscore: Normalize top-40 PCs. Save as obj.features
                     obj.features = scored_gabor_features(:);
                     
-                    %TODO: populate obj.xval_map
+                    %TODO: populate labels with integer class identifiers
+                    %instead of strings
+                    %obj.labels=fulldata.labels;
+                    
+                    %TODO: populate obj.xval_map mapping from
+                    %cross-validation folds to features
                     %all_tags = fulldata.(fulldata.xval_tag);
                     %unique_tags=unique(all_tags)
                     
                     %TODO: Make cross-validation folds
-                    obj.folds = obj.makeXvalFolds(fulldata);
-                    
-                    obj.labels=fulldata.labels;
-                    
+                    %obj.folds = obj.makeXvalFolds(fulldata);
                 end
             end
         end

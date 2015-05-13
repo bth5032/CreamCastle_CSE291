@@ -34,10 +34,13 @@ for i=1:length(network)
     options.display = 'iter';
     options.maxFunEvals = 1e6;
     options.Method = 'lbfgs';
+    ei = network(i).network_design.ei;
+    params = stack2params(initialize_weights(ei)); 
+    data=network(i).network_input.features;
+    label=network(i).network_input.labels;
     
     % run training
-    [opt_params,opt_value,exitflag,output] = minFunc(network(i).costFunc, params, options, network(i).network_design.ei, data_train, labels_train);
-        
+    [opt_params,opt_value,exitflag,output] = minFunc(@supervised_dnn_cost, params, options, data, label);  
     
     % TODO:  1) check the gradient calculated by supervised_dnn_cost.m
     %        2) Decide proper hyperparamters and train the network.
@@ -58,6 +61,16 @@ for i=1:length(network)
 end
 
 %% Train with gradientdescent; leave 2 out line search for lambda (L2 regularization);
+    % setup minfunc options
+    options = [];
+    options.display = 'iter';
+    options.maxFunEvals = 1e6;
+    options.Method = 'lbfgs';
+    ei = network(i).network_design.ei;
+    params = stack2params(initialize_weights(ei)); 
+    data=network(i).network_input.features;
+    label=network(i).network_input.labels;
+    
 % LIAM:  Code fails here
 % net_input = {NetworkInput(ei{NIMSTIM}, NIMSTIM)};
 % for i=1:length(ei)

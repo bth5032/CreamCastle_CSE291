@@ -49,8 +49,12 @@ classdef Network < matlab.mixin.Copyable
                     labels=obj(i).network_input.labels; 
                     ei=obj(i).network_design.ei; 
                     
-                    [ cost, grad, obj(i).network_output.hAct, delta] = supervised_dnn_cost( theta, ei, data, labels);
+                    %Gradient Descent 
+                    gd=NetworkGradientDescent; 
+                    gd.stochasticL2(obj); 
                     
+                    [obj(i).network_output.loss(n), delta, obj(i).network_output.act_stack(n)] = supervised_dnn_cost( theta, ei, data, labels);
+                    obj(i).network_output.delta_stack(n)=params2stack(delta); 
                     obj(i).network_output.loss(n)=norm(cost);
                     obj(i).network_output.steps=n;
                     n=n+1;
