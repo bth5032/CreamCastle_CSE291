@@ -24,11 +24,11 @@ end
 
 %% Scale images to the proper size
 processed_images.NimStim.images = cellfun(@(x) imresize(rgb2gray(x),[64,64]), fulldata{1}.data, 'UniformOutput', false)
-processed_images.NimStim.targets = target{1}
-processed_images.POFA.images = cellfun(@(x) imresize(x,[64,64]), fulldata{2}.data, 'UniformOutput', false)
-processed_images.POFA.targets = target{2}
+scaled_images.NimStim.targets = target{1}
+scaled_images.POFA.images = cellfun(@(x) imresize(x,[64,64]), fulldata{2}.data, 'UniformOutput', false)
+scaled_images.POFA.targets = target{2}
 
-%% Generate Gabor Filters
+%% Apply Gabor Filters
 
 %add gabor filter library to path:
 addpath(genpath(fullfile('..', 'preprocessing', 'gabor')));  %From Matlab exchange
@@ -39,8 +39,5 @@ ei.scaleDownFactor = 8;
 
 gabArr = gaborFilterBank(ei.orientations, ei.scales, ei.scaleDownFactor, ei.scaleDownFactor);
 
-%% Preprocess images to gabor filters
-processed_images.NimStim.images = cellfun(@(x) gaborFeatures(x, gabArr,8, 8) , processed_images.NimStim.images, 'UniformOutput' , false);
-processed_images.POFA.images = cellfun(@(x) gaborFeatures(x, gabArr,8, 8) , processed_images.POFA.images, 'UniformOutput' , false);
-
+scaled_images.NimStim.images = cellfun(@(x) gaborFeatures(x, gabArr,8, 8) , scaled_images.NimStim.images, 'UniformOutput' , false);
 

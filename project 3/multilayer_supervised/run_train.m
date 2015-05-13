@@ -18,6 +18,8 @@ addpath(genpath(fullfile('..', 'common','minFunc_2012','minFunc')));
 addpath(genpath(fullfile('..', 'common','minFunc_2012','autoDif')));
 addpath(genpath(fullfile('..', 'common', 'Mohammad Haghighat')));  %From Matlab exchange
 
+
+%%
 % TODO: load face data
 % populate ei with the network architecture to train
 % ei is a structure you can use to store hyperparameters of the network
