@@ -37,7 +37,7 @@ classdef NetworkInput < matlab.mixin.Copyable
                 else
                     %Resize
                     all_images = cellfun(@(x) imresize(x, [obj.IMAGEDIM, obj.IMAGEDIM]),...
-                        fulldata.data, 'uniformoutput',false);
+                        fulldata.data, 'uniformoutput', false);
                     
                     %Filter and downsample images
                     all_512_gabor_features = cellfun(@(x) gaborFeatures(x, gabArr,...
@@ -56,10 +56,15 @@ classdef NetworkInput < matlab.mixin.Copyable
                     %PCA/zscore: Normalize top-40 PCs. Save as obj.features
                     obj.features = scored_gabor_features(:);
                     
-                    %TODO: populate labels with integer class identifiers
+                    %Populate labels with integer class identifiers
                     %instead of strings
-                    %obj.labels=fulldata.labels;
-                    
+                    strlabels=fulldata.labels;
+                    unique_strlabels=unique(strlabels);
+                    for j=1:length(unique_strlabels)
+                        idx = strcmpi(strlabels, unique_strlabels{j});
+                        obj.labels(idx)=j;
+                    end
+
                     %TODO: populate obj.xval_map mapping from
                     %cross-validation folds to features
                     %all_tags = fulldata.(fulldata.xval_tag);
@@ -112,6 +117,13 @@ classdef NetworkInput < matlab.mixin.Copyable
                 %Create NetworkXvalFold object
                 folds=NetworkXvalFold(NetworkInput(train_data), NetworkInput(test_data));
             end
+        end
+        function idim = getInputDim(obj)
+            idim = length(obj.labels)*obj.SCALES*obj.NUM_COMPONENTS; 
+        end
+        
+        function odim = getOutputDim(obj)
+            odim = length(unique(obj.labels)); 
         end
     end
     

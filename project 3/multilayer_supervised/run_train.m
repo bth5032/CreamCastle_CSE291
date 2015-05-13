@@ -1,3 +1,4 @@
+
 %% runs training procedure for supervised multilayer network
 % softmax output layer with cross entropy loss function
 
@@ -30,7 +31,6 @@ p3;
 %% Train with minFunc
 for i=1:length(network)
     % setup minfunc options
-    options = [];
     options.display = 'iter';
     options.maxFunEvals = 1e6;
     options.Method = 'lbfgs';
@@ -38,9 +38,11 @@ for i=1:length(network)
     params = stack2params(initialize_weights(ei)); 
     data=network(i).network_input.features;
     label=network(i).network_input.labels;
+    pred_only=0; 
     
     % run training
-    [opt_params,opt_value,exitflag,output] = minFunc(@supervised_dnn_cost, params, options, data, label);  
+   
+    [opt_params,opt_value,exitflag,output] = minFunc(@supervised_dnn_cost, params,  options, ei, data, label, pred_only);  
     
     % TODO:  1) check the gradient calculated by supervised_dnn_cost.m
     %        2) Decide proper hyperparamters and train the network.

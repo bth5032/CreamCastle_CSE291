@@ -35,9 +35,15 @@ classdef NetworkDesign < matlab.mixin.Copyable
                 
             end
         end
+        
+
+
     end
     
     methods(Static)
+        function retval=crossEntLoss(x)
+        end
+            
         function retval = logisticFunc(x)
             retval=1/(1+exp(-x)); 
         end
