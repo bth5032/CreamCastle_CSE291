@@ -66,17 +66,18 @@ end
 %% Feature Extraction
 
 % Extract feature vector from input image
+%recall v = num_orientations, u = num_scales
 [n,m] = size(img);
 s = (n*m)/(d1*d2);
-l = s*u*v;
-featureVector = zeros(u, v);
-c = 0;
-for i = 1:u
-    c = 0;
-    for j = 1:v
+ = s*u*v; %Length of flattened feature vector
+
+featureVector = zeros(s*u, v);
+for i = 1:u %for each scale
+    r = 0;
+    for j = 1:v  %for each orientation
         
-        c = c+1;
-        gaborAbs = abs(gaborResult{i,j});
+        r = r+1; % the row to store input, each col is an element of the convolution for that scale/orientation
+        gaborAbs = abs(gaborResult{i,j}); %compute 
         gaborAbs = imresize(gaborAbs,[d1, d2]);
         gaborAbs = reshape(gaborAbs.',[],1);
         
@@ -84,7 +85,7 @@ for i = 1:u
         % Normalized to zero mean and unit variance. (if not applicable, please comment this line)
         gaborAbs = (gaborAbs-mean(gaborAbs))/std(gaborAbs,1);
         
-        featureVector(((c-1)*s+1):(c*s), j) = gaborAbs;
+        featureVector(:, i) = gaborAbs;
         
     end
 end
