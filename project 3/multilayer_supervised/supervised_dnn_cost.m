@@ -57,7 +57,11 @@ end;
 
 
 %% Compute cost.
-cost = network.lossfunc;
+cost = 0;
+
+for i = 1:m
+    
+end
 
 
 %% Compute gradients using backpropagation algorithm.

@@ -1,4 +1,4 @@
-%% runs training procedure for supervised multilayer network
+%% Training procedure for supervised multilayer network.
 % softmax output layer with cross entropy loss function
 
 % setup environmentc
@@ -17,13 +17,7 @@ addpath(fullfile('..', 'common'));
 addpath(genpath(fullfile('..', 'common','minFunc_2012','minFunc')));
 addpath(genpath(fullfile('..', 'common', 'Mohammad Haghighat')));  %From Matlab exchange
 
-% TODO: load face data
-% populate ei with the network architecture to train
-% ei is a structure you can use to store hyperparameters of the network
-% You should be able to try different network architectures by changing ei
-% only (no changes to the objective function code)
-
-%Pre-processing pipeline: includes loading data and instantiating network
+%% Pre-processing pipeline: includes loading data and instantiating network
 p3;
 
 %% Train with minFunc
