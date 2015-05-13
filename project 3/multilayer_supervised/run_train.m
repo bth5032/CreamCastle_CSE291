@@ -1,81 +1,87 @@
-%% Training procedure for supervised multilayer network.
+% runs training procedure for supervised multilayer network
 % softmax output layer with cross entropy loss function
 
-% setup environmentc
+%% Setup environment
 % experiment information
 % a struct containing network layer sizes etc
 ei = [];
 
-%Makes code easier to read
-NIMSTIM=1;
-POFA=2;
-
 % add common directory to your path for
 % minfunc and mnist data helpers
-addpath(pwd); 
-addpath(fullfile('..', 'common'));
-addpath(genpath(fullfile('..', 'common','minFunc_2012','minFunc')));
-addpath(genpath(fullfile('..', 'common', 'Mohammad Haghighat')));  %From Matlab exchange
+addpath ../common;
+addpath(genpath('../common/minFunc_2012/minFunc'));
 
-%% Pre-processing pipeline: includes loading data and instantiating network
-p3;
+%% TODO: load face data
+[train,test] = ex1_load_mnist(false);
 
-%% Train with minFunc
-for i=1:length(network)
-    % setup minfunc options
-    options = [];
-    options.display = 'iter';
-    options.maxFunEvals = 1e6;
-    options.Method = 'lbfgs';
-    
-    % run training
-    [opt_params,opt_value,exitflag,output] = minFunc(network(i).costFunc, params, options, network(i).network_design.ei, data_train, labels_train);
-        
-    
-    % TODO:  1) check the gradient calculated by supervised_dnn_cost.m
-    %        2) Decide proper hyperparamters and train the network.
-    %        3) Implement SGD version of solution.
-    %        4) Plot speed of convergence for 1 and 3.
-    %        5) Compute training time and accuracy of train & test data.
-    
-    % compute accuracy on the test and train set
-    [~, ~, pred] = supervised_dnn_cost( opt_params, ei{i}, data_test, [], true);
-    [~,pred] = max(pred);
-    acc_test = mean(pred'==labels_test);
-    fprintf('test accuracy: %f\n', acc_test);
-    
-    [~, ~, pred] = supervised_dnn_cost( opt_params, ei{i}, data_train, [], true);
-    [~,pred] = max(pred);
-    acc_train = mean(pred'==labels_train);
-    fprintf('train accuracy: %f\n', acc_train);
-end
+% Add row of 1s to the dataset to act as an intercept term.
+train.y = train.y+1; % make labels 1-based.
+test.y = test.y+1; % make labels 1-based.
 
-%% Train with gradientdescent; leave 2 out line search for lambda (L2 regularization);
-% LIAM:  Code fails here
-% net_input = {NetworkInput(ei{NIMSTIM}, NIMSTIM)};
-% for i=1:length(ei)
-%     for j=1:1
-%         stack = initialize_weights(ei{i});
-%         params = stack2params(stack);
-%         
-%         % setup minfunc options
-%         options = [];
-%         options.display = 'iter';
-%         options.maxFunEvals = 1e6;
-%         options.Method = 'lbfgs';
-%         
-%         [opt_params,opt_value,exitflag,output] = gradientdescent( dnn_cost_function, params, options, ei, data, labels);
-%         
-%         %Makes code easier to read
-%         NimStim=1;
-%         POFA=2;
-%         
-%         inputs = cellfun(@(x) NetworkInput(x.ei, x.data), networkintput_input);
-%         network = cellfun(@(x) Network(x), inputs);
-%         outputs = cellfun(@(x) NetworkOutput(x), network);
-%     end
-% end
+% Training set info
+m=size(train.X,2);
+n=size(train.X,1);
 
+%% populate ei with the network architecture to train
+% ei is a structure you can use to store hyperparameters of the network
+% You should be able to try different network architectures by changing ei
+% only (no changes to the objective function code)
+
+
+%TODO: decide proper hyperparameters.
+% dimension of input features FOR YOU TO DECIDE
+ei.input_dim = n;
+% number of output classes FOR YOU TO DECIDE
+ei.output_dim = 10;
+% sizes of all hidden layers and the output layer FOR YOU TO DECIDE
+ei.layer_sizes = [30 20 ei.output_dim];
+% scaling parameter for l2 weight regularization penalty
+ei.lambda = 1;
+% which type of activation function to use in hidden layers
+% feel free to implement support for different activation function
+ei.activation_fun = 'logistic';
+%ei.activation_fun = 'tanh';
+
+
+%% setup random initial weights
+stack = initialize_weights(ei);
+params = stack2params(stack);
+
+%% Gradient check
+%x = gradient_check(@supervised_dnn_cost, params, 10, ei, train.X(:, 1:5000), train.y(1:5000), false)
+
+%% setup minfunc options
+options = [];
+options.display = 'iter';
+options.maxFunEvals = 1e6;
+options.Method = 'lbfgs';
+options.maxIter = 10;
+
+%% run training
+[opt_params,opt_value,exitflag,output] = minFunc(@supervised_dnn_cost,...
+    params,options,ei, train.X, train.y);
+
+% TODO:  1) check the gradient calculated by supervised_dnn_cost.m
+%        2) Decide proper hyperparamters and train the network.
+%        3) Implement SGD version of solution.
+%        4) Plot speed of convergence for 1 and 3.
+%        5) Compute training time and accuracy of train & test data.
+
+%{
+%% SGD
+[opt_params, error] = SGD(@supervised_dnn_cost, params, 0.01, 1, train.X, train.y, test.X, test.y, ei); 
+
+%% compute accuracy on the test and train set
+[~, ~, pred] = supervised_dnn_cost( opt_params, ei, test.X, [], true);
+[~,pred] = max(pred);
+acc_test = mean(pred==test.y);
+fprintf('test accuracy: %f\n', acc_test);
+
+[~, ~, pred] = supervised_dnn_cost( opt_params, ei, train.X, [], true);
+[~,pred] = max(pred);
+acc_train = mean(pred==train.y);
+fprintf('train accuracy: %f\n', acc_train);
+%}
 
 
 

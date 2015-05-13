@@ -37,15 +37,15 @@ hAct{1}.activation = data;
 
 % Using prior layers, compute activations
 for h = 1:numHidden
-    Z = stack{h}.weight_matrix * hAct{h}.activation + stack{h}.bias_vector;
+    Z = bsxfun(@plus, stack{h}.W * hAct{h}.activation, stack{h}.b);
     Z = f(Z);
     hAct{h+1}.activation = Z;
 end
 
 % Output layer
 H = numHidden + 1;
-Z_output = stack{H}.weight_matrix * hAct{H} + stack{H}.bias_vector;
-probability = softmax(Z_output);
+Z_output = bsxfun(@plus, stack{H}.W * hAct{H}.activation, stack{H}.b);
+pred_prob = softmax(Z_output);
 
 
 %% Return here if only predictions (po == True) desired.
@@ -69,21 +69,20 @@ deltas       = cell(numHidden + 1, 1);
 
 % Compute the delta matrix for output layer
 I = eye(K);
-output_index = numHidden + 1;
-deltas{output_index}.delta_matrix = probability - I(:, labels); 
+deltas{H}.delta_matrix = pred_prob - I(:, labels); 
 
 % Compute the delta matrices for hidden layers, h hidden layers
 for h = numHidden: -1 : 1
-    deltas{h}.delta_matrix =  (stack{h + 1}.weight_matrix' * deltas{h + 1}.delta_matrix) .* f_derivative(hAct{h + 1}.activation);
+    deltas{h}.delta_matrix =  (stack{h + 1}.W' * deltas{h + 1}.delta_matrix) .* f_derivative(hAct{h + 1}.activation);
 end
 
 % Compute the gradients
 for h = 1:(numHidden + 1)
     % Gradients for weight_matrix
-    gradStack{h}.weight_matrix = deltas{h}.delta_matrix * hAct{h}.activation';
+    gradStack{h}.W = deltas{h}.delta_matrix * hAct{h}.activation';
     
     % Gradients for bias
-    gradStack{h}.bias_vector = sum(deltas{h}.delta_matrix, 2);
+    gradStack{h}.b = sum(deltas{h}.delta_matrix, 2);
 end
 
 
