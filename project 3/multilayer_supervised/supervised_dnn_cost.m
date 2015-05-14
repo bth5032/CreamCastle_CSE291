@@ -14,7 +14,6 @@ end
 %% Characteristics of data.
 [d, m] = size(data);
 % Determine the number of unique classes
-%K = 10; %MNIST
 K = 22; %NimStim
 %K = 6;  %POFA
 

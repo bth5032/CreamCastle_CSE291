@@ -13,18 +13,6 @@ addpath(genpath('../common/minFunc_2012/minFunc'));
 
 
 %% Load the NimStim Data
-% train_X = Final_NimStim_Input_Matrix;
-% train_y = Final_NimStim_Targets;
-% 
-% test_X = Final_NimStim_Input_Matrix;
-% test_y = Final_NimStim_Targets;
-% 
-% %Training set info
-% m = size(train_X,2);
-% n = size(train_X,1);
-% 
-% K = length(unique(train_y));
-
 data = Final_NimStim_Input_Matrix;
 labels = Final_NimStim_Targets;
 
@@ -43,21 +31,29 @@ test_y = labels(256:341);
 m = size(train_X,2);
 n = size(train_X,1);
 
-K = length(unique(train_y));
+K = length(unique(labels));
 
 
 %% Load the POFA Data
-% train_X = Final_POFA_Input_Matrix;
-% train_y = Final_POFA_Targets;
+% data = Final_POFA_Input_Matrix;
+% labels = Final_POFA_Targets;
 % 
-% test_X = Final_POFA_Input_Matrix;
-% test_y = Final_POFA_Targets;
+% i = randperm(length(labels));
+% data   = data(:,i);
+% labels = labels(i); 
+% 
+% % Partition data
+% train_X = data(:,1:72);
+% train_y = labels(1:72);
+% 
+% test_X = data(:,73:96);
+% test_y = labels(73:96);
 % 
 % % Training set info
 % m = size(train_X,2);
 % n = size(train_X,1);
 % 
-% K = length(unique(train_y));
+% K = length(unique(labels));
 
 
 %% Network hyperparameters
@@ -67,7 +63,6 @@ K = length(unique(train_y));
 ei.input_dim = n;
 ei.output_dim = K;
 ei.layer_sizes = [30, 20, ei.output_dim];
-% scaling parameter for l2 weight regularization penalty
 ei.lambda = 1;
 ei.activation_fun = 'logistic';
 %ei.activation_fun = 'tanh';
