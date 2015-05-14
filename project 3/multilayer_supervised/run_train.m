@@ -34,7 +34,7 @@ ei.input_dim = n;
 % number of output classes FOR YOU TO DECIDE
 ei.output_dim = 10;
 % sizes of all hidden layers and the output layer FOR YOU TO DECIDE
-ei.layer_sizes = [30 20 ei.output_dim];
+ei.layer_sizes = [30 20 20 10 ei.output_dim];
 % scaling parameter for l2 weight regularization penalty
 ei.lambda = 1;
 % which type of activation function to use in hidden layers
@@ -58,19 +58,19 @@ options.Method = 'lbfgs';
 options.maxIter = 10;
 
 %% run training
+%{
 [opt_params,opt_value,exitflag,output] = minFunc(@supervised_dnn_cost,...
     params,options,ei, train.X, train.y);
-
+%}
 % TODO:  1) check the gradient calculated by supervised_dnn_cost.m
 %        2) Decide proper hyperparamters and train the network.
 %        3) Implement SGD version of solution.
 %        4) Plot speed of convergence for 1 and 3.
 %        5) Compute training time and accuracy of train & test data.
 
-%{
-%% SGD
-[opt_params, error] = SGD(@supervised_dnn_cost, params, 0.01, 1, train.X, train.y, test.X, test.y, ei); 
-%}
+%% Stochastic gradient descent
+[opt_params, error] = stochastic_grad_desc(@supervised_dnn_cost, params, 0.01, 1, train.X, train.y, test.X, test.y, ei); 
+
 
 %% compute accuracy on the test and train set
 [~, ~, pred] = supervised_dnn_cost( opt_params, ei, test.X, [], true);
