@@ -6,15 +6,15 @@ function featureVector = gaborFeatures(img,gaborArray,d1,d2)
 %
 %
 % Inputs:
-%       img         :	Matrix of the input image 
-%       gaborArray	:	Gabor filters bank created by the function gaborFilterBank
-%       d1          :	The factor of downsampling along rows.
+%       img         :   Matrix of the input image 
+%       gaborArray  :   Gabor filters bank created by the function gaborFilterBank
+%       d1          :   The factor of downsampling along rows.
 %                       d1 must be a factor of n if n is the number of rows in img.
-%       d2          :	The factor of downsampling along columns.
+%       d2          :   The factor of downsampling along columns.
 %                       d2 must be a factor of m if m is the number of columns in img.
 %               
 % Output:
-%       featureVector	:   A column vector with length (m*n*u*v)/(d1*d2). 
+%       featureVector   :   A column vector with length (m*n*u*v)/(d1*d2). 
 %                           This vector is the Gabor feature vector of an 
 %                           m by n image. u is the number of scales and
 %                           v is the number of orientations in 'gaborArray'.
@@ -34,7 +34,7 @@ function featureVector = gaborFeatures(img,gaborArray,d1,d2)
 %   Springer Berlin Heidelberg, pp. 440-448, 2013.
 % 
 % 
-% (C)	Mohammad Haghighat, University of Miami
+% (C)   Mohammad Haghighat, University of Miami
 %       haghighat@ieee.org
 %       I WILL APPRECIATE IF YOU CITE OUR PAPER IN YOUR WORK.
 
@@ -43,7 +43,7 @@ if (nargin ~= 4)    % Check correct number of arguments
     error('Use correct number of input arguments!')
 end
 
-if size(img,3) == 3	% % Check if the input image is grayscale
+if size(img,3) == 3 % % Check if the input image is grayscale
     img = rgb2gray(img);
 end
 
@@ -66,32 +66,35 @@ end
 %% Feature Extraction
 
 % Extract feature vector from input image
+%recall v = num_orientations, u = num_scales
 [n,m] = size(img);
-s = (n*m)/(d1*d2);
-l = s*u*v;
-featureVector = zeros(l,1);
-c = 0;
-for i = 1:u
-    for j = 1:v
+s = (n*m)/(d1*d2); %Length of single gabor filter output from image
+l = s*u*v; %Length of flattened feature vector
+
+featureVector = zeros(s*v, u);
+for i = 1:u %for each scale
+    r = 0;
+    for j = 1:v  %for each orientation
         
-        c = c+1;
-        gaborAbs = abs(gaborResult{i,j});
-        gaborAbs = downsample(gaborAbs,d1);
-        gaborAbs = downsample(gaborAbs.',d2);
+        %r = r+1; % the row to store input, each col is an element of the convolution for that scale/orientation
+        gaborAbs = abs(gaborResult{i,j}); %compute 
+        gaborAbs = imresize(gaborAbs,[d1, d2]);
         gaborAbs = reshape(gaborAbs.',[],1);
         
         
         % Normalized to zero mean and unit variance. (if not applicable, please comment this line)
         gaborAbs = (gaborAbs-mean(gaborAbs))/std(gaborAbs,1);
         
-        featureVector(((c-1)*s+1):(c*s)) = gaborAbs;
+        featureVector((((j-1)*s) +1):(j*s), i) = gaborAbs;
         
     end
 end
 
 
-%% Show filtered images
 
+
+%% Show filtered images
+%{
 % Show real parts of Gabor-filtered images
 figure('NumberTitle','Off','Name','Real parts of Gabor filters');
 for i = 1:u
@@ -100,8 +103,6 @@ for i = 1:u
         imshow(real(gaborResult{i,j}),[]);
     end
 end
-
-
 % Show magnitudes of Gabor-filtered images
 figure('NumberTitle','Off','Name','Magnitudes of Gabor filters');
 for i = 1:u
@@ -110,3 +111,4 @@ for i = 1:u
         imshow(abs(gaborResult{i,j}),[]);
     end
 end
+%}
