@@ -21,7 +21,7 @@ classdef Network < matlab.mixin.Copyable
             assert(length(network_input)==length(network_design),'Network (constructor): input and design must be same length');
             
             %Create a single network for each input/design pair
-            if length(network_design)==1
+            if length(network_design)==1 
                 obj.network_design=copy(network_design);
                 obj.network_input=copy(network_input);
                 obj.network_output = NetworkOutput(obj); %NetworkOutput keeps a backlink to this object

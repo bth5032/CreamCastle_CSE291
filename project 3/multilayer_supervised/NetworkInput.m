@@ -48,10 +48,13 @@ classdef NetworkInput < matlab.mixin.Copyable
                     temp = cellfun(@(x) obj.getCellFeatures(x), all_512_gabor_features, 'UniformOutput', false);
                     
                     %Concatenate features across images
-                    stacked_gabor_features=cell2mat(temp);
+                    stacked_gabor_features=cell2mat(temp');
                     
+                    %Final dimensionality reduction 
+                    [U,S] = svds(stacked_gabor_features, obj.NUM_COMPONENTS);
+
                     %Normalize/vectorize features across images and scales
-                    scored_gabor_features = zscore(zscore(stacked_gabor_features)');
+                    scored_gabor_features = zscore(zscore(U*S)')';
                     
                     %PCA/zscore: Normalize top-40 PCs. Save as obj.features
                     obj.features = scored_gabor_features(:);
@@ -69,6 +72,7 @@ classdef NetworkInput < matlab.mixin.Copyable
                     %cross-validation folds to features
                     %all_tags = fulldata.(fulldata.xval_tag);
                     %unique_tags=unique(all_tags)
+                    
                     
                     %TODO: Make cross-validation folds
                     %obj.folds = obj.makeXvalFolds(fulldata);

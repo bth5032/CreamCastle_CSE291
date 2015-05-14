@@ -36,11 +36,11 @@ gradStack = cell(numHidden+1, 1);
 
 %% Forward propagation
 % Initial activation is the data input
-hAct{1}.activation = data(:);
+hAct{1}.activation = data;
 
 % Using prior layers, compute activations
 for h = numHidden: -1 :1
-    Z = stack{h}.W * hAct{h}.activation(:) + stack{h}.b(:);
+    Z = stack{h}.W * hAct{h}.activation + stack{h}.b;
     Z = f(Z);
     hAct{h+1}.activation = Z(:);
 end
