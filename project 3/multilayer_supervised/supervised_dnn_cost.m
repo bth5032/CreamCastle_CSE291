@@ -13,10 +13,6 @@ end
 
 %% Characteristics of data.
 [d, m] = size(data);
-% Determine the number of unique classes
-K = 22; %NimStim
-%K = 6;  %POFA
-
 
 %% Default values.
 po = false;
@@ -68,7 +64,7 @@ cost = cost/m;
 deltas       = cell(numHidden + 1, 1);
 
 % Compute the delta matrix for output layer
-I = eye(K);
+I = eye(size(pred_prob, 1));
 deltas{H}.delta_matrix = pred_prob - I(:, labels); 
 
 % Compute the delta matrices for hidden layers, h hidden layers

@@ -2,52 +2,30 @@
 % softmax output layer with cross entropy loss function
 
 %% Setup environment
-% experiment information
-% a struct containing network layer sizes etc
-ei = [];
-
-% add common directory to your path for
-% minfunc and mnist data helpers
+%  Add common directory to your path for minFunc
 addpath ../common;
 addpath(genpath('../common/minFunc_2012/minFunc'));
 
+% Run preprocess code if necessary
+if ~exist('nimstim_data', 'var')
+    prepare_data;
+end    
+    
 
 %% Load the NimStim Data
-data = Final_NimStim_Input_Matrix;
-labels = Final_NimStim_Targets;
-
-i = randperm(length(labels));
-data   = data(:,i);
-labels = labels(i); 
-
-% Partition data
-train_X = data(:,1:255);
-train_y = labels(1:255);
-
-test_X = data(:,256:341);
-test_y = labels(256:341);
-
-% Training set info
-m = size(train_X,2);
-n = size(train_X,1);
-
-K = length(unique(labels));
-
-
-%% Load the POFA Data
-% data = Final_POFA_Input_Matrix;
-% labels = Final_POFA_Targets;
+% data = nimstim_data;
+% labels = nimstim_labels;
 % 
 % i = randperm(length(labels));
 % data   = data(:,i);
 % labels = labels(i); 
 % 
 % % Partition data
-% train_X = data(:,1:72);
-% train_y = labels(1:72);
+% train_X = data(:,1:255);
+% train_y = labels(1:255);
 % 
-% test_X = data(:,73:96);
-% test_y = labels(73:96);
+% test_X = data(:,256:341);
+% test_y = labels(256:341);
 % 
 % % Training set info
 % m = size(train_X,2);
@@ -56,10 +34,31 @@ K = length(unique(labels));
 % K = length(unique(labels));
 
 
+%% Load the POFA Data
+data = pofa_data;
+labels = pofa_labels;
+
+i = randperm(length(labels));
+data   = data(:,i);
+labels = labels(i); 
+
+% Partition data
+train_X = data(:,1:72);
+train_y = labels(1:72);
+
+test_X = data(:,73:96);
+test_y = labels(73:96);
+
+% Training set info
+m = size(train_X,2);
+n = size(train_X,1);
+
+K = length(unique(labels));
+
+
 %% Network hyperparameters
 % ei is a structure you can use to store hyperparameters of the network
-
-% Decide proper hyperparameters.
+ei = [];
 ei.input_dim = n;
 ei.output_dim = K;
 ei.layer_sizes = [30, 20, ei.output_dim];

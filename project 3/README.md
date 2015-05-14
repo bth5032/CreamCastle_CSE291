@@ -7,13 +7,16 @@ Motivated by the [Stanford Deep Learning Tutorial](http://ufldl.stanford.edu/tut
 The primary code is in multilayer_supervised, but functionality borrowed from the tutorial, specifically, minFunc is utilized from common.  
 
 #### Code Base
-Images are preprocessed using prepare_data.m.  It is necessary that this code is run first in order to load the processed data and labels.  However, this script only needs to be run once as long as the data and labels persist in the current workspace.  
-
 In run_train, select either the NimStim or POFA dataset.  Then, to train and test the neural network, from MATLAB,  
 
 ```
-prepare_data
 run_train
 ```
 
-There are two optimizations available, minFunc and Stochastic Gradient Descent.  
+If the requisite data preprocessing has not yet been done, MATLAB will also call,
+
+```
+prepare_data
+```
+
+Which will considerably extend the run-time of the program.  This will not be called each time run_train is called, provided the data and labels are in the workspace. There are two optimizations available, minFunc and Stochastic Gradient Descent.  
