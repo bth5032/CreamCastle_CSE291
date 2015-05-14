@@ -37,10 +37,69 @@ ei.orientations = 8;
 ei.scales = 5;
 ei.scaleDownFactor = 8;
 
-gabArr = gaborFilterBank(ei.orientations, ei.scales, ei.scaleDownFactor, ei.scaleDownFactor);
+gabArr = gaborFilterBank(ei.scales, ei.orientations, ei.scaleDownFactor, ei.scaleDownFactor);
 
 %% Preprocess images to gabor filters
-processed_images.NimStim.images = cellfun(@(x) gaborFeatures(x, gabArr,8, 8) , processed_images.NimStim.images, 'UniformOutput' , false);
-processed_images.POFA.images = cellfun(@(x) gaborFeatures(x, gabArr,8, 8) , processed_images.POFA.images, 'UniformOutput' , false);
+feature_vector.NimStim.images = cellfun(@(x) gaborFeatures(x, gabArr,8, 8) , processed_images.NimStim.images, 'UniformOutput' , false);
+feature_vector.NimStim.targets = target{1}
+feature_vector.POFA.images = cellfun(@(x) gaborFeatures(x, gabArr,8, 8) , processed_images.POFA.images, 'UniformOutput' , false);
+feature_vector.POFA.targets = target{2}
+%% make feature vector 3D matrix
+temp_features.NimStim = feature_vector.NimStim.images{1}
+for i=2:length(feature_vector.NimStim.images)
+    temp_features.NimStim(:,:,i) = feature_vector.NimStim.images{i}
+end
+temp_features.POFA = feature_vector.NimStim.images{1}
+for i=2:length(feature_vector.POFA.images)
+    temp_features.POFA(:,:,i) = feature_vector.POFA.images{i}
+end
 
+%% split matricies by scale
+temp2_features.NimStim.scale1 = squeeze(temp_features.NimStim(:,1,:));
+temp2_features.NimStim.scale2 = squeeze(temp_features.NimStim(:,2,:));
+temp2_features.NimStim.scale3 = squeeze(temp_features.NimStim(:,3,:));
+temp2_features.NimStim.scale4 = squeeze(temp_features.NimStim(:,4,:));
+temp2_features.NimStim.scale5 = squeeze(temp_features.NimStim(:,5,:));
+
+temp2_features.POFA.scale1 = squeeze(temp_features.POFA(:,1,:));
+temp2_features.POFA.scale2 = squeeze(temp_features.POFA(:,2,:));
+temp2_features.POFA.scale3 = squeeze(temp_features.POFA(:,3,:));
+temp2_features.POFA.scale4 = squeeze(temp_features.POFA(:,4,:));
+temp2_features.POFA.scale5 = squeeze(temp_features.POFA(:,5,:));
+
+%% Find SVD projectors 
+
+[U,S,V] = svds(temp2_features.NimStim.scale1', 8);
+NimStim.p1 = V';
+[U,S,V] = svds(temp2_features.NimStim.scale2', 8);
+NimStim.p2 = V';
+[U,S,V] = svds(temp2_features.NimStim.scale3', 8);
+NimStim.p3 = V';
+[U,S,V] = svds(temp2_features.NimStim.scale4', 8);
+NimStim.p4 = V';
+[U,S,V] = svds(temp2_features.NimStim.scale5', 8);
+NimStim.p5 = V';
+
+[U,S,V] = svds(temp2_features.POFA.scale1', 8);
+POFA.p1 = V';
+[U,S,V] = svds(temp2_features.POFA.scale2', 8);
+POFA.p2 = V';
+[U,S,V] = svds(temp2_features.POFA.scale3', 8);
+POFA.p3 = V';
+[U,S,V] = svds(temp2_features.POFA.scale4', 8);
+POFA.p4 = V';
+[U,S,V] = svds(temp2_features.POFA.scale5', 8);
+POFA.p5 = V';
+
+%% Project Feature Vectors to 8 dimensions
+Final_NimStim_Input_Matrix = vertcat(NimStim.p1*temp2_features.NimStim.scale1, NimStim.p2*temp2_features.NimStim.scale2, ...
+    NimStim.p3*temp2_features.NimStim.scale3, NimStim.p4*temp2_features.NimStim.scale4, NimStim.p5*temp2_features.NimStim.scale5)
+
+Final_POFA_Input_Matrix = vertcat(POFA.p1*temp2_features.POFA.scale1, POFA.p2*temp2_features.POFA.scale2, ...
+    POFA.p3*temp2_features.POFA.scale3, POFA.p4*temp2_features.POFA.scale4, POFA.p5*temp2_features.POFA.scale5)
+
+%% Write out targets
+Final_NimStim_Targets = target{1}'
+
+Final_POFA_Targets = target{2}'
 

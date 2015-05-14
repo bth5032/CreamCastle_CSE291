@@ -5,6 +5,8 @@ function target = getImageLabels(filename, dataset)
 if dataset == 1 %NIMSTIM
     temp=regexp(filename,'[_-]','split');
     target = str2num(temp{1}(1:2)) - 22;
+    if target == 23
+        target = 22;
 
 elseif dataset == 2 %POFA
     temp=regexp(filename,'[_-]','split');
