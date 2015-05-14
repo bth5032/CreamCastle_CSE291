@@ -12,23 +12,6 @@ addpath ../common;
 addpath(genpath('../common/minFunc_2012/minFunc'));
 
 
-%% Load MNIST Data
-% [train,test] = ex1_load_mnist(false);
-% 
-% % Add row of 1s to the dataset to act as an intercept term.
-% train.y = train.y+1; % make labels 1-based.
-% test.y = test.y+1; % make labels 1-based.
-% 
-% train_X = train.X;
-% train_y = train.y;
-% test_X  = test.X;
-% test_y  = test.y;
-% 
-% % Training set info
-% m = size(train.X,2);
-% n = size(train.X,1);
-% K = length(unique(test.y));
-
 %% Load the NimStim Data
 % train_X = Final_NimStim_Input_Matrix;
 % train_y = Final_NimStim_Targets;
