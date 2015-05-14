@@ -13,47 +13,47 @@ end
     
 
 %% Load the NimStim Data
-% data = nimstim_data;
-% labels = nimstim_labels;
-% 
-% i = randperm(length(labels));
-% data   = data(:,i);
-% labels = labels(i); 
-% 
-% % Partition data
-% train_X = data(:,1:255);
-% train_y = labels(1:255);
-% 
-% test_X = data(:,256:341);
-% test_y = labels(256:341);
-% 
-% % Training set info
-% m = size(train_X,2);
-% n = size(train_X,1);
-% 
-% K = length(unique(labels));
-
-
-%% Load the POFA Data
-data = pofa_data;
-labels = pofa_labels;
+data = nimstim_data;
+labels = nimstim_labels;
 
 i = randperm(length(labels));
 data   = data(:,i);
 labels = labels(i); 
 
 % Partition data
-train_X = data(:,1:72);
-train_y = labels(1:72);
+train_X = data(:,1:255);
+train_y = labels(1:255);
 
-test_X = data(:,73:96);
-test_y = labels(73:96);
+test_X = data(:,256:341);
+test_y = labels(256:341);
 
 % Training set info
 m = size(train_X,2);
 n = size(train_X,1);
 
 K = length(unique(labels));
+
+
+%% Load the POFA Data
+% data = pofa_data;
+% labels = pofa_labels;
+% 
+% i = randperm(length(labels));
+% data   = data(:,i);
+% labels = labels(i); 
+% 
+% % Partition data
+% train_X = data(:,1:72);
+% train_y = labels(1:72);
+% 
+% test_X = data(:,73:96);
+% test_y = labels(73:96);
+% 
+% % Training set info
+% m = size(train_X,2);
+% n = size(train_X,1);
+% 
+% K = length(unique(labels));
 
 
 %% Network hyperparameters
@@ -79,15 +79,17 @@ options.Method = 'lbfgs';
 options.maxIter = 1000;
 
 %% Training with minFunc
-t_min = cputime;
+b_min = cputime;
 [opt_params,opt_value,exitflag,output] = minFunc(@supervised_dnn_cost,...
     params,options,ei, train_X, train_y);
-e_min = cputime - t_min;
+e_min = cputime - b_min;
+disp(e_min);
 
 %% Training with stochastic gradient descent
-t_sgd = cputime;
+b_sgd = cputime;
 [opt_params, error] = stochastic_grad_desc(@supervised_dnn_cost, params, 0.01, 100, train_X, train_y, test_X, test_y, ei); 
-e_sgd = cputime - t_sgd;
+e_sgd = cputime - b_sgd;
+disp(e_sgd);
 
 %% Accuracy on test and train set.
 [~, ~, pred] = supervised_dnn_cost( opt_params, ei, test_X, [], true);

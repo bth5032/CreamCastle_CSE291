@@ -12,7 +12,7 @@ end
 
 
 %% Characteristics of data.
-[d, m] = size(data);
+[~, m] = size(data);
 
 %% Default values.
 po = false;
