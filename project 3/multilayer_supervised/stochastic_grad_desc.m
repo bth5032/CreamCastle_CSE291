@@ -11,6 +11,7 @@ function [ theta, error ] = stochastic_grad_desc(func, theta0, alpha, maxIter, X
         X = X(:, perm);
         y = y(perm);
         
+        % Run over the dataset, randomly permuted for each iteration
         for j = 1:m
             [~, g] = func(theta, ei, X(:, j), y(j), false);
             theta = theta - alpha * g;

@@ -69,7 +69,7 @@ options.maxIter = 10;
 %        5) Compute training time and accuracy of train & test data.
 
 %% Stochastic gradient descent
-[opt_params, error] = stochastic_grad_desc(@supervised_dnn_cost, params, 0.01, 1, train.X, train.y, test.X, test.y, ei); 
+[opt_params, error] = stochastic_grad_desc(@supervised_dnn_cost, params, 0.01, 10, train.X, train.y, test.X, test.y, ei); 
 
 
 %% compute accuracy on the test and train set
