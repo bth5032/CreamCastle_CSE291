@@ -1,5 +1,5 @@
-function [p]  = softmax(z)
+function [P]  = softmax(z)
     numerator = exp(z);
     denominator = sum(numerator);
-    p = bsxfun(@rdivide, numerator, denominator);
+    P = bsxfun(@rdivide, numerator, denominator);
 end
