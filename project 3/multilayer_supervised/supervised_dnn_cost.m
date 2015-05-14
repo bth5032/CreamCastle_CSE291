@@ -14,7 +14,9 @@ end
 %% Characteristics of data.
 [d, m] = size(data);
 % Determine the number of unique classes
-K = 22;
+unique_labels = length(unique(labels));
+K = 10;
+%K = 22;
 %K = length(unique(labels));
 
 

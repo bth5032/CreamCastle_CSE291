@@ -1,27 +1,29 @@
-function [ theta, error ] = stochastic_grad_desc(func, theta0, alpha, maxIter, X, y, X_val, y_val, ei)
-    [~, m] = size(X);
-    theta = theta0;
-    error = zeros(1, maxIter);
-    fprintf('epoch    error\n');
+function [ W, error ] = stochastic_grad_desc(func, W0, alpha, N, train_X, train_y, test_X, test_y, ei)
     
-    % Iterate until max iterations reached
-    for epoch = 1:maxIter
+    % Determine size of the dataset 
+    [~, m] = size(train_X);
+    W = W0;
+    error = zeros(1, N);
+    fprintf('iteration    error\n');
+    
+    % Iterate until max iterations, N, reached
+    for iteration = 1:N
         % Shuffle the examples on each iteration
         perm = randperm(m);
-        X = X(:, perm);
-        y = y(perm);
+        train_X = train_X(:, perm);
+        train_y = train_y(perm);
         
         % Run over the dataset, randomly permuted for each iteration
         for j = 1:m
-            [~, g] = func(theta, ei, X(:, j), y(j), false);
-            theta = theta - alpha * g;
+            [~, g] = func(W, ei, train_X(:, j), train_y(j), false);
+            W = W - alpha * g;
         end
         
         % Predict performance with current parameter set
-        [~, ~, pred] = func(theta, ei, X_val, y_val, true);
+        [~, ~, pred] = func(W, ei, test_X, test_y, true);
         [~,pred] = max(pred);
-        error(epoch) = 1 - mean(pred == y_val);
-        fprintf('% 5d    %.3f \n', epoch, error(epoch));
+        error(iteration) = 1 - mean(pred == test_y);
+        fprintf(iteration, error(iteration));
     end
 end
 
