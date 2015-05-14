@@ -70,6 +70,7 @@ options.maxIter = 10;
 %{
 %% SGD
 [opt_params, error] = SGD(@supervised_dnn_cost, params, 0.01, 1, train.X, train.y, test.X, test.y, ei); 
+%}
 
 %% compute accuracy on the test and train set
 [~, ~, pred] = supervised_dnn_cost( opt_params, ei, test.X, [], true);
@@ -77,11 +78,12 @@ options.maxIter = 10;
 acc_test = mean(pred==test.y);
 fprintf('test accuracy: %f\n', acc_test);
 
+
 [~, ~, pred] = supervised_dnn_cost( opt_params, ei, train.X, [], true);
 [~,pred] = max(pred);
 acc_train = mean(pred==train.y);
 fprintf('train accuracy: %f\n', acc_train);
-%}
+
 
 
 
