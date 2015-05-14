@@ -60,7 +60,6 @@ end;
 
 %% Compute cost.
 cost = 0;
-
 for i = 1:m
     cost = cost - log(pred_prob(labels(i), i));
 end
@@ -86,11 +85,6 @@ for h = 1:(numHidden + 1)
     % Gradients for bias
     gradStack{h}.b = sum(deltas{h}.delta_matrix, 2);
 end
-
-
-%% Compute weight penalty cost and gradient for non-bias terms.
-%%% YOUR CODE HERE %%%
-
 
 %% Reshape gradients into vector.
 [grad] = stack2params(gradStack);
