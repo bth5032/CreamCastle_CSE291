@@ -35,9 +35,9 @@ addpath(genpath(fullfile('..', 'preprocessing', 'gabor')));  %From Matlab exchan
 
 ei.orientations = 8;
 ei.scales = 5;
-ei.scaleDownFactor = 8;
+ei.pixels = 128;
 
-gabArr = gaborFilterBank(ei.scales, ei.orientations, ei.scaleDownFactor, ei.scaleDownFactor);
+gabArr = gaborFilterBank(ei.scales, ei.orientations, ei.pixels, ei.pixels);
 
 %% Preprocess images to gabor filters
 feature_vector.NimStim.images = cellfun(@(x) gaborFeatures(x, gabArr,8, 8) , processed_images.NimStim.images, 'UniformOutput' , false);
@@ -67,7 +67,7 @@ temp2_features.POFA.scale3 = squeeze(temp_features.POFA(:,3,:));
 temp2_features.POFA.scale4 = squeeze(temp_features.POFA(:,4,:));
 temp2_features.POFA.scale5 = squeeze(temp_features.POFA(:,5,:));
 
-%% Find SVD projectors 
+% %% Find SVD projectors 
 
 [U,S,V] = svds(temp2_features.NimStim.scale1', 8);
 NimStim.p1 = V';
@@ -94,5 +94,12 @@ POFA.p5 = V';
 %% Project Feature Vectors to 8 dimensions
 Final_NimStim_Input_Matrix = vertcat(NimStim.p1*temp2_features.NimStim.scale1, NimStim.p2*temp2_features.NimStim.scale2, ...
     NimStim.p3*temp2_features.NimStim.scale3, NimStim.p4*temp2_features.NimStim.scale4, NimStim.p5*temp2_features.NimStim.scale5)
-Final_POFA_Input_Matrix = vertcat(NimStim.p1*temp2_features.POFA.scale1, NimStim.p2*temp2_features.POFA.scale2, ...
-    POFA.p3*temp2_features.NimStim.scale3, NimStim.p4*temp2_features.NimStim.scale4, NimStim.p5*temp2_features.NimStim.scale5)
+
+Final_POFA_Input_Matrix = vertcat(POFA.p1*temp2_features.POFA.scale1, POFA.p2*temp2_features.POFA.scale2, ...
+    POFA.p3*temp2_features.POFA.scale3, POFA.p4*temp2_features.POFA.scale4, POFA.p5*temp2_features.POFA.scale5)
+
+%% Write out targets
+Final_NimStim_Targets = target{1}'
+
+Final_POFA_Targets = target{2}'
+

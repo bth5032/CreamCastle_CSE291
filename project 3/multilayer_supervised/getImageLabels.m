@@ -7,6 +7,7 @@ if dataset == 1 %NIMSTIM
     target = str2num(temp{1}(1:2)) - 22;
     if target == 23
         target = 22;
+    end
 
 elseif dataset == 2 %POFA
     temp=regexp(filename,'[_-]','split');

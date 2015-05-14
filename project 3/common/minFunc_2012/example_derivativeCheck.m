@@ -1,5 +1,6 @@
 clear all
 
+
 nInst = 250;
 nVars = 10;
 X = randn(nInst,nVars);
@@ -10,7 +11,7 @@ wTest = randn(nVars,1);
 
 fprintf('Testing gradient using forward-differencing...\n');
 order = 1;
-derivativeCheck(@LogisticLoss,wTest,order,1,X,y);
+derivativeCheck(@LogisticLoss,wTest,order,1,X,y)
 
 fprintf('Testing gradient using central-differencing...\n');
 derivativeCheck(@LogisticLoss,wTest,order,2,X,y);
