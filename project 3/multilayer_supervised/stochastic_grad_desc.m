@@ -4,7 +4,7 @@ function [ W, error ] = stochastic_grad_desc(func, W0, alpha, N, train_X, train_
     [~, m] = size(train_X);
     W = W0;
     error = zeros(1, N);
-    fprintf('iteration    error\n');
+    fprintf('error\n');
     
     % Iterate until max iterations, N, reached
     for iteration = 1:N
@@ -23,7 +23,7 @@ function [ W, error ] = stochastic_grad_desc(func, W0, alpha, N, train_X, train_
         [~, ~, pred] = func(W, ei, test_X, test_y, true);
         [~,pred] = max(pred);
         error(iteration) = 1 - mean(pred == test_y);
-        fprintf(iteration, error(iteration));
+        disp(error(iteration));
     end
 end
 

@@ -36,7 +36,7 @@ addpath(genpath(fullfile('..', 'preprocessing', 'gabor')));  %From Matlab exchan
 
 ei.orientations = 8;
 ei.scales = 5;
-ei.scaleDownFactor = 8;
+ei.scaleDownFactor = 64;
 
 gabArr = gaborFilterBank(ei.scales, ei.orientations, ei.scaleDownFactor, ei.scaleDownFactor);
 
