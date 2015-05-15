@@ -6,6 +6,7 @@
 addpath ../common;
 addpath(genpath('../common/minFunc_2012/minFunc'));
 addpath(genpath('.'));
+addpath(genpath('../preprocessing'));
 
 % Run preprocess code if necessary
 if ~exist('nimstim_data', 'var')
