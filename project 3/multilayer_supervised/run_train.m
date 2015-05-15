@@ -5,6 +5,7 @@
 %  Add common directory to your path for minFunc
 addpath ../common;
 addpath(genpath('../common/minFunc_2012/minFunc'));
+addpath(genpath('.'));
 
 % Run preprocess code if necessary
 if ~exist('nimstim_data', 'var')
