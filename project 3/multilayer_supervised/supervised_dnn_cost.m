@@ -60,7 +60,7 @@ end
 cost = cost/m;
 
 %% Compute gradients using backpropagation algorithm.
-deltas       = cell(numHidden + 1, 1);
+deltas       = cell(output_layer, 1);
 
 % Compute the delta matrix for output layer
 I = eye(size(pred_prob, 1));
@@ -72,7 +72,7 @@ for h = numHidden: -1 : 1
 end
 
 % Compute the gradients
-for h = 1:(numHidden + 1)
+for h = 1:(output_layer)
     % Gradients for weight_matrix
     gradStack{h}.W = deltas{h}.delta_matrix * hAct{h}.activation';
     
