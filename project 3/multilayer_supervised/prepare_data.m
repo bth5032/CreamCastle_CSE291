@@ -18,7 +18,7 @@ for i=1:length(paths)
     %Save filename to extract label
     temp = regexp({paths{i}(good_idx{i}).name}, '[\\\/.]', 'split')';
     filename{i} = cellfun(@(x) x{1}, temp, 'UniformOutput', false);
-    target{i}=cellfun( @(x) getImageLabels(x, i), filename{i});
+    target{i}=cellfun( @(x) get_image_labels(x, i), filename{i});
 end
 
 %% Scale images to the proper size
