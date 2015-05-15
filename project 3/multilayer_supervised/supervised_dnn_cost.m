@@ -37,8 +37,8 @@ for h = 1:numHidden
 end
 
 % Output layer
-H = numHidden + 1;
-Z_output = bsxfun(@plus, stack{H}.W * hAct{H}.activation, stack{H}.b);
+output_layer = numHidden + 1;
+Z_output = bsxfun(@plus, stack{output_layer}.W * hAct{output_layer}.activation, stack{output_layer}.b);
 pred_prob = softmax(Z_output);
 
 
@@ -64,7 +64,7 @@ deltas       = cell(numHidden + 1, 1);
 
 % Compute the delta matrix for output layer
 I = eye(size(pred_prob, 1));
-deltas{H}.delta_matrix = pred_prob - I(:, labels); 
+deltas{output_layer}.delta_matrix = pred_prob - I(:, labels); 
 
 % Compute the delta matrices for hidden layers, h hidden layers
 for h = numHidden: -1 : 1
