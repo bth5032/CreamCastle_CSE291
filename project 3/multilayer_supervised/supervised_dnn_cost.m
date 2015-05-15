@@ -11,9 +11,6 @@ elseif strcmp(ei.activation_fun, 'tanh')
 end
 
 
-%% Characteristics of data.
-[~, m] = size(data);
-
 %% Default values.
 po = false;
 if exist('pred_only','var')
@@ -54,6 +51,8 @@ end;
 
 
 %% Compute cost.
+[~, m] = size(data);
+
 cost = 0;
 for i = 1:m
     cost = cost - log(pred_prob(labels(i), i));
