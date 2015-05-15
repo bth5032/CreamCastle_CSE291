@@ -7,7 +7,7 @@ Motivated by the [Stanford Deep Learning Tutorial](http://ufldl.stanford.edu/tut
 The primary code is in multilayer_supervised, but functionality borrowed from the tutorial, specifically, minFunc is utilized from common.  
 
 #### Code Base
-In run_train, select either the NimStim or POFA dataset.  Then, to train and test the neural network, from MATLAB,  
+In multilayer_supervised/run_train, configure the parameters of a neural network, select either the NimStim or POFA dataset and then train and test simply by executing from MATLAB command window,  
 
 ```
 run_train
