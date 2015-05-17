@@ -81,7 +81,15 @@ for h = 1:(output_layer)
     
 end
 
-% Update the parameters
+% Regularization impact to Cost Function and Weight/Bias Updates
+for h = 1:(output_layer)
+    % Modify cost function to include Weight Decay Term
+    cost = cost + 1/2 * ei.lambda * sum(sum(stack{h}.W.^2));
+    
+    % Change the W and b updates according to regularization
+    gradStack{h}.W = 1/m * gradStack{h}.W + ei.lambda * stack{h}.W;
+    gradStack{h}.b = 1/m * gradStack{h}.b;
+end
 
 
 %% Reshape gradients into vector.

@@ -64,7 +64,7 @@ ei = [];
 ei.input_dim = n;
 ei.output_dim = K;
 ei.layer_sizes = [30, 20, ei.output_dim];
-ei.lambda = 1;
+ei.lambda = 1e-6;
 ei.activation_fun = 'logistic';
 %ei.activation_fun = 'tanh';
 
