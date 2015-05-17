@@ -78,7 +78,11 @@ for h = 1:(output_layer)
     
     % Gradients for bias
     gradStack{h}.b = sum(deltas{h}.delta_matrix, 2);
+    
 end
+
+% Update the parameters
+
 
 %% Reshape gradients into vector.
 [grad] = stack2params(gradStack);
