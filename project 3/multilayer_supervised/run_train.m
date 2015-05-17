@@ -88,8 +88,9 @@ e_min = cputime - b_min;
 disp(e_min);
 
 %% Training with stochastic gradient descent
+alpha = 0.01;
 b_sgd = cputime;
-[opt_params, error] = stochastic_grad_desc(@supervised_dnn_cost, params, 0.01, 100, train_X, train_y, test_X, test_y, ei); 
+[opt_params, error] = stochastic_grad_desc(@supervised_dnn_cost, params, alpha, 100, train_X, train_y, test_X, test_y, ei); 
 e_sgd = cputime - b_sgd;
 disp(e_sgd);
 
