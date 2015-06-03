@@ -1,14 +1,8 @@
-function [train, test] = ex1_load_mnist(binary_digits)
+function [train, test] = ex1_load_mnist()
 
   % Load the training data
   X=loadMNISTImages('train-images-idx3-ubyte');
   y=loadMNISTLabels('train-labels-idx1-ubyte')';
-
-  if (binary_digits)
-    % Take only the 0 and 1 digits
-    X = [ X(:,y==0), X(:,y==1) ];
-    y = [ y(y==0), y(y==1) ];
-  end
 
   % Randomly shuffle the data
   I = randperm(length(y));
@@ -28,12 +22,6 @@ function [train, test] = ex1_load_mnist(binary_digits)
   % Load the testing data
   X=loadMNISTImages('t10k-images-idx3-ubyte');
   y=loadMNISTLabels('t10k-labels-idx1-ubyte')';
-
-  if (binary_digits)
-    % Take only the 0 and 1 digits
-    X = [ X(:,y==0), X(:,y==1) ];
-    y = [ y(y==0), y(y==1) ];
-  end
 
   % Randomly shuffle the data
   I = randperm(length(y));

@@ -8,65 +8,35 @@ addpath(genpath('../common/minFunc_2012/minFunc'));
 addpath(genpath('.'));
 addpath(genpath('../preprocessing'));
 
-% Run preprocess code if necessary
-if ~exist('nimstim_data', 'var')
-    prepare_data;
-end    
-    
+  
+%% Load the MNIST Data
+[train,test] = ex1_load_mnist();
 
-%% Load the NimStim Data
-data = nimstim_data;
-labels = nimstim_labels;
+% Add row of 1s to the dataset to act as an intercept term.
+train.y = train.y+1; % make labels 1-based.
+test.y  = test.y+1; % make labels 1-based.
 
-i = randperm(length(labels));
-data   = data(:,i);
-labels = labels(i); 
+train_X = train.X;
+train_y = train.y;
 
-% Partition data
-train_X = data(:,1:255);
-train_y = labels(1:255);
-
-test_X = data(:,256:341);
-test_y = labels(256:341);
+test_X  = test.X;
+test_y  = test.y;
 
 % Training set info
-m = size(train_X,2);
-n = size(train_X,1);
-
-K = length(unique(labels));
-
-
-%% Load the POFA Data
-% data = pofa_data;
-% labels = pofa_labels;
-% 
-% i = randperm(length(labels));
-% data   = data(:,i);
-% labels = labels(i); 
-% 
-% % Partition data
-% train_X = data(:,1:72);
-% train_y = labels(1:72);
-% 
-% test_X = data(:,73:96);
-% test_y = labels(73:96);
-% 
-% % Training set info
-% m = size(train_X,2);
-% n = size(train_X,1);
-% 
-% K = length(unique(labels));
+m = size(train.X,2);
+n = size(train.X,1);
 
 
 %% Network hyperparameters
 % ei is a structure you can use to store hyperparameters of the network
 ei = [];
 ei.input_dim = n;
-ei.output_dim = K;
+ei.output_dim = 10;
 ei.layer_sizes = [30, 20, ei.output_dim];
 ei.lambda = 1e-6;
 ei.activation_fun = 'logistic';
 %ei.activation_fun = 'tanh';
+%ei.activation_fun = 'relu';
 
 
 %% Setup random initial weights
@@ -78,7 +48,7 @@ options = [];
 options.display = 'iter';
 options.maxFunEvals = 1e6;
 options.Method = 'lbfgs';
-options.maxIter = 1000;
+options.maxIter = 50;
 
 %% Training with minFunc
 b_min = cputime;
