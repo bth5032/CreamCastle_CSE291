@@ -8,6 +8,9 @@ if strcmp(ei.activation_fun, 'logistic')
 elseif strcmp(ei.activation_fun, 'tanh')
     f            = @tanh_activation;
     f_derivative = @(A) ( 1-A.^2); 
+elseif strcmp(ei.activation_fun, 'relu')
+    f            = @relu_activation;
+    f_derivative = @(A) (A > 0);
 end
 
 
@@ -55,7 +58,7 @@ end;
 
 cost = 0;
 for i = 1:m
-    cost = cost - log(pred_prob(labels(i), i));
+    cost = cost + sum((data - Z_output).^2);
 end
 cost = cost/m;
 
@@ -77,8 +80,7 @@ for h = 1:(output_layer)
     gradStack{h}.W = deltas{h}.delta_matrix * hAct{h}.activation';
     
     % Gradients for bias
-    gradStack{h}.b = sum(deltas{h}.delta_matrix, 2);
-    
+    gradStack{h}.b = sum(deltas{h}.delta_matrix, 2); 
 end
 
 % Regularization impact to Cost Function and Weight/Bias Updates

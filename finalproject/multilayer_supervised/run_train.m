@@ -34,12 +34,12 @@ n = size(train.X,1);
 % ei is a structure you can use to store hyperparameters of the network
 ei = [];
 ei.input_dim = n;
-ei.output_dim = 10;
-ei.layer_sizes = [30, 20, ei.output_dim];
+ei.output_dim = 1000;
+ei.layer_sizes = [1000, 500, 250, 30, 250, 500, ei.output_dim];
 ei.lambda = 1e-6;
-ei.activation_fun = 'logistic';
+%ei.activation_fun = 'logistic';
 %ei.activation_fun = 'tanh';
-%ei.activation_fun = 'relu';
+ei.activation_fun = 'relu';
 
 
 %% Setup random initial weights
