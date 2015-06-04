@@ -19,6 +19,9 @@ test.y  = test.y+1; % make labels 1-based.
 train_X = train.X;
 train_y = train.y;
 
+train_reduced = train_X(:,1:10000);
+save('reduced.mat','train_reduced');
+
 test_X  = test.X;
 test_y  = test.y;
 
@@ -60,7 +63,8 @@ disp(e_min);
 %% Training with stochastic gradient descent
 alpha = 0.01;
 b_sgd = cputime;
-[opt_params, error] = stochastic_grad_desc(@supervised_dnn_cost, params, alpha, 100, train_X, train_y, test_X, test_y, ei); 
+[opt_params, error] = stochastic_grad_desc(@supervised_dnn_cost, params,...
+    alpha, 100, train_X, train_y, test_X, test_y, ei); 
 e_sgd = cputime - b_sgd;
 disp(e_sgd);
 
